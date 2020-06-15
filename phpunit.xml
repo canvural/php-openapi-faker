@@ -1,0 +1,29 @@
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutCoversAnnotation="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutResourceUsageDuringSmallTests="true"
+    beStrictAboutTodoAnnotatedTests="true"
+    bootstrap="vendor/autoload.php"
+    cacheResultFile=".build/phpunit.cache"
+    colors="true"
+    columns="max"
+    executionOrder="random"
+    verbose="true"
+>
+    <testsuites>
+        <testsuite name="Unit tests">
+            <directory>./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration tests">
+            <directory>./tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+</phpunit>

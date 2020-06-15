@@ -1,0 +1,54 @@
+{
+    "name": "canvural/php-openapi-faker",
+    "type": "library",
+    "description": "Library to generate fake data for OpenAPI request/response/schemas.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Can Vural",
+            "email": "can@vural.dev"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "ext-json": "*",
+        "cebe/php-openapi": "^1.4",
+        "fzaninotto/faker": "^1.9",
+        "league/openapi-psr7-validator": "^0.9",
+        "thecodingmachine/safe": "^1.1"
+    },
+    "require-dev": {
+        "doctrine/coding-standard": "^7.0",
+        "ergebnis/composer-normalize": "^2.5",
+        "infection/infection": "^0.16.3",
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan": "^0.12.25",
+        "phpstan/phpstan-phpunit": "^0.12.8",
+        "phpunit/phpunit": "^9.1",
+        "spatie/phpunit-snapshot-assertions": "^4.2",
+        "symfony/var-dumper": "^5.1",
+        "thecodingmachine/phpstan-safe-rule": "^1.0"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Vural\\OpenAPIFaker\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vural\\OpenAPIFaker\\Tests\\": "tests/"
+        }
+    },
+    "prefer-stable": true,
+    "scripts": {
+        "codestyle": "vendor/bin/phpcs",
+        "phpstan": "vendor/bin/phpstan analyse --ansi",
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-clover=.build/phpunit/clover.xml",
+        "test-fast": "vendor/bin/phpunit --color=always --exclude Integration",
+        "test-mutation": "vendor/bin/infection --ignore-msi-with-no-mutations --min-covered-msi=86 --min-msi=83"
+    }
+}

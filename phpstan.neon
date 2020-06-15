@@ -1,0 +1,13 @@
+includes:
+    - phpstan-baseline.neon
+parameters:
+    inferPrivatePropertyTypeFromConstructor: true
+    tmpDir: .build/phpstan/
+    level: max
+    paths:
+        - src
+        - tests
+    ignoreErrors:
+        -
+            message: '#Method [a-zA-Z0-9\\_]+::[a-zA-Z0-9\\_]+\(\) has no return typehint specified.#'
+            path: tests
