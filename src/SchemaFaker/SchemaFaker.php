@@ -82,6 +82,12 @@ final class SchemaFaker
 
                     $schema = $this->merge($schema, $resolvedSubSchema);
                 }
+            } elseif ($key === 'anyOf') {
+                $subSchema = Base::randomElement($copy[$key]);
+                unset($schema['anyOf'], $copy['anyOf']);
+                $resolvedSubSchema = $this->resolveOfConstraints($subSchema);
+
+                $schema = $this->merge($schema, $resolvedSubSchema);
             } elseif (is_array($copy[$key])) {
                 $schema[$key] = $this->merge($this->resolveOfConstraints($copy[$key]), $schema[$key]);
             }

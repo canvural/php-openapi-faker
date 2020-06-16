@@ -9,6 +9,7 @@ use League\OpenAPIValidation\Schema\SchemaValidator;
 use Vural\OpenAPIFaker\SchemaFaker\SchemaFaker;
 use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
+use function array_keys;
 
 /**
  * @uses \Vural\OpenAPIFaker\SchemaFaker\StringFaker
@@ -359,5 +360,39 @@ JSON;
         $this->assertIsArray($fakeData);
         $this->assertSame('about:blank', $fakeData['type']);
         $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_choose_schemas_from_any_of()
+    {
+        $specYaml = <<<'YAML'
+anyOf:
+  -
+    type: object
+    properties: 
+      age: 
+        type: integer
+      nickname: 
+        type: string
+    required:
+      - age
+  -
+    type: object
+    properties:
+      pet_type:
+        type: string
+        enum: [Cat, Dog]
+      hunts:
+        type: boolean
+    required: 
+      - pet_type
+YAML;
+
+        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($specYaml)))->generate();
+        $this->assertIsArray($fakeData);
+        $this->assertNotEmpty($fakeData);
+        foreach (array_keys($fakeData) as $key) {
+            $this->assertContains($key, ['age', 'nickname', 'pet_type', 'hunts']);
+        }
     }
 }
