@@ -55,9 +55,9 @@ final class StringFaker
     {
         switch ($schema->format) {
             case 'date':
-                return DateTime::date();
+                return DateTime::date('Y-m-d', '2199-01-01');
             case 'date-time':
-                return DateTime::dateTime()->format(DATE_RFC3339);
+                return DateTime::dateTime('2199-01-01 00:00:00')->format(DATE_RFC3339);
             case 'email':
                 return (new Internet(Factory::create()))->safeEmail();
             case 'uuid':
