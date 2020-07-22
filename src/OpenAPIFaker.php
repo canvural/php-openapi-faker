@@ -19,6 +19,7 @@ use Vural\OpenAPIFaker\Exception\NoRequest;
 use Vural\OpenAPIFaker\Exception\NoResponse;
 use Vural\OpenAPIFaker\Exception\NoSchema;
 use Vural\OpenAPIFaker\SchemaFaker\SchemaFaker;
+
 use function array_key_exists;
 use function strtolower;
 
@@ -35,7 +36,7 @@ final class OpenAPIFaker
      * @throws TypeErrorException
      * @throws UnresolvableReferenceException
      */
-    public static function createFromJson(string $json) : self
+    public static function createFromJson(string $json): self
     {
         $instance                = new static();
         $instance->openAPISchema = (new LeagueOpenAPI\SchemaFactory\JsonFactory($json))->createSchema();
@@ -47,7 +48,7 @@ final class OpenAPIFaker
      * @throws TypeErrorException
      * @throws UnresolvableReferenceException
      */
-    public static function createFromYaml(string $yaml) : self
+    public static function createFromYaml(string $yaml): self
     {
         $instance                = new static();
         $instance->openAPISchema = (new LeagueOpenAPI\SchemaFactory\YamlFactory($yaml))->createSchema();
@@ -143,7 +144,7 @@ final class OpenAPIFaker
     /**
      * @throws NoPath
      */
-    private function findOperation(string $path, string $method) : Operation
+    private function findOperation(string $path, string $method): Operation
     {
         try {
             $operation = (new LeagueOpenAPI\SpecFinder($this->openAPISchema))

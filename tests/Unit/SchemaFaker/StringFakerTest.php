@@ -8,9 +8,11 @@ use DateTime;
 use Vural\OpenAPIFaker\SchemaFaker\StringFaker;
 use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
+
 use function filter_var;
 use function Safe\sprintf;
 use function strlen;
+
 use const FILTER_VALIDATE_URL;
 
 /**

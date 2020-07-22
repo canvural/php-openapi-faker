@@ -10,6 +10,7 @@ use Vural\OpenAPIFaker\Exception\NoRequest;
 use Vural\OpenAPIFaker\Exception\NoResponse;
 use Vural\OpenAPIFaker\Exception\NoSchema;
 use Vural\OpenAPIFaker\OpenAPIFaker;
+
 use function count;
 
 class OpenAPIFakerTest extends TestCase
@@ -437,7 +438,7 @@ YAML;
         $faker->mockComponentSchema('DummySchema');
     }
 
-    private function getTodosSpec() : string
+    private function getTodosSpec(): string
     {
         return <<<'YAML'
 openapi: 3.0.2

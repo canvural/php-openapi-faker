@@ -12,6 +12,7 @@ use League\OpenAPIValidation\Schema\SchemaValidator;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 use Vural\OpenAPIFaker\OpenAPIFaker;
+
 use function Safe\file_get_contents;
 use function Safe\sprintf;
 
@@ -140,7 +141,7 @@ class E2ETest extends TestCase
     /**
      * @return string[][]
      */
-    public function specProvider() : array
+    public function specProvider(): array
     {
         return [
             ['petstore'],

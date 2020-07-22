@@ -6,6 +6,7 @@ namespace Vural\OpenAPIFaker\SchemaFaker;
 
 use cebe\openapi\spec\Schema;
 use Faker\Provider\Base;
+
 use function mt_getrandmax;
 
 /**

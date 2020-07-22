@@ -6,6 +6,7 @@ namespace Vural\OpenAPIFaker\SchemaFaker;
 
 use cebe\openapi\spec\Schema;
 use Faker\Provider\Base;
+
 use function array_unique;
 use function array_values;
 
@@ -17,7 +18,7 @@ final class ArrayFaker
     /**
      * @return array<mixed>
      */
-    public static function generate(Schema $schema) : array
+    public static function generate(Schema $schema): array
     {
         $minimum  = $schema->minItems ?? 0;
         $maximum  = $schema->maxItems ?? $minimum + 15;

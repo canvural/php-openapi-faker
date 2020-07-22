@@ -11,9 +11,11 @@ use Faker\Provider\DateTime;
 use Faker\Provider\Internet;
 use Faker\Provider\Lorem;
 use Faker\Provider\Uuid;
+
 use function max;
 use function Safe\substr;
 use function strlen;
+
 use const DATE_RFC3339;
 
 /**
@@ -21,7 +23,7 @@ use const DATE_RFC3339;
  */
 final class StringFaker
 {
-    public static function generate(Schema $schema) : string
+    public static function generate(Schema $schema): string
     {
         if ($schema->enum !== null) {
             return Base::randomElement($schema->enum);
@@ -51,25 +53,33 @@ final class StringFaker
         return $result;
     }
 
-    private static function generateFromFormat(Schema $schema) : string
+    private static function generateFromFormat(Schema $schema): string
     {
         switch ($schema->format) {
             case 'date':
                 return DateTime::date('Y-m-d', '2199-01-01');
+
             case 'date-time':
                 return DateTime::dateTime('2199-01-01 00:00:00')->format(DATE_RFC3339);
+
             case 'email':
                 return (new Internet(Factory::create()))->safeEmail();
+
             case 'uuid':
                 return Uuid::uuid();
+
             case 'uri':
                 return (new Internet(Factory::create()))->url();
+
             case 'hostname':
                 return (new Internet(Factory::create()))->domainName();
+
             case 'ipv4':
                 return (new Internet(Factory::create()))->ipv4();
+
             case 'ipv6':
                 return (new Internet(Factory::create()))->ipv6();
+
             default:
                 return Lorem::word();
         }

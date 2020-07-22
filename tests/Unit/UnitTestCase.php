@@ -6,14 +6,16 @@ namespace Vural\OpenAPIFaker\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
+
 use function mt_srand;
+
 use const MT_RAND_PHP;
 
 class UnitTestCase extends TestCase
 {
     use MatchesSnapshots;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 

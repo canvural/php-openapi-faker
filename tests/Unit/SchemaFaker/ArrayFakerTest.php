@@ -7,6 +7,7 @@ namespace Vural\OpenAPIFaker\Tests\Unit\SchemaFaker;
 use Vural\OpenAPIFaker\SchemaFaker\ArrayFaker;
 use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
+
 use function array_unique;
 use function Safe\sort;
 

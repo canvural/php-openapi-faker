@@ -6,6 +6,7 @@ namespace Vural\OpenAPIFaker\SchemaFaker;
 
 use cebe\openapi\spec\Schema;
 use Faker\Provider\Base;
+
 use function array_diff;
 use function array_keys;
 use function array_merge;
@@ -20,7 +21,7 @@ final class ObjectFaker
     /**
      * @return array<mixed>
      */
-    public static function generate(Schema $schema) : array
+    public static function generate(Schema $schema): array
     {
         $result = [];
 

@@ -9,6 +9,7 @@ use League\OpenAPIValidation\Schema\SchemaValidator;
 use Vural\OpenAPIFaker\SchemaFaker\SchemaFaker;
 use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
+
 use function array_keys;
 
 /**

@@ -6,6 +6,7 @@ namespace Vural\OpenAPIFaker\SchemaFaker;
 
 use cebe\openapi\spec\Schema;
 use Faker\Provider\Base;
+
 use function random_int;
 
 /**
@@ -13,7 +14,7 @@ use function random_int;
  */
 final class BooleanFaker
 {
-    public static function generate(Schema $schema) : bool
+    public static function generate(Schema $schema): bool
     {
         if ($schema->enum !== null) {
             return Base::randomElement($schema->enum);

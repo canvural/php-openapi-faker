@@ -6,6 +6,7 @@ namespace Vural\OpenAPIFaker\SchemaFaker;
 
 use cebe\openapi\spec\Schema;
 use Faker\Provider\Base;
+
 use function array_key_exists;
 use function array_reverse;
 use function in_array;
@@ -64,7 +65,7 @@ final class SchemaFaker
      *
      * @return array<mixed>
      */
-    private function resolveOfConstraints(array $schema) : array
+    private function resolveOfConstraints(array $schema): array
     {
         $copy = $schema;
         foreach ($copy as $key => $item) {
@@ -108,7 +109,7 @@ final class SchemaFaker
      *
      * @return array<mixed>
      */
-    private function merge(array $firstArray, array $secondArray) : array
+    private function merge(array $firstArray, array $secondArray): array
     {
         // phpcs:ignore
         foreach ($secondArray as $key => $_) {
