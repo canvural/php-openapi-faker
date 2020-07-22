@@ -14,11 +14,11 @@
         "ext-json": "*",
         "cebe/php-openapi": "^1.4",
         "fzaninotto/faker": "^1.9",
-        "league/openapi-psr7-validator": "^0.9",
+        "league/openapi-psr7-validator": "^0.9.1",
         "thecodingmachine/safe": "^1.1"
     },
     "require-dev": {
-        "doctrine/coding-standard": "^7.0",
+        "doctrine/coding-standard": "^8.0",
         "ergebnis/composer-normalize": "^2.5",
         "infection/infection": "^0.16.3",
         "phpstan/extension-installer": "^1.0",
