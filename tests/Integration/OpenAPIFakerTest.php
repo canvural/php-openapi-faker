@@ -76,7 +76,7 @@ JSON;
 
         $faker = OpenAPIFaker::createFromJson($specJson);
 
-        $this->assertInstanceOf(OpenAPIFaker::class, $faker);
+        self::assertInstanceOf(OpenAPIFaker::class, $faker);
     }
 
     /**
@@ -131,7 +131,7 @@ YAML;
 
         $faker = OpenAPIFaker::createFromYaml($specYaml);
 
-        $this->assertInstanceOf(OpenAPIFaker::class, $faker);
+        self::assertInstanceOf(OpenAPIFaker::class, $faker);
     }
 
     /**
@@ -185,7 +185,7 @@ components:
         $ref: '#/components/schemas/Todo'
 YAML;
 
-        $this->expectException(NoRequest::class);
+        self::expectException(NoRequest::class);
         $faker = OpenAPIFaker::createFromYaml($specYaml);
         $faker->mockRequest($path, $method, $contentType);
     }
@@ -234,7 +234,7 @@ components:
         $ref: '#/components/schemas/Todo'
 YAML;
 
-        $this->expectException(NoResponse::class);
+        self::expectException(NoResponse::class);
         $faker = OpenAPIFaker::createFromYaml($specYaml);
         $faker->mockResponse($path, $method, $statusCode, $contentType);
     }
@@ -277,7 +277,7 @@ components:
         $ref: '#/components/schemas/Todo'
 YAML;
 
-        $this->expectException(NoPath::class);
+        self::expectException(NoPath::class);
         $faker = OpenAPIFaker::createFromYaml($specYaml);
         $faker->mockResponse('/todoss', 'GET');
     }
@@ -320,7 +320,7 @@ components:
         $ref: '#/components/schemas/Todo'
 YAML;
 
-        $this->expectException(NoPath::class);
+        self::expectException(NoPath::class);
         $faker = OpenAPIFaker::createFromYaml($specYaml);
         $faker->mockRequest('/todoss', 'GET');
     }
@@ -328,16 +328,16 @@ YAML;
     /** @test */
     function it_can_mock_a_specific_schema()
     {
-        $specYaml = $this->getTodosSpec();
+        $specYaml = self::getTodosSpec();
 
         $faker = OpenAPIFaker::createFromYaml($specYaml);
         $todo  = $faker->mockComponentSchema('Todo');
 
-        $this->assertIsArray($todo);
-        $this->assertArrayHasKey('id', $todo);
-        $this->assertIsInt($todo['id']);
-        $this->assertArrayHasKey('name', $todo);
-        $this->assertIsString($todo['name']);
+        self::assertIsArray($todo);
+        self::assertArrayHasKey('id', $todo);
+        self::assertIsInt($todo['id']);
+        self::assertArrayHasKey('name', $todo);
+        self::assertIsString($todo['name']);
     }
 
     /** @test */
@@ -379,15 +379,15 @@ YAML;
 
         $fakeData = OpenAPIFaker::createFromYaml($yamlSpec)->mockResponse('/todos', 'GET');
 
-        $this->assertIsArray($fakeData);
-        $this->assertGreaterThanOrEqual(0, count($fakeData));
+        self::assertIsArray($fakeData);
+        self::assertGreaterThanOrEqual(0, count($fakeData));
 
         foreach ($fakeData as $fakeDatum) {
-            $this->assertIsArray($fakeDatum);
-            $this->assertArrayHasKey('id', $fakeDatum);
-            $this->assertIsInt($fakeDatum['id']);
-            $this->assertArrayHasKey('name', $fakeDatum);
-            $this->assertIsString($fakeDatum['name']);
+            self::assertIsArray($fakeDatum);
+            self::assertArrayHasKey('id', $fakeDatum);
+            self::assertIsInt($fakeDatum['id']);
+            self::assertArrayHasKey('name', $fakeDatum);
+            self::assertIsString($fakeDatum['name']);
         }
     }
 
@@ -402,7 +402,7 @@ paths:
       describe: Empty
 YAML;
 
-        $this->expectException(NoSchema::class);
+        self::expectException(NoSchema::class);
         $faker = OpenAPIFaker::createFromYaml($specYaml);
         $faker->mockComponentSchema('DummySchema');
     }
@@ -433,7 +433,7 @@ components:
           type: string
 YAML;
 
-        $this->expectException(NoSchema::class);
+        self::expectException(NoSchema::class);
         $faker = OpenAPIFaker::createFromYaml($specYaml);
         $faker->mockComponentSchema('DummySchema');
     }

@@ -85,9 +85,9 @@ YAML;
 
         $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsArray($fakeData);
-        $this->assertArrayHasKey('id', $fakeData);
-        $this->assertArrayHasKey('username', $fakeData);
+        self::assertIsArray($fakeData);
+        self::assertArrayHasKey('id', $fakeData);
+        self::assertArrayHasKey('username', $fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 }

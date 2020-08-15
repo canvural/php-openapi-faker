@@ -57,13 +57,13 @@ class E2ETest extends TestCase
                     try {
                         (new SchemaValidator())->validate($response, $schema);
                     } catch (Throwable $e) {
-                        $this->fail($e->getMessage());
+                        self::fail($e->getMessage());
                     }
                 }
             }
         }
 
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
     /**
@@ -98,14 +98,14 @@ class E2ETest extends TestCase
                         try {
                             (new SchemaValidator())->validate($response, $mediaType->schema);
                         } catch (Throwable $e) {
-                            $this->fail($e->getMessage());
+                            self::fail($e->getMessage());
                         }
                     }
                 }
             }
         }
 
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
     /**
@@ -119,7 +119,7 @@ class E2ETest extends TestCase
 
         $schema = (new YamlFactory($file))->createSchema();
 
-        $this->assertNotNull($schema->components);
+        self::assertNotNull($schema->components);
 
         /**
          * @var string $schemaName
@@ -131,11 +131,11 @@ class E2ETest extends TestCase
             try {
                 (new SchemaValidator())->validate($mockSchema, $schema);
             } catch (Throwable $e) {
-                $this->fail($e->getMessage());
+                self::fail($e->getMessage());
             }
         }
 
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
     /**

@@ -29,7 +29,7 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertGreaterThanOrEqual(0, strlen($fakeData));
+        self::assertGreaterThanOrEqual(0, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -43,7 +43,7 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertGreaterThanOrEqual(3, strlen($fakeData));
+        self::assertGreaterThanOrEqual(3, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -57,7 +57,7 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertLessThanOrEqual(10, strlen($fakeData));
+        self::assertLessThanOrEqual(10, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -71,11 +71,11 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsString($fakeData);
+        self::assertIsString($fakeData);
 
         $date = DateTime::createFromFormat('Y-m-d', $fakeData);
-        $this->assertNotFalse($date);
-        $this->assertSame($date->format('Y-m-d'), $fakeData);
+        self::assertNotFalse($date);
+        self::assertSame($date->format('Y-m-d'), $fakeData);
     }
 
     /** @test */
@@ -88,11 +88,11 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsString($fakeData);
+        self::assertIsString($fakeData);
 
         $date = DateTime::createFromFormat('Y-m-d\TH:i:sP', $fakeData);
-        $this->assertNotFalse($date, sprintf("Failed asserting '%s' is in 'Y-m-d\TH:i:sP' format", $fakeData));
-        $this->assertSame($date->format('Y-m-d\TH:i:sP'), $fakeData);
+        self::assertNotFalse($date, sprintf("Failed asserting '%s' is in 'Y-m-d\TH:i:sP' format", $fakeData));
+        self::assertSame($date->format('Y-m-d\TH:i:sP'), $fakeData);
     }
 
     /** @test */
@@ -105,8 +105,8 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsString($fakeData);
-        $this->assertMatchesRegularExpression('/^.+\@\S+\.\S+$/', $fakeData);
+        self::assertIsString($fakeData);
+        self::assertMatchesRegularExpression('/^.+\@\S+\.\S+$/', $fakeData);
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -120,8 +120,8 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsString($fakeData);
-        $this->assertMatchesRegularExpression('/^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i', $fakeData);
+        self::assertIsString($fakeData);
+        self::assertMatchesRegularExpression('/^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i', $fakeData);
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -135,8 +135,8 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsString($fakeData);
-        $this->assertNotFalse(filter_var($fakeData, FILTER_VALIDATE_URL));
+        self::assertIsString($fakeData);
+        self::assertNotFalse(filter_var($fakeData, FILTER_VALIDATE_URL));
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -150,8 +150,8 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsString($fakeData);
-        $this->assertMatchesRegularExpression('/^(\w)+\.(com|biz|info|net|org)$/', $fakeData);
+        self::assertIsString($fakeData);
+        self::assertMatchesRegularExpression('/^(\w)+\.(com|biz|info|net|org)$/', $fakeData);
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -165,8 +165,8 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsString($fakeData);
-        $this->assertMatchesRegularExpression('/^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\.(?!$)|$)){4}$/', $fakeData);
+        self::assertIsString($fakeData);
+        self::assertMatchesRegularExpression('/^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\.(?!$)|$)){4}$/', $fakeData);
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -180,8 +180,8 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsString($fakeData);
-        $this->assertMatchesRegularExpression('/^([0-9A-Fa-f]{0,4}:){2,7}([0-9A-Fa-f]{1,4}$|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4})$/', $fakeData);
+        self::assertIsString($fakeData);
+        self::assertMatchesRegularExpression('/^([0-9A-Fa-f]{0,4}:){2,7}([0-9A-Fa-f]{1,4}$|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4})$/', $fakeData);
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -195,8 +195,8 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsString($fakeData);
-        $this->assertMatchesRegularExpression('/^\d{3}-\d{2}-\d{4}$/', $fakeData);
+        self::assertIsString($fakeData);
+        self::assertMatchesRegularExpression('/^\d{3}-\d{2}-\d{4}$/', $fakeData);
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -210,7 +210,7 @@ YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertGreaterThanOrEqual(0, strlen($fakeData));
+        self::assertGreaterThanOrEqual(0, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
     }
 

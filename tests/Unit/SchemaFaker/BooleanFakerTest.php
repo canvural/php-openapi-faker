@@ -22,7 +22,7 @@ YAML;
 
         $fakeData = BooleanFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertIsBool($fakeData);
+        self::assertIsBool($fakeData);
     }
 
     /** @test */
@@ -36,6 +36,6 @@ YAML;
 
         $fakeData = BooleanFaker::generate(SchemaFactory::fromYaml($yaml));
 
-        $this->assertTrue($fakeData);
+        self::assertTrue($fakeData);
     }
 }

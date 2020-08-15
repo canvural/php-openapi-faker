@@ -143,8 +143,8 @@ YAML;
 JSON
         ));
 
-        $this->assertIsArray($fakeData);
-        $this->assertSame($fakeData, array_unique($fakeData));
+        self::assertIsArray($fakeData);
+        self::assertSame($fakeData, array_unique($fakeData));
     }
 
     /** @test */
@@ -167,6 +167,6 @@ YAML
 
         $uniqueArray = array_unique($fakeData);
         sort($uniqueArray);
-        $this->assertSame([4, 88, 6789], $uniqueArray);
+        self::assertSame([4, 88, 6789], $uniqueArray);
     }
 }

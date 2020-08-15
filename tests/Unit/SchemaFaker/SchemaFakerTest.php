@@ -91,8 +91,8 @@ YAML;
 
         $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml)))->generate();
 
-        $this->assertIsArray($fakeData);
-        $this->assertArrayHasKey('format', $fakeData);
+        self::assertIsArray($fakeData);
+        self::assertArrayHasKey('format', $fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
@@ -122,8 +122,8 @@ YAML;
 
         $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml)))->generate();
 
-        $this->assertIsArray($fakeData);
-        $this->assertArrayHasKey('format', $fakeData);
+        self::assertIsArray($fakeData);
+        self::assertArrayHasKey('format', $fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
@@ -163,11 +163,11 @@ YAML;
 
         $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml)))->generate();
 
-        $this->assertIsArray($fakeData);
-        $this->assertArrayHasKey('foo', $fakeData);
-        $this->assertArrayHasKey('bar', $fakeData);
-        $this->assertArrayHasKey('baz', $fakeData);
-        $this->assertArrayHasKey('bap', $fakeData);
+        self::assertIsArray($fakeData);
+        self::assertArrayHasKey('foo', $fakeData);
+        self::assertArrayHasKey('bar', $fakeData);
+        self::assertArrayHasKey('baz', $fakeData);
+        self::assertArrayHasKey('bap', $fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
@@ -237,13 +237,13 @@ YAML;
 
         $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml)))->generate();
 
-        $this->assertIsArray($fakeData);
-        $this->assertArrayHasKey('resource_id', $fakeData);
-        $this->assertArrayHasKey('resource_type', $fakeData);
-        $this->assertArrayHasKey('section', $fakeData);
-        $this->assertArrayHasKey('type', $fakeData);
-        $this->assertArrayHasKey('title', $fakeData);
-        $this->assertArrayHasKey('detail', $fakeData);
+        self::assertIsArray($fakeData);
+        self::assertArrayHasKey('resource_id', $fakeData);
+        self::assertArrayHasKey('resource_type', $fakeData);
+        self::assertArrayHasKey('section', $fakeData);
+        self::assertArrayHasKey('type', $fakeData);
+        self::assertArrayHasKey('title', $fakeData);
+        self::assertArrayHasKey('detail', $fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
@@ -304,7 +304,7 @@ JSON;
         try {
             (new SchemaValidator())->validate($fakeData, SchemaFactory::fromJson($json));
         } catch (SchemaMismatch $e) {
-            $this->fail($e->getMessage());
+            self::fail($e->getMessage());
         }
     }
 
@@ -358,8 +358,8 @@ JSON;
 JSON;
 
         $fakeData = (new SchemaFaker(SchemaFactory::fromJson($json)))->generate();
-        $this->assertIsArray($fakeData);
-        $this->assertSame('about:blank', $fakeData['type']);
+        self::assertIsArray($fakeData);
+        self::assertSame('about:blank', $fakeData['type']);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
@@ -390,10 +390,10 @@ anyOf:
 YAML;
 
         $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($specYaml)))->generate();
-        $this->assertIsArray($fakeData);
-        $this->assertNotEmpty($fakeData);
+        self::assertIsArray($fakeData);
+        self::assertNotEmpty($fakeData);
         foreach (array_keys($fakeData) as $key) {
-            $this->assertContains($key, ['age', 'nickname', 'pet_type', 'hunts']);
+            self::assertContains($key, ['age', 'nickname', 'pet_type', 'hunts']);
         }
     }
 }
