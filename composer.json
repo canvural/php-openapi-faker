@@ -24,7 +24,7 @@
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.25",
         "phpstan/phpstan-phpunit": "^0.12.8",
-        "phpunit/phpunit": "^9.1",
+        "phpunit/phpunit": "^9.3",
         "spatie/phpunit-snapshot-assertions": "^4.2",
         "symfony/var-dumper": "^5.1",
         "thecodingmachine/phpstan-safe-rule": "^1.0"

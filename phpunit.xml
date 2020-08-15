@@ -1,6 +1,7 @@
+<?xml version="1.0"?>
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
     beStrictAboutChangesToGlobalState="true"
     beStrictAboutCoversAnnotation="true"
     beStrictAboutOutputDuringTests="true"
@@ -13,17 +14,17 @@
     executionOrder="random"
     verbose="true"
 >
-    <testsuites>
-        <testsuite name="Unit tests">
-            <directory>./tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Integration tests">
-            <directory>./tests/Integration</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+  </coverage>
+  <testsuites>
+    <testsuite name="Unit tests">
+      <directory>./tests/Unit</directory>
+    </testsuite>
+    <testsuite name="Integration tests">
+      <directory>./tests/Integration</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
