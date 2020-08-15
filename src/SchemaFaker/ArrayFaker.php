@@ -6,9 +6,9 @@ namespace Vural\OpenAPIFaker\SchemaFaker;
 
 use cebe\openapi\spec\Schema;
 use Faker\Provider\Base;
+
 use function array_unique;
 use function count;
-use function dump;
 
 /**
  * @internal

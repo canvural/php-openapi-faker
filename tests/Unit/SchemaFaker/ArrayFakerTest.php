@@ -9,9 +9,7 @@ use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
 
 use function array_unique;
-use function count;
 use function mt_srand;
-use function random_int;
 use function Safe\sort;
 
 use const MT_RAND_PHP;
