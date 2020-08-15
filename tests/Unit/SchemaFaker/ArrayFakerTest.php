@@ -9,7 +9,12 @@ use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
 
 use function array_unique;
+use function count;
+use function mt_srand;
+use function random_int;
 use function Safe\sort;
+
+use const MT_RAND_PHP;
 
 /**
  * @uses \Vural\OpenAPIFaker\SchemaFaker\SchemaFaker
@@ -127,6 +132,8 @@ YAML;
     /** @test */
     function it_can_generate_unique_elements()
     {
+        mt_srand(227, MT_RAND_PHP);
+
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
             <<< JSON
 {
@@ -134,16 +141,17 @@ YAML;
   "items": {
     "type": "integer",
     "minimum": 1,
-    "maximum": 2
+    "maximum": 5
   },
-  "minItems": 1,
-  "maxItems": 2,
+  "minItems": 5,
+  "maxItems": 5,
   "uniqueItems": true
 }
 JSON
         ));
 
         self::assertIsArray($fakeData);
+        self::assertCount(5, $fakeData);
         self::assertSame($fakeData, array_unique($fakeData));
     }
 

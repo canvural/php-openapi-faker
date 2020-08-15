@@ -6,9 +6,9 @@ namespace Vural\OpenAPIFaker\SchemaFaker;
 
 use cebe\openapi\spec\Schema;
 use Faker\Provider\Base;
-
 use function array_unique;
-use function array_values;
+use function count;
+use function dump;
 
 /**
  * @internal
@@ -30,10 +30,20 @@ final class ArrayFaker
 
         for ($i = 0; $i < $itemSize; $i++) {
             $fakeData[] = $itemSchema->generate();
-        }
 
-        if ($schema->uniqueItems === true) {
-            $fakeData = array_values(array_unique($fakeData));
+            if ($schema->uniqueItems !== true) {
+                continue;
+            }
+
+            $uniqueData = array_unique($fakeData);
+
+            if (count($uniqueData) >= count($fakeData)) {
+                continue;
+            }
+
+            $i -= count($fakeData) - count($uniqueData);
+
+            $fakeData = $uniqueData;
         }
 
         return $fakeData;
