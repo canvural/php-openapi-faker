@@ -13,7 +13,7 @@
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
         "cebe/php-openapi": "^1.4",
-        "fzaninotto/faker": "^1.9",
+        "fakerphp/faker": "^1.10",
         "league/openapi-psr7-validator": "^0.12",
         "thecodingmachine/safe": "^1.1"
     },
@@ -25,7 +25,7 @@
         "phpstan/phpstan": "^0.12.50",
         "phpstan/phpstan-phpunit": "^0.12.16",
         "phpunit/phpunit": "^9.4",
-        "spatie/phpunit-snapshot-assertions": "^4.2",
+        "spatie/phpunit-snapshot-assertions": "dev-master",
         "symfony/var-dumper": "^5.1",
         "thecodingmachine/phpstan-safe-rule": "^1.0"
     },
