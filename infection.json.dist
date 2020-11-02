@@ -11,22 +11,25 @@
         }
     },
     "mutators": {
+        "@default": true,
         "global-ignore": [
             "Vural\\OpenAPIFaker\\SchemaFaker\\BooleanFaker"
         ],
         "LessThan": {
-            "ignoreSourceCodeByRegex": [
-                ".*\\$minimum.*",
-                ".*\\$maximum.*"
+            "ignore": [
+                "Vural\\OpenAPIFaker\\SchemaFaker\\ArrayFaker::generate"
             ]
         },
         "GreaterThan": {
-            "ignoreSourceCodeByRegex": [
-                ".*\\$minimum.*",
-                ".*\\$maximum.*"
+            "ignore": [
+                "Vural\\OpenAPIFaker\\SchemaFaker\\ArrayFaker::generate"
             ]
         },
-        "@default": true
+        "CastInt": {
+            "ignore": [
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generate"
+            ]
+        }
     },
     "timeout": 20
 }
