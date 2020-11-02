@@ -20,7 +20,7 @@
     "require-dev": {
         "doctrine/coding-standard": "^8.1",
         "ergebnis/composer-normalize": "^2.9",
-        "infection/infection": "^0.18",
+        "infection/infection": "^0.20",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.50",
         "phpstan/phpstan-phpunit": "^0.12.16",

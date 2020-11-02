@@ -6,6 +6,7 @@ namespace Vural\OpenAPIFaker\Tests\Unit\SchemaFaker;
 
 use League\OpenAPIValidation\Schema\Exception\SchemaMismatch;
 use League\OpenAPIValidation\Schema\SchemaValidator;
+use Vural\OpenAPIFaker\Options;
 use Vural\OpenAPIFaker\SchemaFaker\SchemaFaker;
 use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
@@ -21,6 +22,15 @@ use function array_keys;
  */
 class SchemaFakerTest extends UnitTestCase
 {
+    private Options $options;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->options = new Options();
+    }
+
     /** @test */
     function it_can_choose_one_schema_from_one_of()
     {
@@ -35,7 +45,7 @@ oneOf:
 
 YAML;
 
-        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml)))->generate();
+        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml), $this->options))->generate();
 
         $this->assertMatchesSnapshot($fakeData);
     }
@@ -66,7 +76,7 @@ allOf:
 
 YAML;
 
-        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml)))->generate();
+        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml), $this->options))->generate();
 
         $this->assertMatchesJsonSnapshot($fakeData);
     }
@@ -89,7 +99,7 @@ required:
   - format
 YAML;
 
-        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml)))->generate();
+        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml), $this->options))->generate();
 
         self::assertIsArray($fakeData);
         self::assertArrayHasKey('format', $fakeData);
@@ -120,7 +130,7 @@ required:
   - format
 YAML;
 
-        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml)))->generate();
+        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml), $this->options))->generate();
 
         self::assertIsArray($fakeData);
         self::assertArrayHasKey('format', $fakeData);
@@ -161,7 +171,7 @@ required:
   - bap
 YAML;
 
-        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml)))->generate();
+        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml), $this->options))->generate();
 
         self::assertIsArray($fakeData);
         self::assertArrayHasKey('foo', $fakeData);
@@ -235,7 +245,7 @@ required:
 type: object
 YAML;
 
-        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml)))->generate();
+        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($yaml), $this->options))->generate();
 
         self::assertIsArray($fakeData);
         self::assertArrayHasKey('resource_id', $fakeData);
@@ -297,7 +307,7 @@ YAML;
 }
 JSON;
 
-        $fakeData = (new SchemaFaker(SchemaFactory::fromJson($json)))->generate();
+        $fakeData = (new SchemaFaker(SchemaFactory::fromJson($json), $this->options))->generate();
 
         $this->assertMatchesJsonSnapshot($fakeData);
 
@@ -357,7 +367,7 @@ JSON;
 }
 JSON;
 
-        $fakeData = (new SchemaFaker(SchemaFactory::fromJson($json)))->generate();
+        $fakeData = (new SchemaFaker(SchemaFactory::fromJson($json), $this->options))->generate();
         self::assertIsArray($fakeData);
         self::assertSame('about:blank', $fakeData['type']);
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -389,7 +399,7 @@ anyOf:
       - pet_type
 YAML;
 
-        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($specYaml)))->generate();
+        $fakeData = (new SchemaFaker(SchemaFactory::fromYaml($specYaml), $this->options))->generate();
         self::assertIsArray($fakeData);
         self::assertNotEmpty($fakeData);
         foreach (array_keys($fakeData) as $key) {

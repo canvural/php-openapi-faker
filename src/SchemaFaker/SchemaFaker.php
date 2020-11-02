@@ -6,6 +6,7 @@ namespace Vural\OpenAPIFaker\SchemaFaker;
 
 use cebe\openapi\spec\Schema;
 use Faker\Provider\Base;
+use Vural\OpenAPIFaker\Options;
 
 use function array_key_exists;
 use function array_reverse;
@@ -21,11 +22,13 @@ use function Safe\json_encode;
 final class SchemaFaker
 {
     private Schema $schema;
+    private Options $options;
 
-    public function __construct(Schema $schema)
+    public function __construct(Schema $schema, Options $options)
     {
-        $schemaData   = json_decode(json_encode($schema->getSerializableData()), true);
-        $this->schema = new Schema($this->resolveOfConstraints($schemaData));
+        $schemaData    = json_decode(json_encode($schema->getSerializableData()), true);
+        $this->schema  = new Schema($this->resolveOfConstraints($schemaData));
+        $this->options = $options;
     }
 
     /**
@@ -34,11 +37,11 @@ final class SchemaFaker
     public function generate()
     {
         if ($this->schema->type === 'array') {
-            return ArrayFaker::generate($this->schema);
+            return ArrayFaker::generate($this->schema, $this->options);
         }
 
         if ($this->schema->type === 'object') {
-            return ObjectFaker::generate($this->schema);
+            return ObjectFaker::generate($this->schema, $this->options);
         }
 
         if ($this->schema->type === 'string') {
@@ -54,7 +57,7 @@ final class SchemaFaker
         }
 
         if ($this->schema->properties !== null) {
-            return ObjectFaker::generate($this->schema);
+            return ObjectFaker::generate($this->schema, $this->options);
         }
 
         return [];

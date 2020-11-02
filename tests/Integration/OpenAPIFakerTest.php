@@ -438,6 +438,40 @@ YAML;
         $faker->mockComponentSchema('DummySchema');
     }
 
+    /**
+     * @uses \Vural\OpenAPIFaker\SchemaFaker\NumberFaker
+     * @uses \Vural\OpenAPIFaker\SchemaFaker\SchemaFaker
+     * @uses \Vural\OpenAPIFaker\OpenAPIFaker::createFromYaml
+     * @uses \Vural\OpenAPIFaker\OpenAPIFaker::mockComponentSchema
+     *
+     * @test
+     * @covers \Vural\OpenAPIFaker\Options
+     * @covers \Vural\OpenAPIFaker\OpenAPIFaker::setOptions
+     * @covers \Vural\OpenAPIFaker\SchemaFaker\ArrayFaker
+     */
+    function it_can_set_options()
+    {
+        $specYaml = <<<YAML
+openapi: 3.0.2
+components:
+  schemas:
+    Dummy:
+      type: array
+      items:
+          type: integer
+      minItems: 3
+YAML;
+
+        $fakeData = OpenAPIFaker::createFromYaml($specYaml)->setOptions([
+            'minItems' => 5,
+            'notExistingOption' => 'foo',
+            'maxItems' => 6,
+        ])->mockComponentSchema('Dummy');
+
+        self::assertGreaterThanOrEqual(5, count($fakeData));
+        self::assertLessThanOrEqual(6, count($fakeData));
+    }
+
     private function getTodosSpec(): string
     {
         return <<<'YAML'

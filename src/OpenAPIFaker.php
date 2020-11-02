@@ -21,15 +21,18 @@ use Vural\OpenAPIFaker\Exception\NoSchema;
 use Vural\OpenAPIFaker\SchemaFaker\SchemaFaker;
 
 use function array_key_exists;
+use function method_exists;
 use function strtolower;
 
 final class OpenAPIFaker
 {
     private OpenApi $openAPISchema;
+    private Options $options;
 
     /** @codeCoverageIgnore  */
     private function __construct()
     {
+        $this->options = new Options();
     }
 
     /**
@@ -81,7 +84,7 @@ final class OpenAPIFaker
             throw NoRequest::forPathAndMethodAndContentType($path, $method, $contentType);
         }
 
-        return (new SchemaFaker($contents[$contentType]->schema))->generate();
+        return (new SchemaFaker($contents[$contentType]->schema, $this->options))->generate();
     }
 
     /**
@@ -117,7 +120,7 @@ final class OpenAPIFaker
         /** @var MediaType $content */
         $content = $contents[$contentType];
 
-        return (new SchemaFaker($content->schema))->generate();
+        return (new SchemaFaker($content->schema, $this->options))->generate();
     }
 
     /**
@@ -138,7 +141,23 @@ final class OpenAPIFaker
         /** @var Schema $schema */
         $schema = $this->openAPISchema->components->schemas[$schemaName];
 
-        return (new SchemaFaker($schema))->generate();
+        return (new SchemaFaker($schema, $this->options))->generate();
+    }
+
+    /**
+     * @param array{minItems?:?int, maxItems?:?int} $options
+     */
+    public function setOptions(array $options): self
+    {
+        foreach ($options as $key => $value) {
+            if (! method_exists($this->options, 'set' . $key)) {
+                continue;
+            }
+
+            $this->options->{'set' . $key}($value);
+        }
+
+        return $this;
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vural\OpenAPIFaker\Tests\Unit\SchemaFaker;
 
+use Vural\OpenAPIFaker\Options;
 use Vural\OpenAPIFaker\SchemaFaker\ObjectFaker;
 use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
@@ -17,6 +18,15 @@ use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
  */
 class ObjectFakerTest extends UnitTestCase
 {
+    private Options $options;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->options = new Options();
+    }
+
     /** @test */
     function it_can_generate_simple_object()
     {
@@ -29,7 +39,7 @@ properties:
     type: string
 YAML;
 
-        $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
     }
@@ -54,7 +64,7 @@ properties:
           type: string
 YAML;
 
-        $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
     }
@@ -83,7 +93,7 @@ required:
   - username
 YAML;
 
-        $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsArray($fakeData);
         self::assertArrayHasKey('id', $fakeData);

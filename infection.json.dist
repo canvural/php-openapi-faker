@@ -14,7 +14,19 @@
         "global-ignore": [
             "Vural\\OpenAPIFaker\\SchemaFaker\\BooleanFaker"
         ],
+        "LessThan": {
+            "ignoreSourceCodeByRegex": [
+                ".*\\$minimum.*",
+                ".*\\$maximum.*"
+            ]
+        },
+        "GreaterThan": {
+            "ignoreSourceCodeByRegex": [
+                ".*\\$minimum.*",
+                ".*\\$maximum.*"
+            ]
+        },
         "@default": true
     },
-    "timeout": 10
+    "timeout": 20
 }
