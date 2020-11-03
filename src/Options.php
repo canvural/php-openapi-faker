@@ -6,8 +6,8 @@ namespace Vural\OpenAPIFaker;
 
 final class Options
 {
-    private ?int $minItems = null;
-    private ?int $maxItems = null;
+    private ?int $minItems            = null;
+    private ?int $maxItems            = null;
     private bool $alwaysFakeOptionals = false;
 
     public function setMinItems(int $minItems): Options
