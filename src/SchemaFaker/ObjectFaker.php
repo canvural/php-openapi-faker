@@ -33,7 +33,7 @@ final class ObjectFaker
         $allPropertyKeys = array_merge($requiredKeys, $selectedOptionalKeys);
 
         foreach ($schema->properties as $key => $property) {
-            if (! in_array($key, $allPropertyKeys, true)) {
+            if (! $options->getAlwaysFakeOptionals() && ! in_array($key, $allPropertyKeys, true)) {
                 continue;
             }
 

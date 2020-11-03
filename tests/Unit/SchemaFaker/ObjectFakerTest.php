@@ -15,6 +15,7 @@ use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
  * @uses \Vural\OpenAPIFaker\SchemaFaker\NumberFaker
  *
  * @covers \Vural\OpenAPIFaker\SchemaFaker\ObjectFaker
+ * @covers \Vural\OpenAPIFaker\Options
  */
 class ObjectFakerTest extends UnitTestCase
 {
@@ -98,6 +99,40 @@ YAML;
         self::assertIsArray($fakeData);
         self::assertArrayHasKey('id', $fakeData);
         self::assertArrayHasKey('username', $fakeData);
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_fake_all_properties_if_always_fake_optionals_option_is_set()
+    {
+        $options = (new Options())->setAlwaysFakeOptionals(true);
+
+        $yaml = <<<YAML
+type: object
+properties:
+  id:
+    type: integer
+  username:
+    type: string
+  name:
+    type: string
+  age:
+    type: integer
+  birthdate:
+    type: date
+  email:
+    type: string
+    format: email
+required:
+  - id
+  - username
+YAML;
+
+        $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml), $options);
+
+        self::assertIsArray($fakeData);
+        self::assertCount(6, $fakeData);
+
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 }

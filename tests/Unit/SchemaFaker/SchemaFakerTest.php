@@ -17,6 +17,7 @@ use function array_keys;
  * @uses \Vural\OpenAPIFaker\SchemaFaker\StringFaker
  * @uses \Vural\OpenAPIFaker\SchemaFaker\NumberFaker
  * @uses \Vural\OpenAPIFaker\SchemaFaker\ObjectFaker
+ * @uses \Vural\OpenAPIFaker\Options
  *
  * @covers \Vural\OpenAPIFaker\SchemaFaker\SchemaFaker
  */

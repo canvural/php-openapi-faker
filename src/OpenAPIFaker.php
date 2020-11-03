@@ -145,7 +145,7 @@ final class OpenAPIFaker
     }
 
     /**
-     * @param array{minItems?:?int, maxItems?:?int} $options
+     * @param array{minItems?:?int, maxItems?:?int, alwaysFakeOptionals?:bool} $options
      */
     public function setOptions(array $options): self
     {
