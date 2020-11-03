@@ -33,6 +33,27 @@ Then you can use `mockResponse`, `mockRequest` and `mockSchema` methods on it to
 $fakeData = $faker->mockResponse('/todos','GET');
 ```
 
+### Options
+
+There are some options you can use to modify some behaviour. You can pass options as an associative array to `setOptions` method in `OpenAPIFaker`. For example:
+
+```php
+$faker = \Vural\OpenAPIFaker\OpenAPIFaker::createFromJson($yourSchemaAsJson)
+    ->setOptions(['minItems' => 5]);
+```
+
+Below you can find explanation for each option.
+
+#### `minItems`
+Overrides `minItems` property if it's less than this value.
+
+#### `maxItems`
+Override `maxItems` if it's greater than this value.
+
+### `alwaysFakeOptionals`
+
+If enabled, every property or item will be generated regardless if they are required or not. **Default**: `false`
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
