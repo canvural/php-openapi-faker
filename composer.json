@@ -26,7 +26,7 @@
         "phpstan/phpstan-phpunit": "^0.12.17",
         "phpunit/phpunit": "^9.5",
         "spatie/phpunit-snapshot-assertions": "^4.2",
-        "symfony/var-dumper": "^5.1",
+        "symfony/var-dumper": "^5.2",
         "thecodingmachine/phpstan-safe-rule": "^1.0"
     },
     "config": {
