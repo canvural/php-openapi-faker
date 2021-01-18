@@ -22,7 +22,7 @@
         "ergebnis/composer-normalize": "^2.9",
         "infection/infection": "^0.20.2",
         "phpstan/extension-installer": "^1.0",
-        "phpstan/phpstan": "^0.12.50",
+        "phpstan/phpstan": "^0.12.68",
         "phpstan/phpstan-phpunit": "^0.12.16",
         "phpunit/phpunit": "^9.5",
         "spatie/phpunit-snapshot-assertions": "^4.2",
