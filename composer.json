@@ -23,7 +23,7 @@
         "infection/infection": "^0.20.2",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.68",
-        "phpstan/phpstan-phpunit": "^0.12.16",
+        "phpstan/phpstan-phpunit": "^0.12.17",
         "phpunit/phpunit": "^9.5",
         "spatie/phpunit-snapshot-assertions": "^4.2",
         "symfony/var-dumper": "^5.1",
