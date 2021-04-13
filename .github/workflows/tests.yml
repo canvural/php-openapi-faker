@@ -45,7 +45,7 @@ jobs:
         run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
 
       - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2.1.4"
+        uses: "actions/cache@v2.1.5"
         with:
           path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
           key: "php-${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('composer.lock') }}"
@@ -96,7 +96,7 @@ jobs:
         run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
 
       - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2.1.4"
+        uses: "actions/cache@v2.1.5"
         with:
           path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
           key: "php-${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('composer.lock') }}"
@@ -118,7 +118,7 @@ jobs:
         run: "mkdir -p .build/phpstan"
 
       - name: "Cache cache directory for phpstan/phpstan"
-        uses: "actions/cache@v2.1.4"
+        uses: "actions/cache@v2.1.5"
         with:
           path: ".build/phpstan"
           key: "php-${{ matrix.php }}-phpstan-${{ github.sha }}"
@@ -157,7 +157,7 @@ jobs:
         run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
 
       - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2.1.4"
+        uses: "actions/cache@v2.1.5"
         with:
           path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
           key: "php-${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('composer.lock') }}"
@@ -206,7 +206,7 @@ jobs:
         run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
 
       - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2.1.4"
+        uses: "actions/cache@v2.1.5"
         with:
           path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
           key: "php-${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('composer.lock') }}"
@@ -260,7 +260,7 @@ jobs:
         run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
 
       - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2.1.4"
+        uses: "actions/cache@v2.1.5"
         with:
           path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
           key: "php-${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('composer.lock') }}"
