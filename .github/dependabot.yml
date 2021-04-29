@@ -4,9 +4,31 @@ updates:
   directory: "/"
   schedule:
     interval: daily
+    time: "04:00"
   open-pull-requests-limit: 10
-- package-ecosystem: github-actions
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
+  reviewers:
+  - canvural
+  assignees:
+  - canvural
+  versioning-strategy: increase
+  ignore:
+  - dependency-name: phpstan/phpstan
+    versions:
+    - 0.12.76
+    - 0.12.78
+    - 0.12.83
+    - 0.12.84
+  - dependency-name: league/openapi-psr7-validator
+    versions:
+    - "0.16"
+  - dependency-name: doctrine/coding-standard
+    versions:
+    - 9.0.0
+  - dependency-name: infection/infection
+    versions:
+    - 0.21.1
+    - 0.21.3
+    - 0.21.5
+  - dependency-name: fakerphp/faker
+    versions:
+    - 1.14.0
