@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.1.5] - 2021-09-21
+
+### Added
+-  Support for `readonly` and `writeonly` properties ([#81](https://github.com/canvural/php-openapi-faker/pull/81))
+
 ## [0.1.4] - 2020-11-30
 
 ### Added
