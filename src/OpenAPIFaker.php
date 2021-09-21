@@ -84,7 +84,7 @@ final class OpenAPIFaker
             throw NoRequest::forPathAndMethodAndContentType($path, $method, $contentType);
         }
 
-        return (new SchemaFaker($contents[$contentType]->schema, $this->options))->generate();
+        return (new SchemaFaker($contents[$contentType]->schema, $this->options, true))->generate();
     }
 
     /**

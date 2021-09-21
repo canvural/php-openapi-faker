@@ -23,12 +23,14 @@ final class SchemaFaker
 {
     private Schema $schema;
     private Options $options;
+    private bool $request;
 
-    public function __construct(Schema $schema, Options $options)
+    public function __construct(Schema $schema, Options $options, bool $request = false)
     {
         $schemaData    = json_decode(json_encode($schema->getSerializableData()), true);
         $this->schema  = new Schema($this->resolveOfConstraints($schemaData));
         $this->options = $options;
+        $this->request = $request;
     }
 
     /**
@@ -41,7 +43,7 @@ final class SchemaFaker
         }
 
         if ($this->schema->type === 'object') {
-            return ObjectFaker::generate($this->schema, $this->options);
+            return ObjectFaker::generate($this->schema, $this->options, $this->request);
         }
 
         if ($this->schema->type === 'string') {

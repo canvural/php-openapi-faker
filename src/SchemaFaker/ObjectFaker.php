@@ -22,7 +22,7 @@ final class ObjectFaker
     /**
      * @return array<mixed>
      */
-    public static function generate(Schema $schema, Options $options): array
+    public static function generate(Schema $schema, Options $options, bool $request = false): array
     {
         $result = [];
 
@@ -33,6 +33,12 @@ final class ObjectFaker
         $allPropertyKeys = array_merge($requiredKeys, $selectedOptionalKeys);
 
         foreach ($schema->properties as $key => $property) {
+            if ($property instanceof Schema) {
+                if (($request && $property->readOnly) || (! $request && $property->writeOnly)) {
+                    continue;
+                }
+            }
+
             if (! $options->getAlwaysFakeOptionals() && ! in_array($key, $allPropertyKeys, true)) {
                 continue;
             }

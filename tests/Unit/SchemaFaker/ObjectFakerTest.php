@@ -135,4 +135,64 @@ YAML;
 
         $this->assertMatchesJsonSnapshot($fakeData);
     }
+
+    /** @test */
+    function it_does_not_inlcude_readonly_properties_when_type_is_request()
+    {
+        $yaml = <<<YAML
+type: object
+properties:
+  id:
+    type: integer
+    readOnly: true
+  username:
+    type: string
+  password:
+    type: string
+    writeOnly: true
+required:
+  - id
+  - username
+  - password
+YAML;
+
+        $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml), $this->options, true);
+
+        self::assertIsArray($fakeData);
+        self::assertArrayNotHasKey('id', $fakeData);
+        self::assertArrayHasKey('username', $fakeData);
+        self::assertArrayHasKey('password', $fakeData);
+
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_does_not_inlcude_writeonly_properties_when_type_is_response()
+    {
+        $yaml = <<<YAML
+type: object
+properties:
+  id:
+    type: integer
+    readOnly: true
+  username:
+    type: string
+  password:
+    type: string
+    writeOnly: true
+required:
+  - id
+  - username
+  - password
+YAML;
+
+        $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        self::assertIsArray($fakeData);
+        self::assertArrayHasKey('id', $fakeData);
+        self::assertArrayHasKey('username', $fakeData);
+        self::assertArrayNotHasKey('password', $fakeData);
+
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
 }
