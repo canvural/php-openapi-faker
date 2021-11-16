@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.4, 8.0]
+        php: [7.4, 8.0, 8.1]
         dependencies: [locked]
 
     steps:
@@ -76,7 +76,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.4,8.0]
+        php: [7.4,8.0, 8.1]
 
         dependencies: [locked]
 
@@ -134,7 +134,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.4, 8.0]
+        php: [7.4, 8.0, 8.1]
 
         dependencies:
           - "lowest"
@@ -185,7 +185,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.4, 8.0]
+        php: [7.4, 8.0, 8.1]
 
         dependencies:
           - "locked"
