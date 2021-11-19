@@ -60,6 +60,8 @@ final class OpenAPIFaker
     }
 
     /**
+     * @return mixed
+     *
      * @throws NoPath
      * @throws NoRequest
      */
@@ -67,7 +69,7 @@ final class OpenAPIFaker
         string $path,
         string $method,
         string $contentType = 'application/json'
-    ): mixed {
+    ) {
         $operation = $this->findOperation($path, $method);
 
         if ($operation->requestBody === null) {
@@ -86,6 +88,8 @@ final class OpenAPIFaker
     }
 
     /**
+     * @return mixed
+     *
      * @throws NoPath
      * @throws NoResponse
      */
@@ -94,7 +98,7 @@ final class OpenAPIFaker
         string $method,
         string $statusCode = '200',
         string $contentType = 'application/json'
-    ): mixed {
+    ) {
         $operation = $this->findOperation($path, $method);
 
         if ($operation->responses === null) {
@@ -120,9 +124,11 @@ final class OpenAPIFaker
     }
 
     /**
+     * @return mixed
+     *
      * @throws Exception
      */
-    public function mockComponentSchema(string $schemaName): mixed
+    public function mockComponentSchema(string $schemaName)
     {
         if ($this->openAPISchema->components === null) {
             throw NoSchema::forZeroComponents();

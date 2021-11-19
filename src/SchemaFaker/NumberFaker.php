@@ -14,7 +14,10 @@ use function mt_getrandmax;
  */
 final class NumberFaker
 {
-    public static function generate(Schema $schema): int|float
+    /**
+     * @return int|float
+     */
+    public static function generate(Schema $schema)
     {
         if ($schema->enum !== null) {
             return Base::randomElement($schema->enum);
