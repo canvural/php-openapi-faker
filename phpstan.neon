@@ -3,11 +3,11 @@ includes:
 parameters:
     inferPrivatePropertyTypeFromConstructor: true
     tmpDir: .build/phpstan/
-    level: max
+    level: 8
     paths:
         - src
         - tests
     ignoreErrors:
         -
-            message: '#Method [a-zA-Z0-9\\_]+::[a-zA-Z0-9\\_]+\(\) has no return typehint specified.#'
+            message: '#Method [a-zA-Z0-9\\_]+::[a-zA-Z0-9\\_]+\(\) has no return type specified.#'
             path: tests
