@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.0.0] - 2021-11-19
+
+### Changed
+- Update to PHPStan 1.0
+- Build on PHP 8.1
+
 ## [0.1.5] - 2021-09-21
 
 ### Added
@@ -37,7 +43,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Initial release!
 
-[Unreleased]: https://github.com/canvural/php-openapi-faker/compare/0.1.4...HEAD
+[Unreleased]: https://github.com/canvural/php-openapi-faker/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/canvural/php-openapi-faker/compare/0.1.5...1.0.0
+[0.1.5]: https://github.com/canvural/php-openapi-faker/compare/0.1.4...0.1.5
 [0.1.4]: https://github.com/canvural/php-openapi-faker/compare/0.1.3...0.1.4
 [0.1.3]: https://github.com/canvural/php-openapi-faker/compare/0.1.2...0.1.3
 [0.1.1]: https://github.com/canvural/php-openapi-faker/compare/0.1.0...0.1.1
