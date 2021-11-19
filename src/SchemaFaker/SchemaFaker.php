@@ -36,7 +36,7 @@ final class SchemaFaker
     /**
      * @return array<mixed>|string|bool|int|float
      */
-    public function generate()
+    public function generate(): array|string|bool|int|float
     {
         if ($this->schema->type === 'array') {
             return ArrayFaker::generate($this->schema, $this->options);
