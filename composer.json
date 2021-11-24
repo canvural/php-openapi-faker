@@ -19,7 +19,7 @@
     },
     "require-dev": {
         "doctrine/coding-standard": "^9",
-        "ergebnis/composer-normalize": "^2.14",
+        "ergebnis/composer-normalize": "^2.16",
         "infection/infection": "^0.25",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.2",
