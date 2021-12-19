@@ -1,8 +1,8 @@
 {
     "name": "canvural/php-openapi-faker",
-    "type": "library",
     "description": "Library to generate fake data for OpenAPI request/response/schemas.",
     "license": "MIT",
+    "type": "library",
     "authors": [
         {
             "name": "Can Vural",
@@ -29,9 +29,7 @@
         "symfony/var-dumper": "^5.4",
         "thecodingmachine/phpstan-safe-rule": "^1.1"
     },
-    "config": {
-        "sort-packages": true
-    },
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Vural\\OpenAPIFaker\\": "src/"
@@ -42,7 +40,9 @@
             "Vural\\OpenAPIFaker\\Tests\\": "tests/"
         }
     },
-    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
     "scripts": {
         "codestyle": "vendor/bin/phpcs",
         "phpstan": "vendor/bin/phpstan analyse --ansi",
