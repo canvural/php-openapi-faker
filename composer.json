@@ -13,7 +13,7 @@
         "php": ">=7.4",
         "ext-json": "*",
         "cebe/php-openapi": "^1.5",
-        "fakerphp/faker": "^1.16",
+        "fakerphp/faker": "^1.17",
         "league/openapi-psr7-validator": "^0.16.4",
         "thecodingmachine/safe": "^1.3"
     },
