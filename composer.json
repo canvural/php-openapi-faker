@@ -27,7 +27,7 @@
         "phpunit/phpunit": "^9.5",
         "spatie/phpunit-snapshot-assertions": "^4.2",
         "symfony/var-dumper": "^5.4",
-        "thecodingmachine/phpstan-safe-rule": "^1.1"
+        "thecodingmachine/phpstan-safe-rule": "^1.2"
     },
     "prefer-stable": true,
     "autoload": {
