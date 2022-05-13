@@ -52,7 +52,7 @@ final class ArrayFaker
                 continue;
             }
 
-            $uniqueData = array_unique($fakeData);
+            $uniqueData = array_unique($fakeData, SORT_REGULAR);
 
             if (count($uniqueData) >= count($fakeData)) {
                 continue;
