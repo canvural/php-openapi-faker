@@ -10,6 +10,10 @@ use Vural\OpenAPIFaker\Options;
 
 use function array_unique;
 use function count;
+use function is_array;
+
+use const SORT_REGULAR;
+use const SORT_STRING;
 
 /**
  * @internal
@@ -52,7 +56,7 @@ final class ArrayFaker
                 continue;
             }
 
-            $uniqueData = array_unique($fakeData);
+            $uniqueData = array_unique($fakeData, is_array($fakeData[0]) ? SORT_REGULAR : SORT_STRING);
 
             if (count($uniqueData) >= count($fakeData)) {
                 continue;
