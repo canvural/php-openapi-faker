@@ -11,6 +11,8 @@ use Vural\OpenAPIFaker\Options;
 use function array_unique;
 use function count;
 
+use const SORT_REGULAR;
+
 /**
  * @internal
  */
