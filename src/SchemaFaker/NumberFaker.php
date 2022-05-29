@@ -6,6 +6,7 @@ namespace Vural\OpenAPIFaker\SchemaFaker;
 
 use cebe\openapi\spec\Schema;
 use Faker\Provider\Base;
+use Vural\OpenAPIFaker\Options;
 
 use function mt_getrandmax;
 
@@ -17,8 +18,12 @@ final class NumberFaker
     /**
      * @return int|float
      */
-    public static function generate(Schema $schema)
+    public static function generate(Schema $schema, Options $options): ?int
     {
+        if ($options->getStrategy() === Options::STRATEGY_STATIC) {
+            return self::generateStatic($schema);
+        }
+
         if ($schema->enum !== null) {
             return Base::randomElement($schema->enum);
         }
@@ -40,5 +45,22 @@ final class NumberFaker
         }
 
         return Base::randomFloat(null, $minimum, $maximum) * $multipleOf;
+    }
+
+    private static function generateStatic(Schema $schema): ?int
+    {
+        if ($schema->enum !== null) {
+            return reset($schema->enum);
+        }
+
+        if (!empty($schema->default)) {
+            return $schema->default;
+        }
+
+        if ($schema->nullable) {
+            return null;
+        }
+
+        return 0;
     }
 }

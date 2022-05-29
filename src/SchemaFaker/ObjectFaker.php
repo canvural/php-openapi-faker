@@ -39,7 +39,11 @@ final class ObjectFaker
                 }
             }
 
-            if (! $options->getAlwaysFakeOptionals() && ! in_array($key, $allPropertyKeys, true)) {
+            if (
+                ! $options->getAlwaysFakeOptionals()
+                && $options->getStrategy() !== Options::STRATEGY_STATIC
+                && ! in_array($key, $allPropertyKeys, true)
+            ) {
                 continue;
             }
 

@@ -28,13 +28,13 @@ final class SchemaFaker
     public function __construct(Schema $schema, Options $options, bool $request = false)
     {
         $schemaData    = json_decode(json_encode($schema->getSerializableData()), true);
-        $this->schema  = new Schema($this->resolveOfConstraints($schemaData));
+        $this->schema  = new Schema($this->resolveOfConstraints($schemaData, $options));
         $this->options = $options;
         $this->request = $request;
     }
 
     /**
-     * @return array<mixed>|string|bool|int|float
+     * @return array<mixed>|string|bool|int|float|null
      */
     public function generate()
     {
@@ -47,15 +47,15 @@ final class SchemaFaker
         }
 
         if ($this->schema->type === 'string') {
-            return StringFaker::generate($this->schema);
+            return StringFaker::generate($this->schema, $this->options);
         }
 
         if ($this->schema->type === 'boolean') {
-            return BooleanFaker::generate($this->schema);
+            return BooleanFaker::generate($this->schema, $this->options);
         }
 
         if (in_array($this->schema->type, ['integer', 'number'], true)) {
-            return NumberFaker::generate($this->schema);
+            return NumberFaker::generate($this->schema, $this->options);
         }
 
         if ($this->schema->properties !== null) {
@@ -67,35 +67,37 @@ final class SchemaFaker
 
     /**
      * @param array<mixed> $schema
+     * @param Options $options
      *
      * @return array<mixed>
      */
-    private function resolveOfConstraints(array $schema): array
+    private function resolveOfConstraints(array $schema, Options $options): array
     {
+        $useStaticStrategy = $options->getStrategy() === Options::STRATEGY_STATIC;
         $copy = $schema;
         foreach ($copy as $key => $item) {
             if ($key === 'oneOf') {
-                $subSchema = Base::randomElement($copy[$key]);
+                $subSchema = $useStaticStrategy ? reset($copy[$key]) : Base::randomElement($copy[$key]);
                 unset($schema['oneOf'], $copy['oneOf']);
-                $resolvedSubSchema = $this->resolveOfConstraints($subSchema);
+                $resolvedSubSchema = $this->resolveOfConstraints($subSchema, $options);
 
                 $schema = $this->merge($schema, $resolvedSubSchema);
             } elseif ($key === 'allOf') {
                 $allSubSchemas = $copy[$key];
                 unset($schema['allOf'], $copy['allOf']);
                 foreach (array_reverse($allSubSchemas) as $subSchema) {
-                    $resolvedSubSchema = $this->resolveOfConstraints($subSchema);
+                    $resolvedSubSchema = $this->resolveOfConstraints($subSchema, $options);
 
                     $schema = $this->merge($schema, $resolvedSubSchema);
                 }
             } elseif ($key === 'anyOf') {
-                $subSchema = Base::randomElement($copy[$key]);
+                $subSchema = $useStaticStrategy ? reset($copy[$key]) : Base::randomElement($copy[$key]);
                 unset($schema['anyOf'], $copy['anyOf']);
-                $resolvedSubSchema = $this->resolveOfConstraints($subSchema);
+                $resolvedSubSchema = $this->resolveOfConstraints($subSchema, $options);
 
                 $schema = $this->merge($schema, $resolvedSubSchema);
             } elseif (is_array($copy[$key])) {
-                $schema[$key] = $this->merge($this->resolveOfConstraints($copy[$key]), $schema[$key]);
+                $schema[$key] = $this->merge($this->resolveOfConstraints($copy[$key], $options), $schema[$key]);
             }
         }
 

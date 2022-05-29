@@ -11,6 +11,7 @@ use Faker\Provider\DateTime;
 use Faker\Provider\Internet;
 use Faker\Provider\Lorem;
 use Faker\Provider\Uuid;
+use Vural\OpenAPIFaker\Options;
 
 use function max;
 use function Safe\substr;
@@ -23,8 +24,12 @@ use const DATE_RFC3339;
  */
 final class StringFaker
 {
-    public static function generate(Schema $schema): string
+    public static function generate(Schema $schema, Options $options): ?string
     {
+        if ($options->getStrategy() === Options::STRATEGY_STATIC) {
+            return self::generateStatic($schema);
+        }
+
         if ($schema->enum !== null) {
             return Base::randomElement($schema->enum);
         }
@@ -83,5 +88,30 @@ final class StringFaker
             default:
                 return Lorem::word();
         }
+    }
+
+    private static function generateStatic(Schema $schema): ?string
+    {
+        if ($schema->enum !== null) {
+            return reset($schema->enum);
+        }
+
+        if (!empty($schema->default)) {
+            return $schema->default;
+        }
+
+        if ($schema->nullable) {
+            return null;
+        }
+
+        if ($schema->format !== null) {
+            return self::generateFromFormat($schema);
+        }
+
+        if ($schema->pattern !== null) {
+            return Lorem::regexify($schema->pattern);
+        }
+
+        return 'string';
     }
 }
