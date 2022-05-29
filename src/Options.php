@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace Vural\OpenAPIFaker;
 
+use InvalidArgumentException;
+
 final class Options
 {
+    public const STRATEGY_STATIC = 'static';
+    public const STRATEGY_DYNAMIC = 'dynamic';
+    public const STRATEGY_EXAMPLE = 'example';
+
     private ?int $minItems            = null;
     private ?int $maxItems            = null;
     private bool $alwaysFakeOptionals = false;
+    private string $strategy          = self::STRATEGY_DYNAMIC;
 
     public function setMinItems(int $minItems): Options
     {
@@ -31,6 +38,19 @@ final class Options
         return $this;
     }
 
+    public function setStrategy(string $strategy): self
+    {
+        $allowed = [self::STRATEGY_STATIC, self::STRATEGY_DYNAMIC, self::STRATEGY_EXAMPLE];
+
+        if (!in_array($strategy, $allowed, true)) {
+            throw new InvalidArgumentException(sprintf('Unknown generation strategy: %s', $strategy));
+        }
+
+        $this->strategy = $strategy;
+
+        return $this;
+    }
+
     public function getMinItems(): ?int
     {
         return $this->minItems;
@@ -44,5 +64,10 @@ final class Options
     public function getAlwaysFakeOptionals(): bool
     {
         return $this->alwaysFakeOptionals;
+    }
+
+    public function getStrategy(): string
+    {
+        return $this->strategy;
     }
 }
