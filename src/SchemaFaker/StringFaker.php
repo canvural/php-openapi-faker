@@ -30,12 +30,17 @@ final class StringFaker
             return self::generateStatic($schema);
         }
 
+        return self::generateDynamic($schema);
+    }
+
+    private static function generateDynamic(Schema $schema): string
+    {
         if ($schema->enum !== null) {
             return Base::randomElement($schema->enum);
         }
 
         if ($schema->format !== null) {
-            return self::generateFromFormat($schema);
+            return self::generateDynamicFromFormat($schema);
         }
 
         if ($schema->pattern !== null) {
@@ -58,7 +63,7 @@ final class StringFaker
         return $result;
     }
 
-    private static function generateFromFormat(Schema $schema): string
+    private static function generateDynamicFromFormat(Schema $schema): string
     {
         switch ($schema->format) {
             case 'date':
@@ -105,13 +110,80 @@ final class StringFaker
         }
 
         if ($schema->format !== null) {
-            return self::generateFromFormat($schema);
+            return self::generateStaticFromFormat($schema);
         }
 
         if ($schema->pattern !== null) {
-            return Lorem::regexify($schema->pattern);
+            return $schema->pattern;
         }
 
-        return 'string';
+        return self::ensureStringLength('string', $schema);
+    }
+
+    private static function generateStaticFromFormat(Schema $schema): string
+    {
+        switch ($schema->format) {
+            case 'date':
+                return '2019-08-24';
+
+            case 'date-time':
+                return (new \DateTime('2019-08-24T14:15:22'))->format(DATE_RFC3339);
+
+            case 'email':
+                return 'user@example.com';
+
+            case 'uuid':
+                return '095be615-a8ad-4c33-8e9c-c7612fbf6c9f';
+
+            case 'uri':
+                return 'http://example.com';
+
+            case 'hostname':
+                return 'example.com';
+
+            case 'ipv4':
+                return '192.168.0.1';
+
+            case 'ipv6':
+                return '2001:0db8:85a3:0000:0000:8a2e:0370:7334';
+
+            case 'password':
+                return self::generatePasswordSample($schema);
+
+            default:
+                return self::ensureStringLength('string', $schema);
+        }
+    }
+
+    private static function generatePasswordSample(Schema $schema): string
+    {
+        $passwordSymbols = 'qwerty!@#$%^123456';
+        $password = 'pa$$word';
+
+        $min = $schema->minLength ?? 0;
+
+        if ($min > strlen($password)) {
+            $password .= '_';
+            $password .= self::ensureStringLength($passwordSymbols, $schema);
+        }
+
+        return $password;
+    }
+
+    private static function ensureStringLength(string $sample, Schema $schema): string
+    {
+        $min = $schema->minLength ?? 0;
+        $max = $schema->maxLength ?? max(140, $min + 1);
+
+        if (strlen($sample) < $min) {
+            $sample = str_repeat($sample, (int) round($min / strlen($sample)));
+            $sample = substr($sample, 0, $min);
+        }
+
+        if (strlen($sample) > $max) {
+            $sample = substr($sample, 0, $max);
+        }
+
+        return $sample;
     }
 }

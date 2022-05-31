@@ -1,0 +1,104 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Static example
+  license:
+    name: MIT
+servers:
+  - url: http://example.swagger.io
+paths:
+  /examples:
+    get:
+      summary: List all examples
+      operationId: listExamples
+      tags:
+        - examples
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: A paged array of examples
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Examples"
+
+components:
+  schemas:
+    Example:
+      type: object
+      properties:
+        integer32:
+          type: integer
+          format: int32
+          exclusiveMinimum: false
+        integer64:
+          type: integer
+          format: int64
+        float:
+          type: number
+          format: float
+        double:
+          type: number
+          format: double
+        string:
+          type: string
+        minLengthString:
+          type: string
+          minLength: 10
+        maxLengthString:
+          type: string
+          maxLength: 3
+        byte:
+          type: string
+          format: byte
+        binary:
+          type: string
+          format: binary
+        date:
+          type: string
+          format: date
+        dateTime:
+          type: string
+          format: date-time
+        password:
+          type: string
+          format: password
+        email:
+          type: string
+          format: email
+        uuid:
+          type: string
+          format: uuid
+        uri:
+          type: string
+          format: uri
+        hostname:
+          type: string
+          format: hostname
+        ipv4:
+          type: string
+          format: ipv4
+        ipv6:
+          type: string
+          format: ipv6
+        regex:
+          type: string
+          format: '/hello/'
+        boolean:
+          type: boolean
+    Examples:
+      type: array
+      items:
+        $ref: "#/components/schemas/Example"
