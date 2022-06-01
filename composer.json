@@ -53,7 +53,7 @@
         "codestyle": "vendor/bin/phpcs",
         "phpstan": "vendor/bin/phpstan analyse --ansi",
         "test": "vendor/bin/phpunit",
-        "test-coverage": "vendor/bin/phpunit --coverage-clover=.build/phpunit/clover.xml",
+        "test-coverage": "vendor/bin/phpunit --coverage-clover=.build/phpunit/clover.xml --coverage-html=build/phpunit",
         "test-fast": "vendor/bin/phpunit --color=always --exclude Integration",
         "test-mutation": "vendor/bin/infection --ignore-msi-with-no-mutations --min-covered-msi=89 --min-msi=89"
     }

@@ -4,15 +4,27 @@ declare(strict_types=1);
 
 namespace Vural\OpenAPIFaker\Tests\Unit\SchemaFaker;
 
+use Vural\OpenAPIFaker\Options;
 use Vural\OpenAPIFaker\SchemaFaker\NumberFaker;
 use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
 
 /**
+ * @uses \Vural\OpenAPIFaker\Options
+ *
  * @covers \Vural\OpenAPIFaker\SchemaFaker\NumberFaker
  */
 class NumberFakerTest extends UnitTestCase
 {
+    private Options $options;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->options = new Options();
+    }
+
     /** @test */
     function it_can_generate_a_number()
     {
@@ -20,7 +32,7 @@ class NumberFakerTest extends UnitTestCase
 type: number
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsNumeric($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -34,7 +46,7 @@ type: number
 format: float
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsFloat($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -48,7 +60,7 @@ type: number
 format: double
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsFloat($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -61,7 +73,7 @@ YAML;
 type: integer
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -75,7 +87,7 @@ type: integer
 format: int32
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -89,7 +101,7 @@ type: integer
 format: int64
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -103,7 +115,7 @@ type: integer
 minimum: 100
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
         self::assertGreaterThanOrEqual(100, $fakeData);
@@ -118,7 +130,7 @@ type: integer
 maximum: 100
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
         self::assertLessThanOrEqual(100, $fakeData);
@@ -134,7 +146,7 @@ minimum: 100
 maximum: 200
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsNumeric($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -150,7 +162,7 @@ maximum: 102
 exclusiveMinimum: true
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
         self::assertGreaterThan(100, $fakeData);
@@ -167,7 +179,7 @@ maximum: 102
 exclusiveMaximum: true
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
         self::assertLessThan(102, $fakeData);
@@ -185,7 +197,7 @@ exclusiveMinimum: true
 exclusiveMaximum: true
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
         self::assertSame(101, $fakeData);
@@ -200,7 +212,7 @@ type: integer
 multipleOf: 10
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
         self::assertSame(0, $fakeData % 10);
@@ -214,7 +226,7 @@ type: number
 multipleOf: 8
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsFloat($fakeData);
         self::assertSame(0, $fakeData % 8);
@@ -231,7 +243,7 @@ enum:
   - 111.123
 YAML;
 
-        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsFloat($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);

@@ -148,6 +148,7 @@ class E2ETest extends TestCase
             ['twitter'],
             ['uber'],
             ['uspto'],
+            ['static-example'],
         ];
     }
 }

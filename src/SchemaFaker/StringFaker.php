@@ -13,6 +13,7 @@ use Faker\Provider\Lorem;
 use Faker\Provider\Uuid;
 use Vural\OpenAPIFaker\Options;
 
+use function base64_decode;
 use function max;
 use function Safe\substr;
 use function strlen;
@@ -90,6 +91,12 @@ final class StringFaker
             case 'ipv6':
                 return (new Internet(Factory::create()))->ipv6();
 
+            case 'byte':
+                return base64_encode(Lorem::word());
+
+            case 'binary':
+                return Lorem::word();
+
             default:
                 return Lorem::word();
         }
@@ -146,6 +153,12 @@ final class StringFaker
 
             case 'ipv6':
                 return '2001:0db8:85a3:0000:0000:8a2e:0370:7334';
+
+            case 'byte':
+                return base64_encode('string');
+
+            case 'binary':
+                return '01101000';
 
             case 'password':
                 return self::generatePasswordSample($schema);

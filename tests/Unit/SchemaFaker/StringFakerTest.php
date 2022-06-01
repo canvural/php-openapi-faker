@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vural\OpenAPIFaker\Tests\Unit\SchemaFaker;
 
 use DateTime;
+use Vural\OpenAPIFaker\Options;
 use Vural\OpenAPIFaker\SchemaFaker\StringFaker;
 use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
@@ -16,10 +17,21 @@ use function strlen;
 use const FILTER_VALIDATE_URL;
 
 /**
+ * @uses \Vural\OpenAPIFaker\Options
+ *
  * @covers \Vural\OpenAPIFaker\SchemaFaker\StringFaker
  */
 class StringFakerTest extends UnitTestCase
 {
+    private Options $options;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->options = new Options();
+    }
+
     /** @test */
     function it_can_generate_single_string()
     {
@@ -27,7 +39,7 @@ class StringFakerTest extends UnitTestCase
 type: string
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertGreaterThanOrEqual(0, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
@@ -41,7 +53,7 @@ type: string
 minLength: 3
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertGreaterThanOrEqual(3, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
@@ -55,7 +67,7 @@ type: string
 maxLength: 10
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertLessThanOrEqual(10, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
@@ -69,7 +81,7 @@ type: string
 format: date
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
 
@@ -86,7 +98,7 @@ type: string
 format: date-time
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
 
@@ -103,7 +115,7 @@ type: string
 format: email
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
         self::assertMatchesRegularExpression('/^.+\@\S+\.\S+$/', $fakeData);
@@ -118,7 +130,7 @@ type: string
 format: uuid
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
         self::assertMatchesRegularExpression('/^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i', $fakeData);
@@ -133,7 +145,7 @@ type: string
 format: uri
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
         self::assertNotFalse(filter_var($fakeData, FILTER_VALIDATE_URL));
@@ -148,7 +160,7 @@ type: string
 format: hostname
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
         self::assertMatchesRegularExpression('/^(\w)+\.(com|biz|info|net|org)$/', $fakeData);
@@ -163,7 +175,7 @@ type: string
 format: ipv4
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
         self::assertMatchesRegularExpression('/^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\.(?!$)|$)){4}$/', $fakeData);
@@ -178,7 +190,7 @@ type: string
 format: ipv6
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
         self::assertMatchesRegularExpression('/^([0-9A-Fa-f]{0,4}:){2,7}([0-9A-Fa-f]{1,4}$|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4})$/', $fakeData);
@@ -193,7 +205,7 @@ type: string
 pattern: '^\d{3}-\d{2}-\d{4}$'
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
         self::assertMatchesRegularExpression('/^\d{3}-\d{2}-\d{4}$/', $fakeData);
@@ -208,7 +220,7 @@ type: string
 format: unkown
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertGreaterThanOrEqual(0, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
@@ -225,7 +237,7 @@ enum:
   - baz
 YAML;
 
-        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml));
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         $this->assertMatchesSnapshot($fakeData);
     }
