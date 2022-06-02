@@ -95,7 +95,13 @@ final class StringFaker
                 return base64_encode(Lorem::word());
 
             case 'binary':
-                return Lorem::word();
+                return self::stringToBinary(Lorem::word());
+
+            case 'password':
+                $min = $schema->minLength ?? 0;
+                $max = $schema->maxLength ?? max(10, $min + 1);
+
+                return Base::asciify(str_repeat('*', $max));
 
             default:
                 return Lorem::word();
@@ -104,10 +110,6 @@ final class StringFaker
 
     private static function generateStatic(Schema $schema): ?string
     {
-        if ($schema->enum !== null) {
-            return reset($schema->enum);
-        }
-
         if (!empty($schema->default)) {
             return $schema->default;
         }
@@ -116,12 +118,18 @@ final class StringFaker
             return null;
         }
 
+        if ($schema->enum !== null) {
+            $enums = $schema->enum;
+
+            return reset($enums);
+        }
+
         if ($schema->format !== null) {
             return self::generateStaticFromFormat($schema);
         }
 
         if ($schema->pattern !== null) {
-            return $schema->pattern;
+            return self::generateRegxSample($schema->pattern);
         }
 
         return self::ensureStringLength('string', $schema);
@@ -158,7 +166,7 @@ final class StringFaker
                 return base64_encode('string');
 
             case 'binary':
-                return '01101000';
+                return self::stringToBinary('string');
 
             case 'password':
                 return self::generatePasswordSample($schema);
@@ -181,6 +189,80 @@ final class StringFaker
         }
 
         return $password;
+    }
+
+    private static function generateRegxSample(string $regex): string
+    {
+        // ditch the anchors
+        $regex = preg_replace('/^\/?\^?/', '', $regex);
+        $regex = preg_replace('/\$?\/?$/', '', $regex);
+        // All {2} become {2,2}
+        $regex = preg_replace('/\{(\d+)\}/', '{\1,\1}', $regex);
+        // Single-letter quantifiers (?, *, +) become bracket quantifiers ({1,1})
+        $regex = preg_replace('/(?<!\\\)\?/', '{1,1}', $regex);
+        // [12]{1,2} becomes [12]
+        $regex = preg_replace_callback('/(\[[^\]]+\])\{(\d+),(\d+)\}/', static function ($matches) {
+            return str_repeat($matches[1], range($matches[2], $matches[3])[0] ?? null);
+        }, $regex);
+        // (12|34){1,2} becomes (12|34)
+        $regex = preg_replace_callback('/(\([^\)]+\))\{(\d+),(\d+)\}/', static function ($matches) {
+            return str_repeat($matches[1], range($matches[2], $matches[3])[0] ?? null);
+        }, $regex);
+        // A{1,2} becomes A or \d{3} becomes \d\d\d
+        $regex = preg_replace_callback('/(\\\?.)\{(\d+),(\d+)\}/', static function ($matches) {
+            return str_repeat($matches[1], range($matches[2], $matches[3])[0] ?? null);
+        }, $regex);
+        // (this|that) becomes 'this'
+        $regex = preg_replace_callback('/\((.*?)\)/', static function ($matches) {
+            return explode('|', str_replace(['(', ')'], '', $matches[1])[0]);
+        }, $regex);
+        // All A-F inside of [] become ABCDEF
+        $regex = preg_replace_callback('/\[([^\]]+)\]/', static function ($matches) {
+            return '[' . preg_replace_callback('/(\w|\d)\-(\w|\d)/', static function ($range) {
+                return implode('', range($range[1], $range[2]));
+            }, $matches[1]) . ']';
+        }, $regex);
+        // All [ABC] become A
+        $regex = preg_replace_callback('/\[([^\]]+)\]/', static function ($matches) {
+            // remove backslashes (that are not followed by another backslash) because they are escape characters
+            $match = preg_replace('/\\\(?!\\\)/', '', $matches[1]);
+            $randomElement = str_split($match)[0];
+            //[.] should not be a character, but a literal .
+            return str_replace('.', '\.', $randomElement);
+        }, $regex);
+        // replace \d with number 0 and \w with letter a and . with ascii
+        $regex = preg_replace('/\\\w/', 'a', $regex);
+        $regex = preg_replace('/\\\d/', '1', $regex);
+        //replace . with ascii except backslash
+        $regex = preg_replace_callback('/(?<!\\\)\./', static function () {
+            $chr = 'a';
+
+            if ($chr === '\\') {
+                $chr .= '\\';
+            }
+
+            return $chr;
+        }, $regex);
+        // remove remaining single backslashes
+        $regex = str_replace('\\\\', '[:escaped_backslash:]', $regex);
+        $regex = str_replace('\\', '', $regex);
+        $regex = str_replace('[:escaped_backslash:]', '\\', $regex);
+
+        // phew
+        return $regex;
+    }
+
+    private static function stringToBinary($string): string
+    {
+        $characters = str_split($string);
+     
+        $binary = [];
+        foreach ($characters as $character) {
+            $data = unpack('H*', $character);
+            $binary[] = base_convert($data[1], 16, 2);
+        }
+     
+        return implode(' ', $binary);    
     }
 
     private static function ensureStringLength(string $sample, Schema $schema): string

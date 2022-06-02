@@ -27,23 +27,24 @@ final class ArrayFaker
     {
         $minimum = $schema->minItems ?? 0;
         $maximum = $schema->maxItems ?? $minimum + 15;
+
         if ($options->getStrategy() === Options::STRATEGY_STATIC) {
             $minimum = 1;
             $maximum = 1;
-        }
+        } else {
+            if ($options->getMinItems() && $minimum < $options->getMinItems()) {
+                /** @var int $minimum */
+                $minimum = $options->getMinItems();
+            }
 
-        if ($options->getMinItems() && $minimum < $options->getMinItems()) {
-            /** @var int $minimum */
-            $minimum = $options->getMinItems();
-        }
+            if ($options->getMaxItems() && $maximum > $options->getMaxItems()) {
+                /** @var int $maximum */
+                $maximum = $options->getMaxItems();
 
-        if ($options->getMaxItems() && $maximum > $options->getMaxItems()) {
-            /** @var int $maximum */
-            $maximum = $options->getMaxItems();
-
-            // Don't allow user to set min items above our maximum
-            if ($minimum > $maximum) {
-                $minimum = $maximum;
+                // Don't allow user to set min items above our maximum
+                if ($minimum > $maximum) {
+                    $minimum = $maximum;
+                }
             }
         }
 

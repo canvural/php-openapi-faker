@@ -21,7 +21,7 @@ use const FILTER_VALIDATE_URL;
  *
  * @covers \Vural\OpenAPIFaker\SchemaFaker\StringFaker
  */
-class StringFakerTest extends UnitTestCase
+class StaticStringFakerTest extends UnitTestCase
 {
     private Options $options;
 
@@ -29,7 +29,7 @@ class StringFakerTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->options = new Options();
+        $this->options = (new Options())->setStrategy(Options::STRATEGY_STATIC);
     }
 
     /** @test */
@@ -64,12 +64,12 @@ YAML;
     {
         $yaml = <<<YAML
 type: string
-maxLength: 10
+maxLength: 3
 YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
-        self::assertLessThanOrEqual(10, strlen($fakeData));
+        self::assertLessThanOrEqual(3, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -163,7 +163,6 @@ YAML;
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
-        self::assertMatchesRegularExpression('/^(\w)+\.(com|biz|info|net|org)$/', $fakeData);
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -269,7 +268,7 @@ YAML;
     }
 
     /** @test */
-    function it_can_generate_elements_from_enum()
+    function it_can_generate_string_value_from_enum()
     {
         $yaml = <<<YAML
 type: string
@@ -282,5 +281,35 @@ YAML;
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         $this->assertMatchesSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_default_value_from_enum()
+    {
+        $yaml = <<<YAML
+type: string
+enum:
+  - foo
+  - bar
+  - baz
+default: bar
+YAML;
+
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        $this->assertMatchesSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_nullable_value()
+    {
+        $yaml = <<<YAML
+type: string
+nullable: true
+YAML;
+
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        self::assertNull($fakeData);
     }
 }

@@ -21,6 +21,14 @@ final class BooleanFaker
             return self::generateStatic($schema);
         }
 
+        return self::generateDynamic($schema);
+    }
+
+    /**
+     * @return int|float
+     */
+    private static function generateDynamic(Schema $schema): bool
+    {
         if ($schema->enum !== null) {
             return Base::randomElement($schema->enum);
         }
@@ -30,16 +38,18 @@ final class BooleanFaker
 
     private static function generateStatic(Schema $schema): ?bool
     {
-        if ($schema->enum !== null) {
-            return reset($schema->enum);
-        }
-
         if (!empty($schema->default)) {
             return $schema->default;
         }
 
         if ($schema->nullable) {
             return null;
+        }
+
+        if ($schema->enum !== null) {
+            $enums = $schema->enum;
+
+            return reset($enums);
         }
 
         return true;

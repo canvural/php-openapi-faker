@@ -60,16 +60,18 @@ final class NumberFaker
      */
     private static function generateStatic(Schema $schema)
     {
-        if ($schema->enum !== null) {
-            return reset($schema->enum);
-        }
-
         if (!empty($schema->default)) {
             return $schema->default;
         }
 
         if ($schema->nullable) {
             return null;
+        }
+
+        if ($schema->enum !== null) {
+            $enums = $schema->enum;
+
+            return reset($enums);
         }
 
         if ($schema->format !== null) {
