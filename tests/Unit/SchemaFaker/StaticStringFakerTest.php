@@ -50,12 +50,12 @@ YAML;
     {
         $yaml = <<<YAML
 type: string
-minLength: 3
+minLength: 25
 YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
-        self::assertGreaterThanOrEqual(3, strlen($fakeData));
+        self::assertGreaterThanOrEqual(10, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -230,6 +230,21 @@ YAML;
         $yaml = <<<YAML
 type: string
 format: password
+YAML;
+
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        self::assertIsString($fakeData);
+        $this->assertMatchesSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_handle_long_password_format()
+    {
+        $yaml = <<<YAML
+type: string
+format: password
+minLength: 10
 YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);

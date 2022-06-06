@@ -50,12 +50,12 @@ YAML;
     {
         $yaml = <<<YAML
 type: string
-minLength: 3
+minLength: 25
 YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
-        self::assertGreaterThanOrEqual(3, strlen($fakeData));
+        self::assertGreaterThanOrEqual(10, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -64,7 +64,7 @@ YAML;
     {
         $yaml = <<<YAML
 type: string
-maxLength: 10
+maxLength: 3
 YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);

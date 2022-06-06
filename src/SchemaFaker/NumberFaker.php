@@ -78,20 +78,11 @@ final class NumberFaker
             return self::generateStaticFromFormat($schema);
         }
 
-        if ($schema->minimum) {
-            return $schema->minimum;
+        if (($schema->type === 'integer')) {
+            return (int) self::ensureLength(-mt_getrandmax(), $schema);
         }
 
-        $number = ($schema->type === 'integer') ? -mt_getrandmax() : -PHP_INT_MAX;
-        if ($schema->exclusiveMinimum === true) {
-            return $number + 1;
-        }
-
-        if ($schema->maximum) {
-            return $schema->maximum;
-        }
-
-        return $number;
+        return (float) self::ensureLength(-PHP_INT_MAX, $schema);
     }
 
     /**
@@ -124,7 +115,17 @@ final class NumberFaker
      */
     private static function ensureLength($sample, Schema $schema)
     {
+        $minimum    = $schema->minimum ?? $sample;
+        $maximum    = $schema->maximum ?? $sample;
         $multipleOf = $schema->multipleOf ?? 1;
+
+        if ($minimum > $sample) {
+            $sample = $minimum;
+        }
+
+        if ($maximum < $sample) {
+            $sample = $maximum;
+        }
 
         if ($schema->exclusiveMinimum === true) {
             $sample++;

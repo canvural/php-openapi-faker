@@ -13,7 +13,6 @@ use Faker\Provider\Lorem;
 use Faker\Provider\Uuid;
 use Vural\OpenAPIFaker\Options;
 
-use function base64_decode;
 use function max;
 use function Safe\substr;
 use function strlen;
