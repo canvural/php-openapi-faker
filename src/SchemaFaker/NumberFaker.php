@@ -116,7 +116,7 @@ final class NumberFaker
     private static function ensureLength($sample, Schema $schema)
     {
         $minimum    = $schema->minimum ?? $sample;
-        $maximum    = $schema->maximum ?? $sample;
+        $maximum    = $schema->maximum ?? $minimum;
         $multipleOf = $schema->multipleOf ?? 1;
 
         if ($minimum > $sample) {
@@ -127,14 +127,22 @@ final class NumberFaker
             $sample = $maximum;
         }
 
-        if ($schema->exclusiveMinimum === true) {
+        if ($sample === $minimum && $schema->exclusiveMinimum === true) {
             $sample++;
         }
 
-        if ($schema->exclusiveMaximum === true) {
+        if ($sample === $maximum && $schema->exclusiveMaximum === true) {
             $sample--;
         }
 
-        return $sample * $multipleOf;
+        if ($multipleOf !== 1) {
+            $mod = ($sample % $multipleOf) * -1;
+
+            $sample += $mod;
+
+            return $sample / $multipleOf;
+        }
+
+        return $sample;
     }
 }

@@ -205,7 +205,7 @@ YAML;
     }
 
     /** @test */
-    function it_can_handle_multiple_of_keyword()
+    function it_can_handle_multiple_of_keyword_with_integer_number()
     {
         $yaml = <<<YAML
 type: integer
