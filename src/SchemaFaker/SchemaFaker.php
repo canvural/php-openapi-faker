@@ -75,7 +75,7 @@ final class SchemaFaker
     {
         $useStaticStrategy = $options->getStrategy() === Options::STRATEGY_STATIC;
         $copy = $schema;
-        foreach ($copy as $key => $item) {
+        foreach (array_keys($copy) as $key) {
             if ($key === 'oneOf') {
                 $subSchema = $useStaticStrategy ? reset($copy[$key]) : Base::randomElement($copy[$key]);
                 unset($schema['oneOf'], $copy['oneOf']);
@@ -120,13 +120,13 @@ final class SchemaFaker
     {
         // phpcs:ignore
         foreach ($secondArray as $key => $_) {
-            if (! is_array($secondArray[$key])) {
+            if (!is_array($secondArray[$key])) {
                 $firstArray[$key] = $secondArray[$key];
 
                 continue;
             }
 
-            if (! array_key_exists($key, $firstArray) || ! is_array($firstArray[$key])) {
+            if (!array_key_exists($key, $firstArray) || !is_array($firstArray[$key])) {
                 $firstArray[$key] = [];
             }
 

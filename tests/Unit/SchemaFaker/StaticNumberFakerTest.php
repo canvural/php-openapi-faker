@@ -108,6 +108,20 @@ YAML;
     }
 
     /** @test */
+    function it_will_return_a_integer_if_unknown_format_is_given()
+    {
+        $yaml = <<<YAML
+type: number
+format: unkown
+YAML;
+
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        self::assertIsNumeric($fakeData);
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
     function it_can_handle_minimum_keyword()
     {
         $yaml = <<<YAML
@@ -248,4 +262,34 @@ YAML;
         self::assertIsFloat($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
+
+     /** @test */
+     function it_can_generate_default_value_from_enum()
+     {
+        $yaml = <<<YAML
+type: number
+enum:
+    - 1010.9865
+    - -123.321
+    - 111.123
+default: -123.321
+YAML;
+ 
+         $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+ 
+         $this->assertMatchesSnapshot($fakeData);
+     }
+ 
+     /** @test */
+     function it_can_generate_nullable_value()
+     {
+         $yaml = <<<YAML
+ type: number
+ nullable: true
+ YAML;
+ 
+         $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+ 
+         self::assertNull($fakeData);
+     }
 }

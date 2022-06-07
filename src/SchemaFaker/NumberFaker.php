@@ -79,10 +79,10 @@ final class NumberFaker
         }
 
         if (($schema->type === 'integer')) {
-            return (int) self::ensureLength(-mt_getrandmax(), $schema);
+            return (int) self::ensureRange(-mt_getrandmax(), $schema);
         }
 
-        return (float) self::ensureLength(-PHP_INT_MAX, $schema);
+        return (float) self::ensureRange(-PHP_INT_MAX, $schema);
     }
 
     /**
@@ -92,19 +92,19 @@ final class NumberFaker
     {
         switch ($schema->format) {
             case 'int32':
-                return (int) self::ensureLength(-mt_getrandmax(), $schema);
+                return (int) self::ensureRange(-mt_getrandmax(), $schema);
 
             case 'int64':
-                return (int) self::ensureLength(-PHP_INT_MAX, $schema);
+                return (int) self::ensureRange(-PHP_INT_MAX, $schema);
 
             case 'float':
-                return (float) self::ensureLength(-mt_getrandmax() / 1000000, $schema);
+                return (float) self::ensureRange(-mt_getrandmax() / 1000000, $schema);
 
             case 'double':
-                return (float) self::ensureLength(-PHP_FLOAT_MAX, $schema);
+                return (float) self::ensureRange(-PHP_FLOAT_MAX, $schema);
 
             default:
-                return self::ensureLength(-mt_getrandmax(), $schema);
+                return self::ensureRange(-mt_getrandmax(), $schema);
         }
     }
 
@@ -113,7 +113,7 @@ final class NumberFaker
      * @param Schema $schema
      * @return int|float
      */
-    private static function ensureLength($sample, Schema $schema)
+    private static function ensureRange($sample, Schema $schema)
     {
         $minimum    = $schema->minimum ?? $sample;
         $maximum    = $schema->maximum ?? $minimum;
@@ -136,11 +136,7 @@ final class NumberFaker
         }
 
         if ($multipleOf !== 1) {
-            $mod = ($sample % $multipleOf) * -1;
-
-            $sample += $mod;
-
-            return $sample / $multipleOf;
+            $sample -= $sample % $multipleOf;
         }
 
         return $sample;

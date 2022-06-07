@@ -95,7 +95,7 @@ components:
           format: ipv6
         regex:
           type: string
-          pattern: '/^\d{3}-\d{2}-\d{4}$/'
+          pattern: '\d{3}-\d{2}-\d{4}'
         boolean:
           type: boolean
     Examples:
