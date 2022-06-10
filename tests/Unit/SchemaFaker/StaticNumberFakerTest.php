@@ -34,7 +34,7 @@ YAML;
 
         $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
-        self::assertIsNumeric($fakeData);
+        self::assertIsFloat($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
@@ -117,7 +117,7 @@ YAML;
 
         $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
-        self::assertIsNumeric($fakeData);
+        self::assertIsInt($fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
@@ -162,7 +162,8 @@ YAML;
 
         $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
-        self::assertIsNumeric($fakeData);
+        self::assertIsFloat($fakeData);
+        self::assertEquals(100, $fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
@@ -179,7 +180,7 @@ YAML;
         $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
-        self::assertGreaterThan(100, $fakeData);
+        self::assertEquals(101, $fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
@@ -196,6 +197,7 @@ YAML;
         $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsInt($fakeData);
+        self::assertEquals(100, $fakeData);
         self::assertLessThan(102, $fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }

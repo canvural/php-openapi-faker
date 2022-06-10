@@ -13,23 +13,38 @@
     "mutators": {
         "@default": true,
         "global-ignore": [
-            "Vural\\OpenAPIFaker\\SchemaFaker\\BooleanFaker"
+            "Vural\\OpenAPIFaker\\SchemaFaker\\BooleanFaker",
+            "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::generatePasswordSample",
+            "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::generateRegxSample",
+            "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::stringToBinary",
+            "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::ensureStringLength"
         ],
         "LessThan": {
             "ignore": [
-                "Vural\\OpenAPIFaker\\SchemaFaker\\ArrayFaker::generate"
+                "Vural\\OpenAPIFaker\\SchemaFaker\\ArrayFaker::generate",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::ensureRange"
             ]
         },
         "GreaterThan": {
             "ignore": [
-                "Vural\\OpenAPIFaker\\SchemaFaker\\ArrayFaker::generate"
+                "Vural\\OpenAPIFaker\\SchemaFaker\\ArrayFaker::generate",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::ensureRange"
             ]
         },
         "CastInt": {
             "ignore": [
-                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generate"
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateDynamic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateStatic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateStaticFromFormat"
+            ]
+        },
+        "CastFloat": {
+            "ignore": [
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateDynamic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateStatic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateStaticFromFormat"
             ]
         }
     },
-    "timeout": 20
+    "timeout": 5
 }
