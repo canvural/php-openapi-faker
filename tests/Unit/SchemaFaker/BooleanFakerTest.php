@@ -50,5 +50,4 @@ YAML;
 
         self::assertTrue($fakeData);
     }
-
 }

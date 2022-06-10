@@ -6,7 +6,6 @@ namespace Vural\OpenAPIFaker\Tests\Unit;
 
 use InvalidArgumentException;
 use Vural\OpenAPIFaker\Options;
-use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
 
 /**
  * @covers \Vural\OpenAPIFaker\Options

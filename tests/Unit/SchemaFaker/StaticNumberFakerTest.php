@@ -263,9 +263,9 @@ YAML;
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
-     /** @test */
-     function it_can_generate_default_value_from_enum()
-     {
+    /** @test */
+    function it_can_generate_default_value_from_enum()
+    {
         $yaml = <<<YAML
 type: number
 enum:
@@ -274,22 +274,22 @@ enum:
     - 111.123
 default: -123.321
 YAML;
- 
-         $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
- 
-         $this->assertMatchesSnapshot($fakeData);
-     }
- 
-     /** @test */
-     function it_can_generate_nullable_value()
-     {
-         $yaml = <<<YAML
+
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        $this->assertMatchesSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_nullable_value()
+    {
+        $yaml = <<<YAML
  type: number
  nullable: true
  YAML;
- 
-         $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
- 
-         self::assertNull($fakeData);
-     }
+
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        self::assertNull($fakeData);
+    }
 }

@@ -9,10 +9,12 @@ use Faker\Provider\Base;
 use Vural\OpenAPIFaker\Options;
 
 use function array_key_exists;
+use function array_keys;
 use function array_reverse;
 use function in_array;
 use function is_array;
 use function is_string;
+use function reset;
 use function Safe\json_decode;
 use function Safe\json_encode;
 
@@ -67,14 +69,14 @@ final class SchemaFaker
 
     /**
      * @param array<mixed> $schema
-     * @param Options $options
      *
      * @return array<mixed>
      */
     private function resolveOfConstraints(array $schema, Options $options): array
     {
         $useStaticStrategy = $options->getStrategy() === Options::STRATEGY_STATIC;
-        $copy = $schema;
+        $copy              = $schema;
+
         foreach (array_keys($copy) as $key) {
             if ($key === 'oneOf') {
                 $subSchema = $useStaticStrategy ? reset($copy[$key]) : Base::randomElement($copy[$key]);
@@ -120,13 +122,13 @@ final class SchemaFaker
     {
         // phpcs:ignore
         foreach ($secondArray as $key => $_) {
-            if (!is_array($secondArray[$key])) {
+            if (! is_array($secondArray[$key])) {
                 $firstArray[$key] = $secondArray[$key];
 
                 continue;
             }
 
-            if (!array_key_exists($key, $firstArray) || !is_array($firstArray[$key])) {
+            if (! array_key_exists($key, $firstArray) || ! is_array($firstArray[$key])) {
                 $firstArray[$key] = [];
             }
 

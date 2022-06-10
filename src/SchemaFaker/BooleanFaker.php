@@ -9,13 +9,14 @@ use Faker\Provider\Base;
 use Vural\OpenAPIFaker\Options;
 
 use function random_int;
+use function reset;
 
 /**
  * @internal
  */
 final class BooleanFaker
 {
-    public static function generate(Schema $schema, Options  $options): ?bool
+    public static function generate(Schema $schema, Options $options): ?bool
     {
         if ($options->getStrategy() === Options::STRATEGY_STATIC) {
             return self::generateStatic($schema);
@@ -24,9 +25,6 @@ final class BooleanFaker
         return self::generateDynamic($schema);
     }
 
-    /**
-     * @return int|float
-     */
     private static function generateDynamic(Schema $schema): bool
     {
         if ($schema->enum !== null) {
@@ -38,7 +36,7 @@ final class BooleanFaker
 
     private static function generateStatic(Schema $schema): ?bool
     {
-        if (!empty($schema->default)) {
+        if (! empty($schema->default)) {
             return $schema->default;
         }
 

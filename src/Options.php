@@ -6,9 +6,12 @@ namespace Vural\OpenAPIFaker;
 
 use InvalidArgumentException;
 
+use function in_array;
+use function Safe\sprintf;
+
 final class Options
 {
-    public const STRATEGY_STATIC = 'static';
+    public const STRATEGY_STATIC  = 'static';
     public const STRATEGY_DYNAMIC = 'dynamic';
     public const STRATEGY_EXAMPLE = 'example';
 
@@ -42,7 +45,7 @@ final class Options
     {
         $allowed = [self::STRATEGY_STATIC, self::STRATEGY_DYNAMIC, self::STRATEGY_EXAMPLE];
 
-        if (!in_array($strategy, $allowed, true)) {
+        if (! in_array($strategy, $allowed, true)) {
             throw new InvalidArgumentException(sprintf('Unknown generation strategy: %s', $strategy));
         }
 

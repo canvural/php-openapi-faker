@@ -9,6 +9,10 @@ use Faker\Provider\Base;
 use Vural\OpenAPIFaker\Options;
 
 use function mt_getrandmax;
+use function reset;
+
+use const PHP_FLOAT_MAX;
+use const PHP_INT_MAX;
 
 /**
  * @internal
@@ -16,7 +20,7 @@ use function mt_getrandmax;
 final class NumberFaker
 {
     /**
-     * @return int|float
+     * @return int|float|null
      */
     public static function generate(Schema $schema, Options $options)
     {
@@ -56,11 +60,11 @@ final class NumberFaker
     }
 
     /**
-     * @return int|float
+     * @return int|float|null
      */
     private static function generateStatic(Schema $schema)
     {
-        if (!empty($schema->default)) {
+        if (! empty($schema->default)) {
             return $schema->default;
         }
 
@@ -110,7 +114,7 @@ final class NumberFaker
 
     /**
      * @param int|float $sample
-     * @param Schema $schema
+     *
      * @return int|float
      */
     private static function ensureRange($sample, Schema $schema)
