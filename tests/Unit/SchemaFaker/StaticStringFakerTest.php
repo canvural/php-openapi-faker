@@ -261,13 +261,13 @@ YAML;
     {
         $yaml = <<<YAML
 type: string
-pattern: '^\d{3}-\d{2}-\d{4}$'
+pattern: '^[a-z]-[0-9]-A{2}-[ABC]{1,2}-(foo|bar){1,2}-(A)+-(\d{3}-\d{2}-\d{4})*.*$'
 YAML;
 
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertIsString($fakeData);
-        self::assertMatchesRegularExpression('/^\d{3}-\d{2}-\d{4}$/', $fakeData);
+        self::assertMatchesRegularExpression('/^[a-z]-[0-9]-A{2}-[ABC]{1,2}-(foo|bar){1,2}-(A)+-(\d{3}-\d{2}-\d{4})*.*$/', $fakeData);
         $this->assertMatchesSnapshot($fakeData);
     }
 
