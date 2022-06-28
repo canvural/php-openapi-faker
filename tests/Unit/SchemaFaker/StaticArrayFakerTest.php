@@ -17,6 +17,8 @@ use function Safe\sort;
  * @uses \Vural\OpenAPIFaker\SchemaFaker\StringFaker
  * @uses \Vural\OpenAPIFaker\SchemaFaker\NumberFaker
  * @uses \Vural\OpenAPIFaker\Options
+ * @uses \Vural\OpenAPIFaker\Utils\NumberUtils
+ * @uses \Vural\OpenAPIFaker\Utils\StringUtils
  *
  * @covers \Vural\OpenAPIFaker\SchemaFaker\ArrayFaker
  */

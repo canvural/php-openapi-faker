@@ -12,21 +12,14 @@ use Faker\Provider\Internet;
 use Faker\Provider\Lorem;
 use Faker\Provider\Uuid;
 use Vural\OpenAPIFaker\Options;
+use Vural\OpenAPIFaker\Utils\RegexUtils;
+use Vural\OpenAPIFaker\Utils\StringUtils;
 
 use function base64_encode;
-use function base_convert;
-use function explode;
-use function implode;
 use function max;
-use function preg_replace_callback;
 use function reset;
-use function round;
-use function Safe\preg_replace;
 use function Safe\substr;
-use function Safe\unpack;
 use function str_repeat;
-use function str_replace;
-use function str_split;
 use function strlen;
 
 use const DATE_RFC3339;
@@ -59,17 +52,17 @@ final class StringFaker
             return Lorem::regexify($schema->pattern);
         }
 
-        $min = $schema->minLength ?? 0;
-        $max = $schema->maxLength ?? max(140, $min + 1);
+        $minLength = $schema->minLength ?? 0;
+        $maxLength = $schema->maxLength ?? max(140, $minLength + 1);
 
         $result = Lorem::word();
 
-        while (strlen($result) < $min) {
+        while (strlen($result) < $minLength) {
             $result .= Lorem::word();
         }
 
-        if (strlen($result) > $max) {
-            $result = substr($result, 0, $max);
+        if (strlen($result) > $maxLength) {
+            $result = substr($result, 0, $maxLength);
         }
 
         return $result;
@@ -77,6 +70,9 @@ final class StringFaker
 
     private static function generateDynamicFromFormat(Schema $schema): string
     {
+        $minLength = $schema->minLength ?? 0;
+        $maxLength = $schema->maxLength ?? max(10, $minLength + 1);
+
         switch ($schema->format) {
             case 'date':
                 return DateTime::date('Y-m-d', '2199-01-01');
@@ -106,13 +102,10 @@ final class StringFaker
                 return base64_encode(Lorem::word());
 
             case 'binary':
-                return self::stringToBinary(Lorem::word());
+                return StringUtils::convertToBinary(Lorem::word());
 
             case 'password':
-                $min = $schema->minLength ?? 0;
-                $max = $schema->maxLength ?? max(10, $min + 1);
-
-                return Base::asciify(str_repeat('*', $max));
+                return Base::asciify(str_repeat('*', $maxLength));
 
             default:
                 return Lorem::word();
@@ -140,14 +133,20 @@ final class StringFaker
         }
 
         if ($schema->pattern !== null) {
-            return self::generateRegxSample($schema->pattern);
+            return RegexUtils::generateSample($schema->pattern);
         }
 
-        return self::ensureStringLength('string', $schema);
+        $minLength = $schema->minLength ?? 0;
+        $maxLength = $schema->maxLength ?? max(140, $minLength + 1);
+
+        return StringUtils::ensureLength('string', $minLength, $maxLength);
     }
 
     private static function generateStaticFromFormat(Schema $schema): string
     {
+        $minLength = $schema->minLength ?? 0;
+        $maxLength = $schema->maxLength ?? max(140, $minLength + 1);
+
         switch ($schema->format) {
             case 'date':
                 return '2019-08-24';
@@ -177,113 +176,13 @@ final class StringFaker
                 return base64_encode('string');
 
             case 'binary':
-                return self::stringToBinary('string');
+                return StringUtils::convertToBinary('string');
 
             case 'password':
-                return self::generatePasswordSample($schema);
+                return StringUtils::ensureLength('pa$$wordqwerty!@#$%^123456', $minLength, $maxLength);
 
             default:
-                return self::ensureStringLength('string', $schema);
+                return StringUtils::ensureLength('string', $minLength, $maxLength);
         }
-    }
-
-    private static function generatePasswordSample(Schema $schema): string
-    {
-        $passwordSymbols = 'qwerty!@#$%^123456';
-        $password        = 'pa$$word';
-
-        $min = $schema->minLength ?? 0;
-
-        if ($min > strlen($password)) {
-            $password .= '_';
-            $password .= self::ensureStringLength($passwordSymbols, $schema);
-        }
-
-        return $password;
-    }
-
-    private static function generateRegxSample(string $regex): string
-    {
-        // ditch the anchors
-        $regex = preg_replace('/^\/?\^?/', '', $regex);
-        $regex = preg_replace('/\$?\/?$/', '', $regex);
-        // All {2} become {2,2}
-        $regex = preg_replace('/\{(\d+)\}/', '{\1,\1}', $regex);
-        // Single-letter quantifiers (?, *, +) become bracket quantifiers ({1,1})
-        $regex = preg_replace('/(?<!\\\)\?/', '{1,1}', $regex);
-        $regex = preg_replace('/(?<!\\\)\*/', '{1,1}', $regex);
-        $regex = preg_replace('/(?<!\\\)\+/', '{1,1}', $regex);
-        // [12]{1,2} becomes [12]
-        $regex = preg_replace_callback('/(\[[^\]]+\])\{(\d+),(\d+)\}/', static function ($matches) {
-            return str_repeat($matches[1], (int) $matches[2]);
-        }, $regex);
-        // (12|34){1,2} becomes (12|34)
-        $regex = preg_replace_callback('/(\([^\)]+\))\{(\d+),(\d+)\}/', static function ($matches) {
-            return str_repeat($matches[1], (int) $matches[2]);
-        }, $regex ?? '');
-        // A{1,2} becomes A or \d{3} becomes \d\d\d
-        $regex = preg_replace_callback('/(\\\?.)\{(\d+),(\d+)\}/', static function ($matches) {
-            return str_repeat($matches[1], (int) $matches[2]);
-        }, $regex ?? '');
-        // (this|that) becomes 'this'
-        $regex = preg_replace_callback('/\((.*?)\)/', static function ($matches) {
-            return explode('|', str_replace(['(', ')'], '', $matches[1]))[0];
-        }, $regex ?? '');
-        // [A-F] become [A] or [0-9] becomes [0]
-        $regex = preg_replace_callback('/\[([^\]]+)\]/', static function ($matches) {
-            return '[' . preg_replace_callback('/(\w|\d)\-(\w|\d)/', static function ($range) {
-                return $range[1];
-            }, $matches[1]) . ']';
-        }, $regex ?? '');
-        // All [ABC] become A
-        $regex = preg_replace_callback('/\[([^\]]+)\]/', static function ($matches) {
-            // remove backslashes (that are not followed by another backslash) because they are escape characters
-            $match        = preg_replace('/\\\(?!\\\)/', '', $matches[1]);
-            $firstElement = str_split($match)[0];
-
-            //[.] should not be a character, but a literal .
-            return str_replace('.', '\.', $firstElement);
-        }, $regex ?? '');
-        // replace \d with number 1 and \w with letter a
-        $regex = preg_replace('/\\\w/', 'a', $regex ?? '');
-        $regex = preg_replace('/\\\d/', '1', $regex);
-        //replace . with !
-        $regex = preg_replace('/(?<!\\\)\./', '!', $regex);
-        // remove remaining single backslashes
-        $regex = str_replace('\\\\', '[:escaped_backslash:]', $regex);
-        $regex = str_replace('\\', '', $regex);
-        $regex = str_replace('[:escaped_backslash:]', '\\', $regex);
-
-        return $regex;
-    }
-
-    private static function stringToBinary(string $string): string
-    {
-        $characters = str_split($string);
-
-        $binary = [];
-        foreach ($characters as $character) {
-            $data     = unpack('H*', $character);
-            $binary[] = base_convert($data[1], 16, 2);
-        }
-
-        return implode(' ', $binary);
-    }
-
-    private static function ensureStringLength(string $sample, Schema $schema): string
-    {
-        $min = $schema->minLength ?? 0;
-        $max = $schema->maxLength ?? max(140, $min + 1);
-
-        if (strlen($sample) < $min) {
-            $sample = str_repeat($sample, (int) round($min / strlen($sample)));
-            $sample = substr($sample, 0, $min);
-        }
-
-        if (strlen($sample) > $max) {
-            $sample = substr($sample, 0, $max);
-        }
-
-        return $sample;
     }
 }

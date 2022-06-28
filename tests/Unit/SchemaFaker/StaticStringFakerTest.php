@@ -20,6 +20,8 @@ use const FILTER_VALIDATE_URL;
  * @uses \Vural\OpenAPIFaker\Options
  *
  * @covers \Vural\OpenAPIFaker\SchemaFaker\StringFaker
+ * @covers \Vural\OpenAPIFaker\Utils\RegexUtils
+ * @covers \Vural\OpenAPIFaker\Utils\StringUtils
  */
 class StaticStringFakerTest extends UnitTestCase
 {

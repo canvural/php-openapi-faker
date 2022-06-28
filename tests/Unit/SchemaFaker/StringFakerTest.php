@@ -18,6 +18,7 @@ use const FILTER_VALIDATE_URL;
 
 /**
  * @uses \Vural\OpenAPIFaker\Options
+ * @uses \Vural\OpenAPIFaker\Utils\StringUtils
  *
  * @covers \Vural\OpenAPIFaker\SchemaFaker\StringFaker
  */

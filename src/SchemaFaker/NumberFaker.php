@@ -7,6 +7,7 @@ namespace Vural\OpenAPIFaker\SchemaFaker;
 use cebe\openapi\spec\Schema;
 use Faker\Provider\Base;
 use Vural\OpenAPIFaker\Options;
+use Vural\OpenAPIFaker\Utils\NumberUtils;
 
 use function mt_getrandmax;
 use function reset;
@@ -82,11 +83,17 @@ final class NumberFaker
             return self::generateStaticFromFormat($schema);
         }
 
+        $minimum          = $schema->minimum;
+        $maximum          = $schema->maximum;
+        $multipleOf       = $schema->multipleOf;
+        $exclusiveMinimum = $schema->exclusiveMinimum;
+        $exclusiveMaximum = $schema->exclusiveMaximum;
+
         if (($schema->type === 'integer')) {
-            return (int) self::ensureRange(-mt_getrandmax(), $schema);
+            return (int) NumberUtils::ensureRange(-mt_getrandmax(), $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
         }
 
-        return (float) self::ensureRange(-PHP_INT_MAX, $schema);
+        return (float) NumberUtils::ensureRange(-PHP_INT_MAX, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
     }
 
     /**
@@ -94,55 +101,27 @@ final class NumberFaker
      */
     private static function generateStaticFromFormat(Schema $schema)
     {
+        $minimum          = $schema->minimum;
+        $maximum          = $schema->maximum;
+        $multipleOf       = $schema->multipleOf;
+        $exclusiveMinimum = $schema->exclusiveMinimum;
+        $exclusiveMaximum = $schema->exclusiveMaximum;
+
         switch ($schema->format) {
             case 'int32':
-                return (int) self::ensureRange(-mt_getrandmax(), $schema);
+                return (int) NumberUtils::ensureRange(-mt_getrandmax(), $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
 
             case 'int64':
-                return (int) self::ensureRange(-PHP_INT_MAX, $schema);
+                return (int) NumberUtils::ensureRange(-PHP_INT_MAX, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
 
             case 'float':
-                return (float) self::ensureRange(-mt_getrandmax() / 1000000, $schema);
+                return (float) NumberUtils::ensureRange(-mt_getrandmax() / 1000000, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
 
             case 'double':
-                return (float) self::ensureRange(-PHP_FLOAT_MAX, $schema);
+                return (float) NumberUtils::ensureRange(-PHP_FLOAT_MAX, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
 
             default:
-                return self::ensureRange(-mt_getrandmax(), $schema);
+                return NumberUtils::ensureRange(-mt_getrandmax(), $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
         }
-    }
-
-    /**
-     * @param int|float $sample
-     *
-     * @return int|float
-     */
-    private static function ensureRange($sample, Schema $schema)
-    {
-        $minimum    = $schema->minimum ?? $sample;
-        $maximum    = $schema->maximum ?? $minimum;
-        $multipleOf = $schema->multipleOf ?? 1;
-
-        if ($minimum > $sample) {
-            $sample = $minimum;
-        }
-
-        if ($maximum < $sample) {
-            $sample = $maximum;
-        }
-
-        if ($sample === $minimum && $schema->exclusiveMinimum === true) {
-            $sample++;
-        }
-
-        if ($sample === $maximum && $schema->exclusiveMaximum === true) {
-            $sample--;
-        }
-
-        if ($multipleOf !== 1) {
-            $sample -= $sample % $multipleOf;
-        }
-
-        return $sample;
     }
 }

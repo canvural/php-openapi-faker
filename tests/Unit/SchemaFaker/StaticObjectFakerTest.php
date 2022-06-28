@@ -13,6 +13,8 @@ use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
  * @uses \Vural\OpenAPIFaker\SchemaFaker\SchemaFaker
  * @uses \Vural\OpenAPIFaker\SchemaFaker\StringFaker
  * @uses \Vural\OpenAPIFaker\SchemaFaker\NumberFaker
+ * @uses \Vural\OpenAPIFaker\Utils\NumberUtils
+ * @uses \Vural\OpenAPIFaker\Utils\StringUtils
  *
  * @covers \Vural\OpenAPIFaker\SchemaFaker\ObjectFaker
  * @covers \Vural\OpenAPIFaker\Options

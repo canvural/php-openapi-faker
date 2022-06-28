@@ -13,6 +13,7 @@ use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
  * @uses \Vural\OpenAPIFaker\Options
  *
  * @covers \Vural\OpenAPIFaker\SchemaFaker\NumberFaker
+ * @covers \Vural\OpenAPIFaker\Utils\NumberUtils
  */
 class StaticNumberFakerTest extends UnitTestCase
 {
