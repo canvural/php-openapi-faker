@@ -10,13 +10,14 @@ namespace Vural\OpenAPIFaker\Utils;
 final class NumberUtils
 {
     /**
-     * @param int|float $sample
+     * @param int|float      $sample
      * @param int|float|null $minimum
      * @param int|float|null $maximum
+     * @param int|float|null $multipleOf
      *
      * @return int|float
      */
-    public static function ensureRange($sample, $minimum, $maximum, ?bool $exclusiveMinimum = null, ?bool $exclusiveMaximum = null, ?int $multipleOf = null)
+    public static function ensureRange($sample, $minimum, $maximum, ?bool $exclusiveMinimum = null, ?bool $exclusiveMaximum = null, $multipleOf = null)
     {
         if ($minimum === null) {
             $minimum = $sample;

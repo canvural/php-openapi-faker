@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Vural\OpenAPIFaker\Utils;
 
 use function base_convert;
+use function ceil;
 use function implode;
+use function max;
 use function Safe\substr;
 use function Safe\unpack;
 use function str_repeat;
