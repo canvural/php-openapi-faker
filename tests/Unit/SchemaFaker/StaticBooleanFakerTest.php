@@ -82,4 +82,17 @@ YAML;
 
         self::assertNull($fakeData);
     }
+
+    /** @test */
+    function it_can_generate_example_value()
+    {
+        $yaml = <<<YAML
+type: boolean
+example: false
+YAML;
+
+        $fakeData = BooleanFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        self::assertFalse($fakeData);
+    }
 }

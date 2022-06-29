@@ -118,6 +118,10 @@ final class StringFaker
             return $schema->default;
         }
 
+        if ($schema->example !== null) {
+            return $schema->example;
+        }
+
         if ($schema->nullable) {
             return null;
         }
@@ -136,16 +140,16 @@ final class StringFaker
             return RegexUtils::generateSample($schema->pattern);
         }
 
-        $minLength = $schema->minLength ?? 0;
-        $maxLength = $schema->maxLength ?? max(140, $minLength + 1);
+        $minLength = $schema->minLength;
+        $maxLength = $schema->maxLength;
 
         return StringUtils::ensureLength('string', $minLength, $maxLength);
     }
 
     private static function generateStaticFromFormat(Schema $schema): string
     {
-        $minLength = $schema->minLength ?? 0;
-        $maxLength = $schema->maxLength ?? max(140, $minLength + 1);
+        $minLength = $schema->minLength;
+        $maxLength = $schema->maxLength;
 
         switch ($schema->format) {
             case 'date':

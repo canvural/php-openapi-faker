@@ -13,9 +13,10 @@ use function array_unique;
 use function Safe\sort;
 
 /**
+ * @uses \Vural\OpenAPIFaker\SchemaFaker\BooleanFaker
+ * @uses \Vural\OpenAPIFaker\SchemaFaker\NumberFaker
  * @uses \Vural\OpenAPIFaker\SchemaFaker\SchemaFaker
  * @uses \Vural\OpenAPIFaker\SchemaFaker\StringFaker
- * @uses \Vural\OpenAPIFaker\SchemaFaker\NumberFaker
  * @uses \Vural\OpenAPIFaker\Options
  * @uses \Vural\OpenAPIFaker\Utils\NumberUtils
  * @uses \Vural\OpenAPIFaker\Utils\StringUtils
@@ -115,7 +116,6 @@ items:
     - 4
     - 88
     - 6789
-minItems: 10
 YAML
         ), $this->options);
 
@@ -159,6 +159,104 @@ YAML
         ), $options);
 
         self::assertCount(1, $fakeData);
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_string_items()
+    {
+        $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
+            <<<JSON
+{
+  "items": {
+    "type": "string"
+  }
+}
+JSON
+        ), $this->options);
+
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_integer_items()
+    {
+        $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
+            <<<JSON
+{
+  "items": {
+    "type": "integer"
+  }
+}
+JSON
+        ), $this->options);
+
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_number_items()
+    {
+        $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
+            <<<JSON
+{
+  "items": {
+    "type": "number"
+  }
+}
+JSON
+        ), $this->options);
+
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_boolean_items()
+    {
+        $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
+            <<<JSON
+{
+  "items": {
+    "type": "boolean"
+  }
+}
+JSON
+        ), $this->options);
+
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_example_string_items()
+    {
+        $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
+            <<<JSON
+{
+  "items": {
+    "type": "string"
+  },
+  "example": ["string1","string2","string3"]
+}
+JSON
+        ), $this->options);
+
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_example_integer_items()
+    {
+        $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
+            <<<JSON
+{
+  "items": {
+    "type": "integer"
+  },
+  "example": [1,2,3]
+}
+JSON
+        ), $this->options);
+
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 }

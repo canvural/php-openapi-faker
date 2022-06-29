@@ -40,6 +40,10 @@ final class BooleanFaker
             return $schema->default;
         }
 
+        if ($schema->example !== null) {
+            return $schema->example;
+        }
+
         if ($schema->nullable) {
             return null;
         }

@@ -32,8 +32,16 @@ final class StringUtils
         return implode(' ', $binary);
     }
 
-    public static function ensureLength(string $text, int $minLength, int $maxLength): string
+    public static function ensureLength(string $text, ?int $minLength = null, ?int $maxLength = null): string
     {
+        if ($minLength === null) {
+            $minLength = 0;
+        }
+
+        if ($maxLength === null) {
+            $maxLength = strlen($text);
+        }
+
         if (max($minLength, $maxLength) === 0) {
             return $text;
         }

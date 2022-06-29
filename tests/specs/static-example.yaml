@@ -7,51 +7,62 @@ info:
 servers:
   - url: http://example.swagger.io
 paths:
-  /examples:
+  /example:
     get:
-      summary: List all examples
-      operationId: listExamples
+      summary: Get examples
+      operationId: getExample
       tags:
-        - examples
-      parameters:
-        - name: limit
-          in: query
-          description: How many items to return at one time (max 100)
-          required: false
-          schema:
-            type: integer
-            format: int32
+        - example
       responses:
         '200':
-          description: A paged array of examples
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
+          description: A example
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Examples"
+                $ref: "#/components/schemas/Example"
 
 components:
   schemas:
     Example:
       type: object
       properties:
+        numbers:
+          $ref: "#/components/schemas/ExampleNumbers"
+        strings:
+          $ref: "#/components/schemas/ExampleStrings"
+        booleans:
+          $ref: "#/components/schemas/ExampleBooleans"
+        arrays:
+          $ref: "#/components/schemas/ExampleArrays"
+        objects:
+          $ref: "#/components/schemas/ExampleObjects"
+
+    ExampleNumbers:
+      type: object
+      properties:
+        integer:
+          type: integer
         integer32:
           type: integer
           format: int32
-          exclusiveMinimum: false
         integer64:
           type: integer
           format: int64
+        number:
+          type: number
         float:
           type: number
           format: float
         double:
           type: number
           format: double
+        numberWithExample:
+          type: number
+          example: 10
+
+    ExampleStrings:
+      type: object
+      properties:
         string:
           type: string
         minLengthString:
@@ -96,9 +107,66 @@ components:
         regex:
           type: string
           pattern: '\d{3}-\d{2}-\d{4}'
+        stringWithExample:
+          type: string
+          example: example string
+
+    ExampleBooleans:
+      type: object
+      properties:
         boolean:
           type: boolean
-    Examples:
-      type: array
-      items:
-        $ref: "#/components/schemas/Example"
+        booleanWithExample:
+          type: boolean
+          example: false
+
+    ExampleArrays:
+      type: object
+      properties:
+        arrayWithIntegers:
+          type: array
+          items:
+            type: integer
+        arrayWithNumbers:
+          type: array
+          items:
+            type: number
+        arrayWithStrings:
+          type: array
+          items:
+            type: string
+        arrayWithBooleans:
+          type: array
+          items:
+            type: boolean
+        arrayWithIntegerExamples:
+          type: array
+          items:
+            type: integer
+          example: [1,2,3]
+        arrayWithStringsExamples:
+          type: array
+          items:
+            type: string
+          example: ['string1','string2','string3']
+
+    ExampleObjects:
+      type: object
+      properties:
+        object:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        objectWithExample:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+          example:
+            id: 100
+            name: name

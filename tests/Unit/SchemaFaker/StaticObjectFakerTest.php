@@ -62,4 +62,29 @@ YAML;
 
         $this->assertMatchesJsonSnapshot($fakeData);
     }
+
+    /** @test */
+    function it_can_generate_example_value()
+    {
+        $yaml = <<<YAML
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+required:
+  - id
+  - username
+example:
+  id: 100
+  name: name
+YAML;
+
+        $fakeData = ObjectFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        self::assertIsArray($fakeData);
+
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
 }

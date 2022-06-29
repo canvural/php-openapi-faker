@@ -44,7 +44,6 @@ YAML;
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertNotNull($fakeData);
-        self::assertGreaterThanOrEqual(0, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -59,7 +58,7 @@ YAML;
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertNotNull($fakeData);
-        self::assertGreaterThanOrEqual(10, strlen($fakeData));
+        self::assertEquals(25, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -74,7 +73,7 @@ YAML;
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertNotNull($fakeData);
-        self::assertLessThanOrEqual(3, strlen($fakeData));
+        self::assertEquals(3, strlen($fakeData));
         $this->assertMatchesSnapshot($fakeData);
     }
 
@@ -332,5 +331,18 @@ YAML;
         $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
 
         self::assertNull($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_example_value()
+    {
+        $yaml = <<<YAML
+type: string
+example: example string
+YAML;
+
+        $fakeData = StringFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        $this->assertMatchesSnapshot($fakeData);
     }
 }

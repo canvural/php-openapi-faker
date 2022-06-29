@@ -69,6 +69,10 @@ final class NumberFaker
             return $schema->default;
         }
 
+        if ($schema->example !== null) {
+            return $schema->example;
+        }
+
         if ($schema->nullable) {
             return null;
         }
@@ -79,21 +83,7 @@ final class NumberFaker
             return reset($enums);
         }
 
-        if ($schema->format !== null) {
-            return self::generateStaticFromFormat($schema);
-        }
-
-        $minimum          = $schema->minimum;
-        $maximum          = $schema->maximum;
-        $multipleOf       = $schema->multipleOf;
-        $exclusiveMinimum = $schema->exclusiveMinimum;
-        $exclusiveMaximum = $schema->exclusiveMaximum;
-
-        if (($schema->type === 'integer')) {
-            return (int) NumberUtils::ensureRange(-mt_getrandmax(), $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
-        }
-
-        return (float) NumberUtils::ensureRange(-PHP_INT_MAX, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
+        return self::generateStaticFromFormat($schema);
     }
 
     /**
@@ -120,8 +110,15 @@ final class NumberFaker
             case 'double':
                 return (float) NumberUtils::ensureRange(-PHP_FLOAT_MAX, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
 
+            case null:
+                $number = NumberUtils::ensureRange(0, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
+
+                return $schema->type === 'number' ? (float) $number : (int) $number;
+
             default:
-                return NumberUtils::ensureRange(-mt_getrandmax(), $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
+                $number = NumberUtils::ensureRange(0, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
+
+                return (int) $number;
         }
     }
 }

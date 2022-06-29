@@ -29,6 +29,10 @@ final class ArrayFaker
         $maximum = $schema->maxItems ?? $minimum + 15;
 
         if ($options->getStrategy() === Options::STRATEGY_STATIC) {
+            if ($schema->example !== null) {
+                return $schema->example;
+            }
+
             $minimum = 1;
             $maximum = 1;
         } else {

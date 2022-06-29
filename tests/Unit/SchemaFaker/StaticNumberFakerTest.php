@@ -295,4 +295,17 @@ YAML;
 
         self::assertNull($fakeData);
     }
+
+    /** @test */
+    function it_can_generate_example_value()
+    {
+        $yaml = <<<YAML
+ type: number
+ example: 10.33
+ YAML;
+
+        $fakeData = NumberFaker::generate(SchemaFactory::fromYaml($yaml), $this->options);
+
+        $this->assertMatchesSnapshot($fakeData);
+    }
 }

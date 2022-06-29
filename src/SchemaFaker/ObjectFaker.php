@@ -24,6 +24,10 @@ final class ObjectFaker
      */
     public static function generate(Schema $schema, Options $options, bool $request = false): array
     {
+        if ($options->getStrategy() === Options::STRATEGY_STATIC && $schema->example !== null) {
+            return $schema->example;
+        }
+
         $result = [];
 
         $requiredKeys         = $schema->required ?? [];
