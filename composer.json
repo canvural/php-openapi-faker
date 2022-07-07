@@ -45,7 +45,8 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "infection/extension-installer": true,
             "ergebnis/composer-normalize": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "ocramius/package-versions": true
         },
         "sort-packages": true
     },
