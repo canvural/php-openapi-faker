@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Vural\OpenAPIFaker\Tests\Integration;
 
+use cebe\openapi\spec\OpenApi;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Yaml\Yaml;
 use Vural\OpenAPIFaker\Exception\NoPath;
 use Vural\OpenAPIFaker\Exception\NoRequest;
 use Vural\OpenAPIFaker\Exception\NoResponse;
@@ -131,6 +133,62 @@ components:
 YAML;
 
         $faker = OpenAPIFaker::createFromYaml($specYaml);
+
+        self::assertInstanceOf(OpenAPIFaker::class, $faker);
+    }
+
+    /**
+     * @test
+     * @covers \Vural\OpenAPIFaker\OpenAPIFaker::createFromSchema
+     */
+    function it_can_create_faker_from_schema()
+    {
+        $specYaml = <<<'YAML'
+openapi: 3.0.2
+paths:
+  /todos:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Todo'
+    get:
+      responses:
+        '200':
+          description: 'Get Todo Items'
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todos'
+components:
+  schemas:
+    Todo:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        tag:
+          type: string
+    Todos:
+      type: array
+      items:
+        $ref: '#/components/schemas/Todo'
+
+YAML;
+
+        $schema = new OpenApi(Yaml::parse($specYaml));
+        $faker  = OpenAPIFaker::createFromSchema($schema);
 
         self::assertInstanceOf(OpenAPIFaker::class, $faker);
     }
@@ -468,6 +526,43 @@ YAML;
         self::assertEquals($expected, $fakeData);
     }
 
+    /** @test */
+    function it_will_mock_the_request()
+    {
+        $yamlSpec = self::getTodosSpec();
+
+        $fakeData = OpenAPIFaker::createFromYaml($yamlSpec)->mockRequest('/todos', 'POST');
+
+        self::assertIsArray($fakeData);
+        self::assertGreaterThanOrEqual(0, count($fakeData));
+
+        self::assertIsArray($fakeData);
+        self::assertArrayHasKey('id', $fakeData);
+        self::assertIsInt($fakeData['id']);
+        self::assertArrayHasKey('name', $fakeData);
+        self::assertIsString($fakeData['name']);
+    }
+
+    /** @test */
+    function it_will_mock_the_request_with_example_data()
+    {
+        $yamlSpec     = self::getTodosSpec();
+        $fakerOptions = [
+            'strategy' => Options::STRATEGY_STATIC,
+        ];
+
+        $faker    = OpenAPIFaker::createFromYaml($yamlSpec)->setOptions($fakerOptions);
+        $fakeData = $faker->mockRequest('/todos', 'POST');
+
+        $expected = [
+            'id' => 100,
+            'name' => 'watering plants',
+            'tag' => 'homework',
+        ];
+
+        self::assertEquals($expected, $fakeData);
+    }
+
     private function getTodosSpec(): string
     {
         return <<<'YAML'
@@ -475,7 +570,24 @@ openapi: 3.0.2
 paths:
   /todos:
     post:
-      describe: Empty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+            examples:
+              textExample:
+                $ref: '#/components/examples/AddTextExample'
+      responses:
+        '200':
+          description: 'Add Todo Item'
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+              examples: 
+                textExample:
+                  $ref: '#/components/examples/GetTextExample'
     get:
       responses:
         '200':
@@ -486,7 +598,7 @@ paths:
                 $ref: '#/components/schemas/Todos'
               examples: 
                 textExample:
-                  $ref: '#/components/examples/TextExample'
+                  $ref: '#/components/examples/GetTextExamples'
 components:
   schemas:
     Todo:
@@ -507,8 +619,14 @@ components:
       items:
         $ref: '#/components/schemas/Todo'
   examples:
-    TextExample:
-      summary: A todo example
+    AddTextExample:
+      summary: Add a todo example
+      value:
+        id: 100
+        name: watering plants
+        tag: homework
+    GetTextExamples:
+      summary: A todo example list
       value:
         - id: 100
           name: watering plants
@@ -516,6 +634,12 @@ components:
         - id: 101
           name: prepare food
           tag: homework
+    GetTextExample:
+      summary: A todo example
+      value:
+        id: 100
+        name: watering plants
+        tag: homework
 YAML;
     }
 }
