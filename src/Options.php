@@ -13,7 +13,6 @@ final class Options
 {
     public const STRATEGY_STATIC  = 'static';
     public const STRATEGY_DYNAMIC = 'dynamic';
-    public const STRATEGY_EXAMPLE = 'example';
 
     private ?int $minItems            = null;
     private ?int $maxItems            = null;
@@ -43,7 +42,7 @@ final class Options
 
     public function setStrategy(string $strategy): self
     {
-        $allowed = [self::STRATEGY_STATIC, self::STRATEGY_DYNAMIC, self::STRATEGY_EXAMPLE];
+        $allowed = [self::STRATEGY_STATIC, self::STRATEGY_DYNAMIC];
 
         if (! in_array($strategy, $allowed, true)) {
             throw new InvalidArgumentException(sprintf('Unknown generation strategy: %s', $strategy));
