@@ -10,6 +10,7 @@ use Vural\OpenAPIFaker\Exception\NoRequest;
 use Vural\OpenAPIFaker\Exception\NoResponse;
 use Vural\OpenAPIFaker\Exception\NoSchema;
 use Vural\OpenAPIFaker\OpenAPIFaker;
+use Vural\OpenAPIFaker\Options;
 
 use function count;
 
@@ -326,72 +327,6 @@ YAML;
     }
 
     /** @test */
-    function it_can_mock_a_specific_schema()
-    {
-        $specYaml = self::getTodosSpec();
-
-        $faker = OpenAPIFaker::createFromYaml($specYaml);
-        $todo  = $faker->mockComponentSchema('Todo');
-
-        self::assertIsArray($todo);
-        self::assertArrayHasKey('id', $todo);
-        self::assertIsInt($todo['id']);
-        self::assertArrayHasKey('name', $todo);
-        self::assertIsString($todo['name']);
-    }
-
-    /** @test */
-    function it_will_mock_the_response()
-    {
-        $yamlSpec =
-            <<<YAML
-openapi: 3.0.2
-paths:
-  /todos:
-    get:
-      responses:
-        200:
-          description: Get Todo Items
-          content:
-            'application/json':
-              schema:
-                \$ref: "#/components/schemas/Todos"
-components:
-  schemas:
-    Todo:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        tag:
-          type: string
-    Todos:
-      type: array
-      items:
-        \$ref: "#/components/schemas/Todo"
-YAML;
-
-        $fakeData = OpenAPIFaker::createFromYaml($yamlSpec)->mockResponse('/todos', 'GET');
-
-        self::assertIsArray($fakeData);
-        self::assertGreaterThanOrEqual(0, count($fakeData));
-
-        foreach ($fakeData as $fakeDatum) {
-            self::assertIsArray($fakeDatum);
-            self::assertArrayHasKey('id', $fakeDatum);
-            self::assertIsInt($fakeDatum['id']);
-            self::assertArrayHasKey('name', $fakeDatum);
-            self::assertIsString($fakeDatum['name']);
-        }
-    }
-
-    /** @test */
     function it_will_throw_exception_if_spec_does_not_have_any_components()
     {
         $specYaml = <<<'YAML'
@@ -472,6 +407,67 @@ YAML;
         self::assertLessThanOrEqual(6, count($fakeData));
     }
 
+    /** @test */
+    function it_can_mock_a_specific_schema()
+    {
+        $specYaml = self::getTodosSpec();
+
+        $faker = OpenAPIFaker::createFromYaml($specYaml);
+        $todo  = $faker->mockComponentSchema('Todo');
+
+        self::assertIsArray($todo);
+        self::assertArrayHasKey('id', $todo);
+        self::assertIsInt($todo['id']);
+        self::assertArrayHasKey('name', $todo);
+        self::assertIsString($todo['name']);
+    }
+
+    /** @test */
+    function it_will_mock_the_response()
+    {
+        $yamlSpec = self::getTodosSpec();
+
+        $fakeData = OpenAPIFaker::createFromYaml($yamlSpec)->mockResponse('/todos', 'GET');
+
+        self::assertIsArray($fakeData);
+        self::assertGreaterThanOrEqual(0, count($fakeData));
+
+        foreach ($fakeData as $fakeDatum) {
+            self::assertIsArray($fakeDatum);
+            self::assertArrayHasKey('id', $fakeDatum);
+            self::assertIsInt($fakeDatum['id']);
+            self::assertArrayHasKey('name', $fakeDatum);
+            self::assertIsString($fakeDatum['name']);
+        }
+    }
+
+    /** @test */
+    function it_will_mock_the_response_with_example_data()
+    {
+        $yamlSpec     = self::getTodosSpec();
+        $fakerOptions = [
+            'strategy' => Options::STRATEGY_STATIC,
+        ];
+
+        $faker    = OpenAPIFaker::createFromYaml($yamlSpec)->setOptions($fakerOptions);
+        $fakeData = $faker->mockResponse('/todos', 'GET');
+
+        $expected = [
+            [
+                'id' => 100,
+                'name' => 'watering plants',
+                'tag' => 'homework',
+            ],
+            [
+                'id' => 101,
+                'name' => 'prepare food',
+                'tag' => 'homework',
+            ],
+        ];
+
+        self::assertEquals($expected, $fakeData);
+    }
+
     private function getTodosSpec(): string
     {
         return <<<'YAML'
@@ -488,6 +484,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Todos'
+              examples: 
+                textExample:
+                  $ref: '#/components/examples/TextExample'
 components:
   schemas:
     Todo:
@@ -507,6 +506,16 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Todo'
+  examples:
+    TextExample:
+      summary: A todo example
+      value:
+        - id: 100
+          name: watering plants
+          tag: homework
+        - id: 101
+          name: prepare food
+          tag: homework
 YAML;
     }
 }

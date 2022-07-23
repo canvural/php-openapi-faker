@@ -2,8 +2,13 @@ parameters:
 	ignoreErrors:
 		-
 			message: "#^Parameter \\#1 \\$schema of class Vural\\\\OpenAPIFaker\\\\SchemaFaker\\\\SchemaFaker constructor expects cebe\\\\openapi\\\\spec\\\\Schema, cebe\\\\openapi\\\\spec\\\\Reference\\|cebe\\\\openapi\\\\spec\\\\Schema\\|null given\\.$#"
-			count: 2
-			path: src/OpenAPIFaker.php
+			count: 1
+			path: src/SchemaFaker/RequestFaker.php
+		
+		-
+			message: "#^Parameter \\#1 \\$schema of class Vural\\\\OpenAPIFaker\\\\SchemaFaker\\\\SchemaFaker constructor expects cebe\\\\openapi\\\\spec\\\\Schema, cebe\\\\openapi\\\\spec\\\\Reference\\|cebe\\\\openapi\\\\spec\\\\Schema\\|null given\\.$#"
+			count: 1
+			path: src/SchemaFaker/ResponseFaker.php
 
 		-
 			message: "#^Parameter \\#1 \\$schema of class Vural\\\\OpenAPIFaker\\\\SchemaFaker\\\\SchemaFaker constructor expects cebe\\\\openapi\\\\spec\\\\Schema, cebe\\\\openapi\\\\spec\\\\Reference\\|cebe\\\\openapi\\\\spec\\\\Schema\\|null given\\.$#"

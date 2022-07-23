@@ -18,6 +18,8 @@ use Vural\OpenAPIFaker\Exception\NoPath;
 use Vural\OpenAPIFaker\Exception\NoRequest;
 use Vural\OpenAPIFaker\Exception\NoResponse;
 use Vural\OpenAPIFaker\Exception\NoSchema;
+use Vural\OpenAPIFaker\SchemaFaker\RequestFaker;
+use Vural\OpenAPIFaker\SchemaFaker\ResponseFaker;
 use Vural\OpenAPIFaker\SchemaFaker\SchemaFaker;
 
 use function array_key_exists;
@@ -60,6 +62,17 @@ final class OpenAPIFaker
     }
 
     /**
+     * @return OpenAPIFaker
+     */
+    public static function createFromSchema(OpenApi $schema): self
+    {
+        $instance                = new static();
+        $instance->openAPISchema = $schema;
+
+        return $instance;
+    }
+
+    /**
      * @return mixed
      *
      * @throws NoPath
@@ -84,7 +97,10 @@ final class OpenAPIFaker
             throw NoRequest::forPathAndMethodAndContentType($path, $method, $contentType);
         }
 
-        return (new SchemaFaker($contents[$contentType]->schema, $this->options, true))->generate();
+        /** @var MediaType $content */
+        $content = $contents[$contentType];
+
+        return (new RequestFaker($content, $this->options))->generate();
     }
 
     /**
@@ -120,7 +136,7 @@ final class OpenAPIFaker
         /** @var MediaType $content */
         $content = $contents[$contentType];
 
-        return (new SchemaFaker($content->schema, $this->options))->generate();
+        return (new ResponseFaker($content, $this->options))->generate();
     }
 
     /**
