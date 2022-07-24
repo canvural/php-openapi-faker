@@ -24,7 +24,9 @@ final class ObjectFaker
      */
     public static function generate(Schema $schema, Options $options, bool $request = false): array
     {
-        if ($options->getStrategy() === Options::STRATEGY_STATIC && $schema->example !== null) {
+        $useStaticStrategy = $options->getStrategy() === Options::STRATEGY_STATIC;
+
+        if ($useStaticStrategy && $schema->example !== null) {
             return $schema->example;
         }
 
@@ -36,6 +38,7 @@ final class ObjectFaker
 
         $allPropertyKeys = array_merge($requiredKeys, $selectedOptionalKeys);
 
+        /** @var Schema $property */
         foreach ($schema->properties as $key => $property) {
             if ($property instanceof Schema) {
                 if (($request && $property->readOnly) || (! $request && $property->writeOnly)) {
@@ -45,13 +48,24 @@ final class ObjectFaker
 
             if (
                 ! $options->getAlwaysFakeOptionals()
-                && $options->getStrategy() !== Options::STRATEGY_STATIC
+                && ! $useStaticStrategy
                 && ! in_array($key, $allPropertyKeys, true)
             ) {
                 continue;
             }
 
-            $result[$key] = (new SchemaFaker($property, $options))->generate();
+            $value = (new SchemaFaker($property, $options))->generate();
+
+            $isUnused = ! isset($schema->required[$key]) && $property->nullable && $value === null;
+            if (
+                ! $options->getAlwaysFakeOptionals()
+                && $useStaticStrategy
+                && $isUnused
+            ) {
+                continue;
+            }
+
+            $result[$key] = $value;
         }
 
         return $result;
