@@ -51,7 +51,7 @@ JSON
     }
 
     /** @test */
-    function it_will_ignore_min_items()
+    function it_can_handle_min_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
             <<< JSON
@@ -65,7 +65,7 @@ JSON
 JSON
         ), $this->options);
 
-        self::assertCount(1, $fakeData);
+        self::assertCount(3, $fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 
@@ -127,7 +127,7 @@ YAML
     }
 
     /** @test */
-    function it_can_not_override_minimum_items_with_option()
+    function it_can_override_minimum_items_with_option()
     {
         $options = $this->options->setMinItems(5);
 
@@ -140,7 +140,7 @@ minItems: 3
 YAML
         ), $options);
 
-        self::assertCount(1, $fakeData);
+        self::assertCount(5, $fakeData);
         $this->assertMatchesJsonSnapshot($fakeData);
     }
 

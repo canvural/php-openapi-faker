@@ -12,6 +12,7 @@ use League\OpenAPIValidation\Schema\SchemaValidator;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 use Vural\OpenAPIFaker\OpenAPIFaker;
+use Vural\OpenAPIFaker\Options;
 
 use function Safe\file_get_contents;
 use function Safe\sprintf;
@@ -25,10 +26,10 @@ class E2ETest extends TestCase
      * @test
      * @dataProvider specProvider
      */
-    function it_can_generate_valid_request(string $filename)
+    function it_can_generate_valid_request(string $filename, string $strategy)
     {
         $file  = file_get_contents(sprintf('%s/../specs/%s.yaml', __DIR__, $filename));
-        $faker = OpenAPIFaker::createFromYaml($file);
+        $faker = OpenAPIFaker::createFromYaml($file)->setOptions(['strategy' => $strategy]);
 
         $schema = (new YamlFactory($file))->createSchema();
 
@@ -70,10 +71,10 @@ class E2ETest extends TestCase
      * @test
      * @dataProvider specProvider
      */
-    function it_can_generate_valid_response(string $filename)
+    function it_can_generate_valid_response(string $filename, string $strategy)
     {
         $file  = file_get_contents(sprintf('%s/../specs/%s.yaml', __DIR__, $filename));
-        $faker = OpenAPIFaker::createFromYaml($file);
+        $faker = OpenAPIFaker::createFromYaml($file)->setOptions(['strategy' => $strategy]);
 
         $schema = (new YamlFactory($file))->createSchema();
 
@@ -112,10 +113,10 @@ class E2ETest extends TestCase
      * @test
      * @dataProvider specProvider
      */
-    function it_can_generate_valid_component(string $filename)
+    function it_can_generate_valid_component(string $filename, string $strategy)
     {
         $file  = file_get_contents(sprintf('%s/../specs/%s.yaml', __DIR__, $filename));
-        $faker = OpenAPIFaker::createFromYaml($file);
+        $faker = OpenAPIFaker::createFromYaml($file)->setOptions(['strategy' => $strategy]);
 
         $schema = (new YamlFactory($file))->createSchema();
 
@@ -144,11 +145,16 @@ class E2ETest extends TestCase
     public function specProvider(): array
     {
         return [
-            ['petstore'],
-            ['twitter'],
-            ['uber'],
-            ['uspto'],
-            ['static-example'],
+            ['petstore', Options::STRATEGY_DYNAMIC],
+            ['twitter', Options::STRATEGY_DYNAMIC],
+            ['uber', Options::STRATEGY_DYNAMIC],
+            ['uspto', Options::STRATEGY_DYNAMIC],
+            ['static-example', Options::STRATEGY_DYNAMIC],
+            ['petstore', Options::STRATEGY_STATIC],
+            ['twitter', Options::STRATEGY_STATIC],
+            ['uber', Options::STRATEGY_STATIC],
+            ['uspto', Options::STRATEGY_STATIC],
+            ['static-example', Options::STRATEGY_STATIC],
         ];
     }
 }
