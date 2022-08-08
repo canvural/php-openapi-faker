@@ -6,7 +6,7 @@ namespace Vural\OpenAPIFaker\Tests\Unit\SchemaFaker;
 
 use Vural\OpenAPIFaker\Exception\NoExample;
 use Vural\OpenAPIFaker\Options;
-use Vural\OpenAPIFaker\SchemaFaker\ResponseFaker;
+use Vural\OpenAPIFaker\SchemaFaker\RequestFaker;
 use Vural\OpenAPIFaker\Tests\MediaTypeFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
 
@@ -19,10 +19,10 @@ use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
  * @uses \Vural\OpenAPIFaker\Utils\NumberUtils
  * @uses \Vural\OpenAPIFaker\Utils\StringUtils
  *
- * @covers \Vural\OpenAPIFaker\SchemaFaker\ResponseFaker
+ * @covers \Vural\OpenAPIFaker\SchemaFaker\RequestFaker
  * @covers \Vural\OpenAPIFaker\Exception\NoExample
  */
-class StaticResponseFakerTest extends UnitTestCase
+class StaticRequestFakerTest extends UnitTestCase
 {
     private Options $options;
 
@@ -34,28 +34,25 @@ class StaticResponseFakerTest extends UnitTestCase
     }
 
     /** @test */
-    function it_will_mock_the_response()
+    function it_will_mock_the_request()
     {
         $yaml = <<<YAML
 schema:
   type: object
+  required:
+    - id
+    - name
   properties:
-    todo:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        tag:
-          type: string
+    id:
+      type: integer
+      format: int64
+    name:
+      type: string
+    tag:
+      type: string
 YAML;
 
-        $fakeData = (new ResponseFaker(MediaTypeFactory::fromYaml($yaml), $this->options))->generate();
+        $fakeData = (new RequestFaker(MediaTypeFactory::fromYaml($yaml), $this->options))->generate();
 
         $this->assertMatchesJsonSnapshot($fakeData);
     }
@@ -66,38 +63,33 @@ YAML;
         $yaml = <<<YAML
 schema:
   type: object
+  required:
+    - id
+    - name
   properties:
-    todo:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        tag:
-          type: string
+    id:
+      type: integer
+      format: int64
+    name:
+      type: string
+    tag:
+      type: string
 examples: 
   textExample:
     summary: A todo example
     value:
-      todo:
-        id: 100
-        name: watering plants
-        tag: homework
+      id: 100
+      name: watering plants
+      tag: homework
   otherExample:
     summary: A other todo example
     value:
-      todo:
-        id: 101
-        name: prepare food
-        tag: homework
+      id: 101
+      name: prepare food
+      tag: homework
 YAML;
 
-        $fakeData = (new ResponseFaker(MediaTypeFactory::fromYaml($yaml), $this->options))->generate();
+        $fakeData = (new RequestFaker(MediaTypeFactory::fromYaml($yaml), $this->options))->generate();
 
         $this->assertMatchesJsonSnapshot($fakeData);
     }
@@ -108,39 +100,34 @@ YAML;
         $yaml = <<<YAML
 schema:
   type: object
+  required:
+    - id
+    - name
   properties:
-    todo:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        tag:
-          type: string
+    id:
+      type: integer
+      format: int64
+    name:
+      type: string
+    tag:
+      type: string
 examples: 
   textExample:
     summary: A todo example
     value:
-      todo:
-        id: 100
-        name: watering plants
-        tag: homework
+      id: 100
+      name: watering plants
+      tag: homework
   otherExample:
     summary: A other todo example
     value:
-      todo:
-        id: 101
-        name: prepare food
-        tag: homework
+      id: 101
+      name: prepare food
+      tag: homework
 YAML;
 
         $options  = $this->options->setExample('otherExample');
-        $fakeData = (new ResponseFaker(MediaTypeFactory::fromYaml($yaml), $options))->generate();
+        $fakeData = (new RequestFaker(MediaTypeFactory::fromYaml($yaml), $options))->generate();
 
         $this->assertMatchesJsonSnapshot($fakeData);
     }
@@ -151,42 +138,37 @@ YAML;
         $yaml = <<<YAML
 schema:
   type: object
+  required:
+    - id
+    - name
   properties:
-    todo:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        tag:
-          type: string
+    id:
+      type: integer
+      format: int64
+    name:
+      type: string
+    tag:
+      type: string
 examples: 
   textExample:
     summary: A todo example
     value:
-      todo:
-        id: 100
-        name: watering plants
-        tag: homework
+      id: 100
+      name: watering plants
+      tag: homework
   otherExample:
     summary: A other todo example
     value:
-      todo:
-        id: 101
-        name: prepare food
-        tag: homework
+      id: 101
+      name: prepare food
+      tag: homework
 YAML;
 
         $options = $this->options->setExample('unknownExample');
 
         $this->expectException(NoExample::class);
-        $this->expectExceptionMessage('OpenAPI spec does not have a example "unknownExample" response');
+        $this->expectExceptionMessage('OpenAPI spec does not have a example "unknownExample" request');
 
-        (new ResponseFaker(MediaTypeFactory::fromYaml($yaml), $options))->generate();
+        (new RequestFaker(MediaTypeFactory::fromYaml($yaml), $options))->generate();
     }
 }

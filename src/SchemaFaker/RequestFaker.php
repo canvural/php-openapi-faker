@@ -8,8 +8,10 @@ use cebe\openapi\spec\Example;
 use cebe\openapi\spec\MediaType;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Schema;
+use Vural\OpenAPIFaker\Exception\NoExample;
 use Vural\OpenAPIFaker\Options;
 
+use function array_key_exists;
 use function reset;
 
 /**
@@ -36,10 +38,19 @@ final class RequestFaker
     public function generate()
     {
         if ($this->options->getStrategy() === Options::STRATEGY_STATIC && ! empty($this->examples)) {
-            /** @var Example $firstExample */
-            $firstExample = reset($this->examples);
+            if ($this->options->getExample() !== null) {
+                if (! array_key_exists($this->options->getExample(), $this->examples)) {
+                    throw NoExample::forRequest($this->options->getExample());
+                }
 
-            return $firstExample->value;
+                /** @var Example $example */
+                $example = $this->examples[$this->options->getExample()];
+            } else {
+                /** @var Example $example */
+                $example = reset($this->examples);
+            }
+
+            return $example->value;
         }
 
         return (new SchemaFaker($this->schema, $this->options, true))->generate();
