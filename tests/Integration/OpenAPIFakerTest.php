@@ -527,6 +527,28 @@ YAML;
     }
 
     /** @test */
+    function it_will_mock_the_response_with_example_data_for_a_specific_example()
+    {
+        $yamlSpec     = self::getTodosSpec();
+        $fakerOptions = [
+            'strategy' => Options::STRATEGY_STATIC,
+        ];
+
+        $faker    = OpenAPIFaker::createFromYaml($yamlSpec)->setOptions($fakerOptions);
+        $fakeData = $faker->mockResponseForExample('/todos', 'GET', 'otherExample');
+
+        $expected = [
+            [
+                'id' => 100,
+                'name' => 'watering plants',
+                'tag' => 'homework',
+            ],
+        ];
+
+        self::assertEquals($expected, $fakeData);
+    }
+
+    /** @test */
     function it_will_mock_the_request()
     {
         $yamlSpec = self::getTodosSpec();
@@ -563,6 +585,26 @@ YAML;
         self::assertEquals($expected, $fakeData);
     }
 
+    /** @test */
+    function it_will_mock_the_request_with_example_data_for_a_specific_example()
+    {
+        $yamlSpec     = self::getTodosSpec();
+        $fakerOptions = [
+            'strategy' => Options::STRATEGY_STATIC,
+        ];
+
+        $faker    = OpenAPIFaker::createFromYaml($yamlSpec)->setOptions($fakerOptions);
+        $fakeData = $faker->mockRequestForExample('/todos', 'POST', 'otherExample');
+
+        $expected = [
+            'id' => 101,
+            'name' => 'prepare food',
+            'tag' => 'homework',
+        ];
+
+        self::assertEquals($expected, $fakeData);
+    }
+
     private function getTodosSpec(): string
     {
         return <<<'YAML'
@@ -576,8 +618,10 @@ paths:
             schema:
               $ref: '#/components/schemas/Todo'
             examples:
-              textExample:
-                $ref: '#/components/examples/AddTextExample'
+              testExample:
+                $ref: '#/components/examples/AddTestExample'
+              otherExample:
+                $ref: '#/components/examples/AddOtherExample'
       responses:
         '200':
           description: 'Add Todo Item'
@@ -586,8 +630,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Todo'
               examples: 
-                textExample:
-                  $ref: '#/components/examples/GetTextExample'
+                testExample:
+                  $ref: '#/components/examples/GetTestExample'
     get:
       responses:
         '200':
@@ -597,8 +641,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Todos'
               examples: 
-                textExample:
-                  $ref: '#/components/examples/GetTextExamples'
+                testExample:
+                  $ref: '#/components/examples/GetTestExamples'
+                otherExample:
+                  $ref: '#/components/examples/GetOtherExamples'
 components:
   schemas:
     Todo:
@@ -619,13 +665,19 @@ components:
       items:
         $ref: '#/components/schemas/Todo'
   examples:
-    AddTextExample:
+    AddTestExample:
       summary: Add a todo example
       value:
         id: 100
         name: watering plants
         tag: homework
-    GetTextExamples:
+    AddOtherExample:
+      summary: Add a other todo example
+      value:
+        id: 101
+        name: prepare food
+        tag: homework
+    GetTestExamples:
       summary: A todo example list
       value:
         - id: 100
@@ -634,7 +686,13 @@ components:
         - id: 101
           name: prepare food
           tag: homework
-    GetTextExample:
+    GetOtherExamples:
+      summary: A todo example list
+      value:
+        - id: 100
+          name: watering plants
+          tag: homework
+    GetTestExample:
       summary: A todo example
       value:
         id: 100

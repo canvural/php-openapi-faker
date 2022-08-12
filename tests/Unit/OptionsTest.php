@@ -21,7 +21,6 @@ class OptionsTest extends UnitTestCase
         self::assertNull($options->getMaxItems());
         self::assertFalse($options->getAlwaysFakeOptionals());
         self::assertEquals(Options::STRATEGY_DYNAMIC, $options->getStrategy());
-        self::assertNull($options->getExample());
     }
 
     /** @test */
@@ -45,17 +44,5 @@ class OptionsTest extends UnitTestCase
         $this->expectExceptionMessage('Unknown generation strategy: INVALID_STRATEGY');
 
         $options->setStrategy('INVALID_STRATEGY');
-    }
-
-    /** @test */
-    function it_can_set_example_value()
-    {
-        $options = new Options();
-
-        self::assertNull($options->getExample());
-
-        $options->setExample('textExample');
-
-        self::assertEquals('textExample', $options->getExample());
     }
 }

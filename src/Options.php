@@ -18,7 +18,6 @@ final class Options
     private ?int $maxItems            = null;
     private bool $alwaysFakeOptionals = false;
     private string $strategy          = self::STRATEGY_DYNAMIC;
-    private ?string $example          = null;
 
     public function setMinItems(int $minItems): Options
     {
@@ -54,13 +53,6 @@ final class Options
         return $this;
     }
 
-    public function setExample(string $example): self
-    {
-        $this->example = $example;
-
-        return $this;
-    }
-
     public function getMinItems(): ?int
     {
         return $this->minItems;
@@ -79,10 +71,5 @@ final class Options
     public function getStrategy(): string
     {
         return $this->strategy;
-    }
-
-    public function getExample(): ?string
-    {
-        return $this->example;
     }
 }

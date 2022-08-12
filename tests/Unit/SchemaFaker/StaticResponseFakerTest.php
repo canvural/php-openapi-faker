@@ -81,7 +81,7 @@ schema:
         tag:
           type: string
 examples: 
-  textExample:
+  testExample:
     summary: A todo example
     value:
       todo:
@@ -123,7 +123,7 @@ schema:
         tag:
           type: string
 examples: 
-  textExample:
+  testExample:
     summary: A todo example
     value:
       todo:
@@ -139,8 +139,7 @@ examples:
         tag: homework
 YAML;
 
-        $options  = $this->options->setExample('otherExample');
-        $fakeData = (new ResponseFaker(MediaTypeFactory::fromYaml($yaml), $options))->generate();
+        $fakeData = (new ResponseFaker(MediaTypeFactory::fromYaml($yaml), $this->options))->generate('otherExample');
 
         $this->assertMatchesJsonSnapshot($fakeData);
     }
@@ -166,7 +165,7 @@ schema:
         tag:
           type: string
 examples: 
-  textExample:
+  testExample:
     summary: A todo example
     value:
       todo:
@@ -182,11 +181,9 @@ examples:
         tag: homework
 YAML;
 
-        $options = $this->options->setExample('unknownExample');
-
         $this->expectException(NoExample::class);
         $this->expectExceptionMessage('OpenAPI spec does not have a example "unknownExample" response');
 
-        (new ResponseFaker(MediaTypeFactory::fromYaml($yaml), $options))->generate();
+        (new ResponseFaker(MediaTypeFactory::fromYaml($yaml), $this->options))->generate('unknownExample');
     }
 }

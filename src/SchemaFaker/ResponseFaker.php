@@ -35,22 +35,22 @@ final class ResponseFaker
     /**
      * @return array<mixed>|string|bool|int|float|null
      */
-    public function generate()
+    public function generate(?string $exampleName = null)
     {
         if ($this->options->getStrategy() === Options::STRATEGY_STATIC && ! empty($this->examples)) {
-            if ($this->options->getExample() !== null) {
-                if (! array_key_exists($this->options->getExample(), $this->examples)) {
-                    throw NoExample::forResponse($this->options->getExample());
+            if ($exampleName !== null) {
+                if (! array_key_exists($exampleName, $this->examples)) {
+                    throw NoExample::forResponse($exampleName);
                 }
 
-                /** @var Example $example */
-                $example = $this->examples[$this->options->getExample()];
+                /** @var Example $exampleName */
+                $exampleName = $this->examples[$exampleName];
             } else {
-                /** @var Example $example */
-                $example = reset($this->examples);
+                /** @var Example $exampleName */
+                $exampleName = reset($this->examples);
             }
 
-            return $example->value;
+            return $exampleName->value;
         }
 
         return (new SchemaFaker($this->schema, $this->options, false))->generate();

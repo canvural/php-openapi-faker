@@ -83,24 +83,26 @@ final class OpenAPIFaker
         string $method,
         string $contentType = 'application/json'
     ) {
-        $operation = $this->findOperation($path, $method);
-
-        if ($operation->requestBody === null) {
-            throw NoRequest::forPathAndMethod($path, $method);
-        }
-
-        /** @var RequestBody $requestBody */
-        $requestBody = $operation->requestBody;
-        $contents    = $requestBody->content;
-
-        if (! array_key_exists($contentType, $contents)) {
-            throw NoRequest::forPathAndMethodAndContentType($path, $method, $contentType);
-        }
-
-        /** @var MediaType $content */
-        $content = $contents[$contentType];
+        $content = $this->findContentForRequest($path, $method, $contentType);
 
         return (new RequestFaker($content, $this->options))->generate();
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws NoPath
+     * @throws NoRequest
+     */
+    public function mockRequestForExample(
+        string $path,
+        string $method,
+        string $exampleName,
+        string $contentType = 'application/json'
+    ) {
+        $content = $this->findContentForRequest($path, $method, $contentType);
+
+        return (new RequestFaker($content, $this->options))->generate($exampleName);
     }
 
     /**
@@ -115,28 +117,27 @@ final class OpenAPIFaker
         string $statusCode = '200',
         string $contentType = 'application/json'
     ) {
-        $operation = $this->findOperation($path, $method);
-
-        if ($operation->responses === null) {
-            throw NoResponse::forPathAndMethod($path, $method);
-        }
-
-        if (! $operation->responses->hasResponse($statusCode)) {
-            throw NoResponse::forPathAndMethodAndStatusCode($path, $method, $statusCode);
-        }
-
-        /** @var Response $response */
-        $response = $operation->responses->getResponse($statusCode);
-        $contents = $response->content;
-
-        if (! array_key_exists($contentType, $contents)) {
-            throw NoResponse::forPathAndMethodAndStatusCode($path, $method, $statusCode);
-        }
-
-        /** @var MediaType $content */
-        $content = $contents[$contentType];
+        $content = $this->findContentForResponse($path, $method, $statusCode, $contentType);
 
         return (new ResponseFaker($content, $this->options))->generate();
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws NoPath
+     * @throws NoResponse
+     */
+    public function mockResponseForExample(
+        string $path,
+        string $method,
+        string $exampleName,
+        string $statusCode = '200',
+        string $contentType = 'application/json'
+    ) {
+        $content = $this->findContentForResponse($path, $method, $statusCode, $contentType);
+
+        return (new ResponseFaker($content, $this->options))->generate($exampleName);
     }
 
     /**
@@ -161,7 +162,7 @@ final class OpenAPIFaker
     }
 
     /**
-     * @param array{minItems?:?int, maxItems?:?int, alwaysFakeOptionals?:bool, strategy?:string, example?:string} $options
+     * @param array{minItems?:?int, maxItems?:?int, alwaysFakeOptionals?:bool, strategy?:string} $options
      */
     public function setOptions(array $options): self
     {
@@ -189,5 +190,68 @@ final class OpenAPIFaker
         }
 
         return $operation;
+    }
+
+    /**
+     * @throws NoPath
+     * @throws NoRequest
+     */
+    private function findContentForRequest(
+        string $path,
+        string $method,
+        string $contentType = 'application/json'
+    ): MediaType {
+        $operation = $this->findOperation($path, $method);
+
+        if ($operation->requestBody === null) {
+            throw NoRequest::forPathAndMethod($path, $method);
+        }
+
+        /** @var RequestBody $requestBody */
+        $requestBody = $operation->requestBody;
+        $contents    = $requestBody->content;
+
+        if (! array_key_exists($contentType, $contents)) {
+            throw NoRequest::forPathAndMethodAndContentType($path, $method, $contentType);
+        }
+
+        /** @var MediaType $content */
+        $content = $contents[$contentType];
+
+        return $content;
+    }
+
+    /**
+     * @throws NoPath
+     * @throws NoResponse
+     */
+    private function findContentForResponse(
+        string $path,
+        string $method,
+        string $statusCode = '200',
+        string $contentType = 'application/json'
+    ): MediaType {
+        $operation = $this->findOperation($path, $method);
+
+        if ($operation->responses === null) {
+            throw NoResponse::forPathAndMethod($path, $method);
+        }
+
+        if (! $operation->responses->hasResponse($statusCode)) {
+            throw NoResponse::forPathAndMethodAndStatusCode($path, $method, $statusCode);
+        }
+
+        /** @var Response $response */
+        $response = $operation->responses->getResponse($statusCode);
+        $contents = $response->content;
+
+        if (! array_key_exists($contentType, $contents)) {
+            throw NoResponse::forPathAndMethodAndStatusCode($path, $method, $statusCode);
+        }
+
+        /** @var MediaType $content */
+        $content = $contents[$contentType];
+
+        return $content;
     }
 }
