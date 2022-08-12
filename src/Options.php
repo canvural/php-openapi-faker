@@ -40,6 +40,9 @@ final class Options
         return $this;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function setStrategy(string $strategy): self
     {
         $allowed = [self::STRATEGY_STATIC, self::STRATEGY_DYNAMIC];

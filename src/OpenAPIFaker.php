@@ -14,6 +14,7 @@ use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;
 use Exception;
 use League\OpenAPIValidation\PSR7 as LeagueOpenAPI;
+use Vural\OpenAPIFaker\Exception\NoExample;
 use Vural\OpenAPIFaker\Exception\NoPath;
 use Vural\OpenAPIFaker\Exception\NoRequest;
 use Vural\OpenAPIFaker\Exception\NoResponse;
@@ -93,6 +94,7 @@ final class OpenAPIFaker
      *
      * @throws NoPath
      * @throws NoRequest
+     * @throws NoExample
      */
     public function mockRequestForExample(
         string $path,
@@ -127,6 +129,7 @@ final class OpenAPIFaker
      *
      * @throws NoPath
      * @throws NoResponse
+     * @throws NoExample
      */
     public function mockResponseForExample(
         string $path,

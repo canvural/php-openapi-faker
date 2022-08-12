@@ -34,6 +34,8 @@ final class RequestFaker
 
     /**
      * @return array<mixed>|string|bool|int|float|null
+     *
+     * @throws NoExample
      */
     public function generate(?string $exampleName = null)
     {
