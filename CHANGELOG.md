@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [2.0.0] - 2022-08-23
+
+### Changed
+- Dropped PHP 7.4 support
+
 ## [1.0.0] - 2021-11-19
 
 ### Changed
@@ -43,7 +48,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Initial release!
 
-[Unreleased]: https://github.com/canvural/php-openapi-faker/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/canvural/php-openapi-faker/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/canvural/php-openapi-faker/compare/1.0.0...2.0.0
 [1.0.0]: https://github.com/canvural/php-openapi-faker/compare/0.1.5...1.0.0
 [0.1.5]: https://github.com/canvural/php-openapi-faker/compare/0.1.4...0.1.5
 [0.1.4]: https://github.com/canvural/php-openapi-faker/compare/0.1.3...0.1.4
