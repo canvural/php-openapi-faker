@@ -9,9 +9,7 @@ use Faker\Provider\Base;
 
 use function random_int;
 
-/**
- * @internal
- */
+/** @internal */
 final class BooleanFaker
 {
     public static function generate(Schema $schema): bool

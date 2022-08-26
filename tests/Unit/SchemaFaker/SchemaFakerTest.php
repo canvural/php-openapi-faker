@@ -35,7 +35,7 @@ class SchemaFakerTest extends UnitTestCase
     /** @test */
     function it_can_choose_one_schema_from_one_of()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 oneOf:
   -
     type: string
@@ -54,7 +54,7 @@ YAML;
     /** @test */
     function it_can_merge_schemas_from_all_of()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 allOf:
   -
     type: object
@@ -85,7 +85,7 @@ YAML;
     /** @test */
     function it_will_merge_all_of_with_existing_schema()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 allOf:
   -
     type: object
@@ -110,7 +110,7 @@ YAML;
     /** @test */
     function it_will_merge_one_of_with_existing_schema()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 oneOf:
   -
     type: object
@@ -141,7 +141,7 @@ YAML;
     /** @test */
     function it_can_recursively_merge_of_constraints()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 oneOf:
   -
     oneOf:

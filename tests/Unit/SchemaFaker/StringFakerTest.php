@@ -15,15 +15,13 @@ use function strlen;
 
 use const FILTER_VALIDATE_URL;
 
-/**
- * @covers \Vural\OpenAPIFaker\SchemaFaker\StringFaker
- */
+/** @covers \Vural\OpenAPIFaker\SchemaFaker\StringFaker */
 class StringFakerTest extends UnitTestCase
 {
     /** @test */
     function it_can_generate_single_string()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 YAML;
 
@@ -36,7 +34,7 @@ YAML;
     /** @test */
     function it_can_handle_min_length()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 minLength: 3
 YAML;
@@ -50,7 +48,7 @@ YAML;
     /** @test */
     function it_can_handle_max_length()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 maxLength: 10
 YAML;
@@ -64,7 +62,7 @@ YAML;
     /** @test */
     function it_can_handle_date_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: date
 YAML;
@@ -81,7 +79,7 @@ YAML;
     /** @test */
     function it_can_handle_datetime_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: date-time
 YAML;
@@ -98,7 +96,7 @@ YAML;
     /** @test */
     function it_can_handle_email_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: email
 YAML;
@@ -113,7 +111,7 @@ YAML;
     /** @test */
     function it_can_handle_uuid_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: uuid
 YAML;
@@ -128,7 +126,7 @@ YAML;
     /** @test */
     function it_can_handle_uri_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: uri
 YAML;
@@ -143,7 +141,7 @@ YAML;
     /** @test */
     function it_can_handle_hostname_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: hostname
 YAML;
@@ -158,7 +156,7 @@ YAML;
     /** @test */
     function it_can_handle_ipv4_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: ipv4
 YAML;
@@ -173,7 +171,7 @@ YAML;
     /** @test */
     function it_can_handle_ipv6_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: ipv6
 YAML;
@@ -203,7 +201,7 @@ YAML;
     /** @test */
     function it_will_return_a_string_if_unknown_format_is_given()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: unkown
 YAML;
@@ -217,7 +215,7 @@ YAML;
     /** @test */
     function it_can_generate_elements_from_enum()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 enum:
   - foo

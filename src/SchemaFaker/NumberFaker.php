@@ -9,9 +9,7 @@ use Faker\Provider\Base;
 
 use function mt_getrandmax;
 
-/**
- * @internal
- */
+/** @internal */
 final class NumberFaker
 {
     public static function generate(Schema $schema): int|float
