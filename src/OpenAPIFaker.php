@@ -66,7 +66,7 @@ final class OpenAPIFaker
     public function mockRequest(
         string $path,
         string $method,
-        string $contentType = 'application/json'
+        string $contentType = 'application/json',
     ): mixed {
         $operation = $this->findOperation($path, $method);
 
@@ -93,7 +93,7 @@ final class OpenAPIFaker
         string $path,
         string $method,
         string $statusCode = '200',
-        string $contentType = 'application/json'
+        string $contentType = 'application/json',
     ): mixed {
         $operation = $this->findOperation($path, $method);
 
@@ -119,9 +119,7 @@ final class OpenAPIFaker
         return (new SchemaFaker($content->schema, $this->options))->generate();
     }
 
-    /**
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function mockComponentSchema(string $schemaName): mixed
     {
         if ($this->openAPISchema->components === null) {
@@ -138,9 +136,7 @@ final class OpenAPIFaker
         return (new SchemaFaker($schema, $this->options))->generate();
     }
 
-    /**
-     * @param array{minItems?:?int, maxItems?:?int, alwaysFakeOptionals?:bool} $options
-     */
+    /** @param array{minItems?:?int, maxItems?:?int, alwaysFakeOptionals?:bool} $options */
     public function setOptions(array $options): self
     {
         foreach ($options as $key => $value) {
@@ -154,15 +150,13 @@ final class OpenAPIFaker
         return $this;
     }
 
-    /**
-     * @throws NoPath
-     */
+    /** @throws NoPath */
     private function findOperation(string $path, string $method): Operation
     {
         try {
             $operation = (new LeagueOpenAPI\SpecFinder($this->openAPISchema))
                 ->findOperationSpec(new LeagueOpenAPI\OperationAddress($path, strtolower($method)));
-        } catch (LeagueOpenAPI\Exception\NoPath $e) {
+        } catch (LeagueOpenAPI\Exception\NoPath) {
             throw NoPath::forPathAndMethod($path, $method);
         }
 

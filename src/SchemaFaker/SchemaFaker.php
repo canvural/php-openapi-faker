@@ -16,26 +16,18 @@ use function is_string;
 use function Safe\json_decode;
 use function Safe\json_encode;
 
-/**
- * @internal
- */
+/** @internal */
 final class SchemaFaker
 {
     private Schema $schema;
-    private Options $options;
-    private bool $request;
 
-    public function __construct(Schema $schema, Options $options, bool $request = false)
+    public function __construct(Schema $schema, private Options $options, private bool $request = false)
     {
-        $schemaData    = json_decode(json_encode($schema->getSerializableData()), true);
-        $this->schema  = new Schema($this->resolveOfConstraints($schemaData));
-        $this->options = $options;
-        $this->request = $request;
+        $schemaData   = json_decode(json_encode($schema->getSerializableData()), true);
+        $this->schema = new Schema($this->resolveOfConstraints($schemaData));
     }
 
-    /**
-     * @return array<mixed>|string|bool|int|float
-     */
+    /** @return array<mixed>|string|bool|int|float */
     public function generate(): array|string|bool|int|float
     {
         if ($this->schema->type === 'array') {

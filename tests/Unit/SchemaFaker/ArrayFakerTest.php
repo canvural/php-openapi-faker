@@ -39,13 +39,13 @@ class ArrayFakerTest extends UnitTestCase
     function it_can_generate_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<<JSON
+            <<<'JSON'
 {
   "items": {
     "type": "string"
   }
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -55,7 +55,7 @@ JSON
     function it_can_handle_min_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<< JSON
+            <<<'JSON'
 {
   "type": "array",
   "items": {
@@ -63,7 +63,7 @@ JSON
   },
   "minItems": 3
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -73,7 +73,7 @@ JSON
     function it_can_handle_max_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<< JSON
+            <<<'JSON'
 {
   "type": "array",
   "items": {
@@ -81,7 +81,7 @@ JSON
   },
   "maxItems": 10
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -91,7 +91,7 @@ JSON
     function it_can_handle_both_min_and_max_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<< JSON
+            <<<'JSON'
 {
   "type": "array",
   "items": {
@@ -100,7 +100,7 @@ JSON
   "minItems": 8,
   "maxItems": 10
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -110,14 +110,14 @@ JSON
     function it_will_use_minimum_plus_15_as_max_items_if_its_not_given()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<< JSON
+            <<<'JSON'
 {
   "type": "array",
   "items": {
     "type": "string"
   }
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -126,7 +126,7 @@ JSON
     /** @test */
     function it_handles_nested_arrays()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: array
 items:
   type: array
@@ -145,7 +145,7 @@ YAML;
         mt_srand(227, MT_RAND_PHP);
 
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<< JSON
+            <<<'JSON'
 {
   "type": "array",
   "items": {
@@ -157,7 +157,7 @@ YAML;
   "maxItems": 5,
   "uniqueItems": true
 }
-JSON
+JSON,
         ), $this->options);
 
         self::assertIsArray($fakeData);
@@ -169,7 +169,7 @@ JSON
     function it_can_generate_elements_from_enum()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromYaml(
-            <<<YAML
+            <<<'YAML'
 type: array
 items:
     type: integer
@@ -178,7 +178,7 @@ items:
       - 88
       - 6789
 minItems: 10
-YAML
+YAML,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -194,12 +194,12 @@ YAML
         $options = (new Options())->setMinItems(5);
 
         $fakeData = ArrayFaker::generate(SchemaFactory::fromYaml(
-            <<<YAML
+            <<<'YAML'
 type: array
 items:
     type: integer
 minItems: 3
-YAML
+YAML,
         ), $options);
 
         self::assertGreaterThan(5, count($fakeData));
@@ -212,13 +212,13 @@ YAML
         $options = (new Options())->setMinItems(1);
 
         $fakeData = ArrayFaker::generate(SchemaFactory::fromYaml(
-            <<<YAML
+            <<<'YAML'
 type: array
 items:
     type: integer
 minItems: 3
 maxItems: 3
-YAML
+YAML,
         ), $options);
 
         self::assertCount(3, $fakeData);
@@ -231,12 +231,12 @@ YAML
         $options = (new Options())->setMaxItems(3);
 
         $fakeData = ArrayFaker::generate(SchemaFactory::fromYaml(
-            <<<YAML
+            <<<'YAML'
 type: array
 items:
     type: integer
 maxItems: 4
-YAML
+YAML,
         ), $options);
 
         self::assertLessThanOrEqual(3, count($fakeData));
@@ -249,13 +249,13 @@ YAML
         $options = (new Options())->setMaxItems(5);
 
         $fakeData = ArrayFaker::generate(SchemaFactory::fromYaml(
-            <<<YAML
+            <<<'YAML'
 type: array
 items:
     type: integer
 minItems: 3
 maxItems: 3
-YAML
+YAML,
         ), $options);
 
         self::assertCount(3, $fakeData);
@@ -268,13 +268,13 @@ YAML
         $options = (new Options())->setMinItems(3)->setMaxItems(3);
 
         $fakeData = ArrayFaker::generate(SchemaFactory::fromYaml(
-            <<<YAML
+            <<<'YAML'
 type: array
 items:
     type: integer
 minItems: 1
 maxItems: 4
-YAML
+YAML,
         ), $options);
 
         self::assertCount(3, $fakeData);
@@ -287,12 +287,12 @@ YAML
         $options = (new Options())->setMaxItems(4);
 
         $fakeData = ArrayFaker::generate(SchemaFactory::fromYaml(
-            <<<YAML
+            <<<'YAML'
 type: array
 items:
     type: integer
 minItems: 5
-YAML
+YAML,
         ), $options);
 
         self::assertCount(4, $fakeData);

@@ -12,7 +12,7 @@ class NoResponse extends Exception
 {
     protected string $method;
     protected string $path;
-    protected ?string $statusCode = null;
+    protected string|null $statusCode = null;
 
     public static function forPathAndMethod(string $path, string $method): self
     {

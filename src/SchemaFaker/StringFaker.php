@@ -18,9 +18,7 @@ use function strlen;
 
 use const DATE_RFC3339;
 
-/**
- * @internal
- */
+/** @internal */
 final class StringFaker
 {
     public static function generate(Schema $schema): string

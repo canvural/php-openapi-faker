@@ -14,14 +14,10 @@ use function array_merge;
 use function count;
 use function in_array;
 
-/**
- * @internal
- */
+/** @internal */
 final class ObjectFaker
 {
-    /**
-     * @return array<mixed>
-     */
+    /** @return array<mixed> */
     public static function generate(Schema $schema, Options $options, bool $request = false): array
     {
         $result = [];

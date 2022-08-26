@@ -344,7 +344,7 @@ YAML;
     function it_will_mock_the_response()
     {
         $yamlSpec =
-            <<<YAML
+            <<<'YAML'
 openapi: 3.0.2
 paths:
   /todos:
@@ -355,7 +355,7 @@ paths:
           content:
             'application/json':
               schema:
-                \$ref: "#/components/schemas/Todos"
+                $ref: "#/components/schemas/Todos"
 components:
   schemas:
     Todo:
@@ -374,7 +374,7 @@ components:
     Todos:
       type: array
       items:
-        \$ref: "#/components/schemas/Todo"
+        $ref: "#/components/schemas/Todo"
 YAML;
 
         $fakeData = OpenAPIFaker::createFromYaml($yamlSpec)->mockResponse('/todos', 'GET');
@@ -451,7 +451,7 @@ YAML;
      */
     function it_can_set_options()
     {
-        $specYaml = <<<YAML
+        $specYaml = <<<'YAML'
 openapi: 3.0.2
 components:
   schemas:
