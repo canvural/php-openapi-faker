@@ -444,7 +444,7 @@ YAML;
      */
     function it_can_set_options()
     {
-        $specYaml = <<<YAML
+        $specYaml = <<<'YAML'
 openapi: 3.0.2
 components:
   schemas:

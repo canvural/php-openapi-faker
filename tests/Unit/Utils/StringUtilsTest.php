@@ -9,9 +9,7 @@ use Vural\OpenAPIFaker\Utils\StringUtils;
 
 use function strlen;
 
-/**
- * @covers \Vural\OpenAPIFaker\Utils\StringUtils
- */
+/** @covers \Vural\OpenAPIFaker\Utils\StringUtils */
 class StringUtilsTest extends UnitTestCase
 {
     private const SAMPLE_STRING = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

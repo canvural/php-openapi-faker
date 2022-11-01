@@ -11,9 +11,7 @@ use function str_repeat;
 use function str_replace;
 use function str_split;
 
-/**
- * @internal
- */
+/** @internal */
 final class RegexUtils
 {
     public static function generateSample(string $regex): string

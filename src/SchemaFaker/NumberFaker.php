@@ -15,15 +15,10 @@ use function reset;
 use const PHP_FLOAT_MAX;
 use const PHP_INT_MAX;
 
-/**
- * @internal
- */
+/** @internal */
 final class NumberFaker
 {
-    /**
-     * @return int|float|null
-     */
-    public static function generate(Schema $schema, Options $options)
+    public static function generate(Schema $schema, Options $options): int|float|null
     {
         if ($options->getStrategy() === Options::STRATEGY_STATIC) {
             return self::generateStatic($schema);
@@ -32,10 +27,7 @@ final class NumberFaker
         return self::generateDynamic($schema);
     }
 
-    /**
-     * @return int|float
-     */
-    private static function generateDynamic(Schema $schema)
+    private static function generateDynamic(Schema $schema): int|float|null
     {
         if ($schema->enum !== null) {
             return Base::randomElement($schema->enum);
@@ -60,10 +52,7 @@ final class NumberFaker
         return Base::randomFloat(null, $minimum, $maximum) * $multipleOf;
     }
 
-    /**
-     * @return int|float|null
-     */
-    private static function generateStatic(Schema $schema)
+    private static function generateStatic(Schema $schema): int|float|null
     {
         if (! empty($schema->default)) {
             return $schema->default;
@@ -86,10 +75,7 @@ final class NumberFaker
         return self::generateStaticFromFormat($schema);
     }
 
-    /**
-     * @return int|float
-     */
-    private static function generateStaticFromFormat(Schema $schema)
+    private static function generateStaticFromFormat(Schema $schema): int|float
     {
         $minimum          = $schema->minimum;
         $maximum          = $schema->maximum;

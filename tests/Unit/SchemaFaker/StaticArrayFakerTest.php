@@ -38,13 +38,13 @@ class StaticArrayFakerTest extends UnitTestCase
     function it_can_generate_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<<JSON
+            <<<'JSON'
 {
   "items": {
     "type": "string"
   }
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -54,7 +54,7 @@ JSON
     function it_can_handle_min_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<< JSON
+            <<<'JSON'
 {
   "type": "array",
   "items": {
@@ -62,7 +62,7 @@ JSON
   },
   "minItems": 3
 }
-JSON
+JSON,
         ), $this->options);
 
         self::assertCount(3, $fakeData);
@@ -73,7 +73,7 @@ JSON
     function it_will_ignore_max_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<< JSON
+            <<<'JSON'
 {
   "type": "array",
   "items": {
@@ -81,7 +81,7 @@ JSON
   },
   "maxItems": 10
 }
-JSON
+JSON,
         ), $this->options);
 
         self::assertCount(1, $fakeData);
@@ -91,7 +91,7 @@ JSON
     /** @test */
     function it_handles_nested_arrays()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: array
 items:
   type: array
@@ -108,7 +108,7 @@ YAML;
     function it_can_generate_one_element_from_enum()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromYaml(
-            <<<YAML
+            <<<'YAML'
 type: array
 items:
   type: integer
@@ -116,7 +116,7 @@ items:
     - 4
     - 88
     - 6789
-YAML
+YAML,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -132,12 +132,12 @@ YAML
         $options = $this->options->setMinItems(5);
 
         $fakeData = ArrayFaker::generate(SchemaFactory::fromYaml(
-            <<<YAML
+            <<<'YAML'
 type: array
 items:
   type: integer
 minItems: 3
-YAML
+YAML,
         ), $options);
 
         self::assertCount(5, $fakeData);
@@ -150,12 +150,12 @@ YAML
         $options = $this->options->setMaxItems(3);
 
         $fakeData = ArrayFaker::generate(SchemaFactory::fromYaml(
-            <<<YAML
+            <<<'YAML'
 type: array
 items:
   type: integer
 maxItems: 4
-YAML
+YAML,
         ), $options);
 
         self::assertCount(1, $fakeData);
@@ -166,13 +166,13 @@ YAML
     function it_can_generate_string_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<<JSON
+            <<<'JSON'
 {
   "items": {
     "type": "string"
   }
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -182,13 +182,13 @@ JSON
     function it_can_generate_integer_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<<JSON
+            <<<'JSON'
 {
   "items": {
     "type": "integer"
   }
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -198,13 +198,13 @@ JSON
     function it_can_generate_number_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<<JSON
+            <<<'JSON'
 {
   "items": {
     "type": "number"
   }
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -214,13 +214,13 @@ JSON
     function it_can_generate_boolean_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<<JSON
+            <<<'JSON'
 {
   "items": {
     "type": "boolean"
   }
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -230,14 +230,14 @@ JSON
     function it_can_generate_example_string_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<<JSON
+            <<<'JSON'
 {
   "items": {
     "type": "string"
   },
   "example": ["string1","string2","string3"]
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);
@@ -247,14 +247,14 @@ JSON
     function it_can_generate_example_integer_items()
     {
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<<JSON
+            <<<'JSON'
 {
   "items": {
     "type": "integer"
   },
   "example": [1,2,3]
 }
-JSON
+JSON,
         ), $this->options);
 
         $this->assertMatchesJsonSnapshot($fakeData);

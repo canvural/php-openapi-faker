@@ -14,9 +14,7 @@ use function str_repeat;
 use function str_split;
 use function strlen;
 
-/**
- * @internal
- */
+/** @internal */
 final class StringUtils
 {
     public static function convertToBinary(string $text): string
@@ -32,7 +30,7 @@ final class StringUtils
         return implode(' ', $binary);
     }
 
-    public static function ensureLength(string $text, ?int $minLength = null, ?int $maxLength = null): string
+    public static function ensureLength(string $text, int|null $minLength = null, int|null $maxLength = null): string
     {
         if ($minLength === null) {
             $minLength = 0;

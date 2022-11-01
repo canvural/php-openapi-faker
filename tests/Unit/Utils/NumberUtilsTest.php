@@ -7,9 +7,7 @@ namespace Vural\OpenAPIFaker\Tests\Unit\Utils;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
 use Vural\OpenAPIFaker\Utils\NumberUtils;
 
-/**
- * @covers \Vural\OpenAPIFaker\Utils\NumberUtils
- */
+/** @covers \Vural\OpenAPIFaker\Utils\NumberUtils */
 class NumberUtilsTest extends UnitTestCase
 {
     /** @test */

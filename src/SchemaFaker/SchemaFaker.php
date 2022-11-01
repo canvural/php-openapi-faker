@@ -18,27 +18,19 @@ use function reset;
 use function Safe\json_decode;
 use function Safe\json_encode;
 
-/**
- * @internal
- */
+/** @internal */
 final class SchemaFaker
 {
     private Schema $schema;
-    private Options $options;
-    private bool $request;
 
-    public function __construct(Schema $schema, Options $options, bool $request = false)
+    public function __construct(Schema $schema, private Options $options, private bool $request = false)
     {
         $schemaData    = json_decode(json_encode($schema->getSerializableData()), true);
         $this->schema  = new Schema($this->resolveOfConstraints($schemaData, $options));
-        $this->options = $options;
-        $this->request = $request;
     }
 
-    /**
-     * @return array<mixed>|string|bool|int|float|null
-     */
-    public function generate()
+    /** @return array<mixed>|string|bool|int|float|null */
+    public function generate(): array|string|bool|int|float|null
     {
         if ($this->schema->type === 'array') {
             return ArrayFaker::generate($this->schema, $this->options);

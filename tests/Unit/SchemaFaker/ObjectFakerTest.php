@@ -31,7 +31,7 @@ class ObjectFakerTest extends UnitTestCase
     /** @test */
     function it_can_generate_simple_object()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: object
 properties:
   id:
@@ -48,7 +48,7 @@ YAML;
     /** @test */
     function it_can_generate_nested_objects()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: object
 properties:
     id:
@@ -73,7 +73,7 @@ YAML;
     /** @test */
     function it_includes_required_properties_all_the_time()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: object
 properties:
   id:
@@ -107,7 +107,7 @@ YAML;
     {
         $options = (new Options())->setAlwaysFakeOptionals(true);
 
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: object
 properties:
   id:
@@ -139,7 +139,7 @@ YAML;
     /** @test */
     function it_does_not_inlcude_readonly_properties_when_type_is_request()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: object
 properties:
   id:
@@ -169,7 +169,7 @@ YAML;
     /** @test */
     function it_does_not_inlcude_writeonly_properties_when_type_is_response()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: object
 properties:
   id:

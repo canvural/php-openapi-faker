@@ -37,7 +37,7 @@ class StaticStringFakerTest extends UnitTestCase
     /** @test */
     function it_can_generate_single_string()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 YAML;
 
@@ -50,7 +50,7 @@ YAML;
     /** @test */
     function it_can_handle_min_length()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 minLength: 25
 YAML;
@@ -65,7 +65,7 @@ YAML;
     /** @test */
     function it_can_handle_max_length()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 maxLength: 3
 YAML;
@@ -80,7 +80,7 @@ YAML;
     /** @test */
     function it_can_handle_date_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: date
 YAML;
@@ -97,7 +97,7 @@ YAML;
     /** @test */
     function it_can_handle_datetime_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: date-time
 YAML;
@@ -114,7 +114,7 @@ YAML;
     /** @test */
     function it_can_handle_email_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: email
 YAML;
@@ -129,7 +129,7 @@ YAML;
     /** @test */
     function it_can_handle_uuid_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: uuid
 YAML;
@@ -144,7 +144,7 @@ YAML;
     /** @test */
     function it_can_handle_uri_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: uri
 YAML;
@@ -159,7 +159,7 @@ YAML;
     /** @test */
     function it_can_handle_hostname_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: hostname
 YAML;
@@ -173,7 +173,7 @@ YAML;
     /** @test */
     function it_can_handle_ipv4_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: ipv4
 YAML;
@@ -188,7 +188,7 @@ YAML;
     /** @test */
     function it_can_handle_ipv6_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: ipv6
 YAML;
@@ -203,7 +203,7 @@ YAML;
     /** @test */
     function it_can_handle_byte_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: byte
 YAML;
@@ -217,7 +217,7 @@ YAML;
     /** @test */
     function it_can_handle_binary_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: binary
 YAML;
@@ -231,7 +231,7 @@ YAML;
     /** @test */
     function it_can_handle_password_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: password
 YAML;
@@ -245,7 +245,7 @@ YAML;
     /** @test */
     function it_can_handle_long_password_format()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: password
 minLength: 10
@@ -275,7 +275,7 @@ YAML;
     /** @test */
     function it_will_return_a_string_if_unknown_format_is_given()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 format: unkown
 YAML;
@@ -290,7 +290,7 @@ YAML;
     /** @test */
     function it_can_generate_string_value_from_enum()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 enum:
   - foo
@@ -306,7 +306,7 @@ YAML;
     /** @test */
     function it_can_generate_default_value_from_enum()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 enum:
   - foo
@@ -323,7 +323,7 @@ YAML;
     /** @test */
     function it_can_generate_nullable_value()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 nullable: true
 YAML;
@@ -336,7 +336,7 @@ YAML;
     /** @test */
     function it_can_generate_example_value()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: string
 example: example string
 YAML;

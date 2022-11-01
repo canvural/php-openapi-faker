@@ -14,8 +14,8 @@ final class Options
     public const STRATEGY_STATIC  = 'static';
     public const STRATEGY_DYNAMIC = 'dynamic';
 
-    private ?int $minItems            = null;
-    private ?int $maxItems            = null;
+    private int|null $minItems        = null;
+    private int|null $maxItems        = null;
     private bool $alwaysFakeOptionals = false;
     private string $strategy          = self::STRATEGY_DYNAMIC;
 
@@ -33,17 +33,15 @@ final class Options
         return $this;
     }
 
-    public function setAlwaysFakeOptionals(bool $alwaysFakeOptionals): self
+    public function setAlwaysFakeOptionals(bool $alwaysFakeOptionals): Options
     {
         $this->alwaysFakeOptionals = $alwaysFakeOptionals;
 
         return $this;
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function setStrategy(string $strategy): self
+    /** @throws InvalidArgumentException */
+    public function setStrategy(string $strategy): Options
     {
         $allowed = [self::STRATEGY_STATIC, self::STRATEGY_DYNAMIC];
 
@@ -56,12 +54,12 @@ final class Options
         return $this;
     }
 
-    public function getMinItems(): ?int
+    public function getMinItems(): int|null
     {
         return $this->minItems;
     }
 
-    public function getMaxItems(): ?int
+    public function getMaxItems(): int|null
     {
         return $this->maxItems;
     }

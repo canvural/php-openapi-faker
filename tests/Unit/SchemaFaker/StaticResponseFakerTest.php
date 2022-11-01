@@ -36,7 +36,7 @@ class StaticResponseFakerTest extends UnitTestCase
     /** @test */
     function it_will_mock_the_response()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 schema:
   type: object
   properties:
@@ -63,7 +63,7 @@ YAML;
     /** @test */
     function it_will_mock_the_first_example()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 schema:
   type: object
   properties:
@@ -105,7 +105,7 @@ YAML;
     /** @test */
     function it_will_mock_the_given_example()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 schema:
   type: object
   properties:
@@ -147,7 +147,7 @@ YAML;
     /** @test */
     function it_throws_exception_if_example_cannot_be_found()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 schema:
   type: object
   properties:

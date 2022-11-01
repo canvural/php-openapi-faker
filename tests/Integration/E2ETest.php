@@ -17,9 +17,7 @@ use Vural\OpenAPIFaker\Options;
 use function Safe\file_get_contents;
 use function Safe\sprintf;
 
-/**
- * @group Integration
- */
+/** @group Integration */
 class E2ETest extends TestCase
 {
     /**
@@ -139,9 +137,7 @@ class E2ETest extends TestCase
         self::assertTrue(true);
     }
 
-    /**
-     * @return string[][]
-     */
+    /** @return string[][] */
     public function specProvider(): array
     {
         return [

@@ -24,12 +24,10 @@ use function strlen;
 
 use const DATE_RFC3339;
 
-/**
- * @internal
- */
+/** @internal */
 final class StringFaker
 {
-    public static function generate(Schema $schema, Options $options): ?string
+    public static function generate(Schema $schema, Options $options): string|null
     {
         if ($options->getStrategy() === Options::STRATEGY_STATIC) {
             return self::generateStatic($schema);
@@ -112,7 +110,7 @@ final class StringFaker
         }
     }
 
-    private static function generateStatic(Schema $schema): ?string
+    private static function generateStatic(Schema $schema): string|null
     {
         if (! empty($schema->default)) {
             return $schema->default;

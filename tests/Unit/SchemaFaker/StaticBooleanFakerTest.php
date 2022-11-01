@@ -28,7 +28,7 @@ class StaticBooleanFakerTest extends UnitTestCase
     /** @test */
     function it_can_generate_boolean_value()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: boolean
 YAML;
 
@@ -41,7 +41,7 @@ YAML;
     /** @test */
     function it_can_generate_boolean_value_from_enum()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: boolean
 enum:
   - false
@@ -56,7 +56,7 @@ YAML;
     /** @test */
     function it_can_generate_default_value_from_enum()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: boolean
 enum:
   - false
@@ -73,7 +73,7 @@ YAML;
     /** @test */
     function it_can_generate_nullable_value()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: boolean
 nullable: true
 YAML;
@@ -86,7 +86,7 @@ YAML;
     /** @test */
     function it_can_generate_example_value()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: boolean
 example: false
 YAML;

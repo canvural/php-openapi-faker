@@ -7,9 +7,7 @@ namespace Vural\OpenAPIFaker\Tests\Unit;
 use InvalidArgumentException;
 use Vural\OpenAPIFaker\Options;
 
-/**
- * @covers \Vural\OpenAPIFaker\Options
- */
+/** @covers \Vural\OpenAPIFaker\Options */
 class OptionsTest extends UnitTestCase
 {
     /** @test */

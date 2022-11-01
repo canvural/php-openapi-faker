@@ -32,7 +32,7 @@ class ResponseFakerTest extends UnitTestCase
     /** @test */
     function it_will_mock_the_response()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 schema:
   type: object
   required:

@@ -14,21 +14,16 @@ use Vural\OpenAPIFaker\Options;
 use function array_key_exists;
 use function reset;
 
-/**
- * @internal
- */
+/** @internal */
 final class ResponseFaker
 {
-    /** @var Schema|Reference|null */
-    private $schema;
-    private Options $options;
+    private Schema|Reference|null $schema = null;
     /** @var Example[]|Reference[] */
     private array $examples;
 
-    public function __construct(MediaType $mediaType, Options $options)
+    public function __construct(MediaType $mediaType, private Options $options)
     {
         $this->schema   = $mediaType->schema;
-        $this->options  = $options;
         $this->examples = $mediaType->examples;
     }
 
@@ -37,7 +32,7 @@ final class ResponseFaker
      *
      * @throws NoExample
      */
-    public function generate(?string $exampleName = null)
+    public function generate(string|null $exampleName = null): array|string|bool|int|float|null
     {
         if ($this->options->getStrategy() === Options::STRATEGY_STATIC && ! empty($this->examples)) {
             if ($exampleName !== null) {

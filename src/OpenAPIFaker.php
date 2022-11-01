@@ -62,9 +62,6 @@ final class OpenAPIFaker
         return $instance;
     }
 
-    /**
-     * @return OpenAPIFaker
-     */
     public static function createFromSchema(OpenApi $schema): self
     {
         $instance                = new static();
@@ -74,24 +71,20 @@ final class OpenAPIFaker
     }
 
     /**
-     * @return mixed
-     *
      * @throws NoPath
      * @throws NoRequest
      */
     public function mockRequest(
         string $path,
         string $method,
-        string $contentType = 'application/json'
-    ) {
+        string $contentType = 'application/json',
+    ): mixed {
         $content = $this->findContentForRequest($path, $method, $contentType);
 
         return (new RequestFaker($content, $this->options))->generate();
     }
 
     /**
-     * @return mixed
-     *
      * @throws NoPath
      * @throws NoRequest
      * @throws NoExample
@@ -100,16 +93,14 @@ final class OpenAPIFaker
         string $path,
         string $method,
         string $exampleName,
-        string $contentType = 'application/json'
-    ) {
+        string $contentType = 'application/json',
+    ): mixed {
         $content = $this->findContentForRequest($path, $method, $contentType);
 
         return (new RequestFaker($content, $this->options))->generate($exampleName);
     }
 
     /**
-     * @return mixed
-     *
      * @throws NoPath
      * @throws NoResponse
      */
@@ -117,16 +108,14 @@ final class OpenAPIFaker
         string $path,
         string $method,
         string $statusCode = '200',
-        string $contentType = 'application/json'
-    ) {
+        string $contentType = 'application/json',
+    ): mixed {
         $content = $this->findContentForResponse($path, $method, $statusCode, $contentType);
 
         return (new ResponseFaker($content, $this->options))->generate();
     }
 
     /**
-     * @return mixed
-     *
      * @throws NoPath
      * @throws NoResponse
      * @throws NoExample
@@ -136,19 +125,15 @@ final class OpenAPIFaker
         string $method,
         string $exampleName,
         string $statusCode = '200',
-        string $contentType = 'application/json'
-    ) {
+        string $contentType = 'application/json',
+    ): mixed {
         $content = $this->findContentForResponse($path, $method, $statusCode, $contentType);
 
         return (new ResponseFaker($content, $this->options))->generate($exampleName);
     }
 
-    /**
-     * @return mixed
-     *
-     * @throws Exception
-     */
-    public function mockComponentSchema(string $schemaName)
+    /** @throws Exception */
+    public function mockComponentSchema(string $schemaName): mixed
     {
         if ($this->openAPISchema->components === null) {
             throw NoSchema::forZeroComponents();
@@ -164,9 +149,7 @@ final class OpenAPIFaker
         return (new SchemaFaker($schema, $this->options))->generate();
     }
 
-    /**
-     * @param array{minItems?:?int, maxItems?:?int, alwaysFakeOptionals?:bool, strategy?:string} $options
-     */
+    /** @param array{minItems?:?int, maxItems?:?int, alwaysFakeOptionals?:bool, strategy?:string} $options */
     public function setOptions(array $options): self
     {
         foreach ($options as $key => $value) {
@@ -180,15 +163,13 @@ final class OpenAPIFaker
         return $this;
     }
 
-    /**
-     * @throws NoPath
-     */
+    /** @throws NoPath */
     private function findOperation(string $path, string $method): Operation
     {
         try {
             $operation = (new LeagueOpenAPI\SpecFinder($this->openAPISchema))
                 ->findOperationSpec(new LeagueOpenAPI\OperationAddress($path, strtolower($method)));
-        } catch (LeagueOpenAPI\Exception\NoPath $e) {
+        } catch (LeagueOpenAPI\Exception\NoPath) {
             throw NoPath::forPathAndMethod($path, $method);
         }
 
@@ -202,7 +183,7 @@ final class OpenAPIFaker
     private function findContentForRequest(
         string $path,
         string $method,
-        string $contentType = 'application/json'
+        string $contentType = 'application/json',
     ): MediaType {
         $operation = $this->findOperation($path, $method);
 
@@ -232,7 +213,7 @@ final class OpenAPIFaker
         string $path,
         string $method,
         string $statusCode = '200',
-        string $contentType = 'application/json'
+        string $contentType = 'application/json',
     ): MediaType {
         $operation = $this->findOperation($path, $method);
 

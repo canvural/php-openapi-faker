@@ -33,7 +33,7 @@ class StaticObjectFakerTest extends UnitTestCase
     /** @test */
     function it_can_fake_all_properties_if_static_strategy_option_is_set()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: object
 properties:
   id:
@@ -66,7 +66,7 @@ YAML;
     /** @test */
     function it_can_generate_example_value()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 type: object
 properties:
   id:

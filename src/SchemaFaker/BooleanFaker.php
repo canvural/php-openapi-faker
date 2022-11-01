@@ -11,12 +11,10 @@ use Vural\OpenAPIFaker\Options;
 use function random_int;
 use function reset;
 
-/**
- * @internal
- */
+/** @internal */
 final class BooleanFaker
 {
-    public static function generate(Schema $schema, Options $options): ?bool
+    public static function generate(Schema $schema, Options $options): bool|null
     {
         if ($options->getStrategy() === Options::STRATEGY_STATIC) {
             return self::generateStatic($schema);
@@ -34,7 +32,7 @@ final class BooleanFaker
         return random_int(0, 1) < 0.5;
     }
 
-    private static function generateStatic(Schema $schema): ?bool
+    private static function generateStatic(Schema $schema): bool|null
     {
         if (! empty($schema->default)) {
             return $schema->default;

@@ -35,7 +35,7 @@ class StaticSchemaFakerTest extends UnitTestCase
     /** @test */
     function it_can_choose_first_schema_from_one_of()
     {
-        $yaml = <<<YAML
+        $yaml = <<<'YAML'
 oneOf:
   -
     type: string

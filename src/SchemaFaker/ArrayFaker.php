@@ -15,14 +15,10 @@ use function is_array;
 use const SORT_REGULAR;
 use const SORT_STRING;
 
-/**
- * @internal
- */
+/** @internal */
 final class ArrayFaker
 {
-    /**
-     * @return array<mixed>
-     */
+    /** @return array<mixed> */
     public static function generate(Schema $schema, Options $options): array
     {
         $useStaticStrategy = $options->getStrategy() === Options::STRATEGY_STATIC;

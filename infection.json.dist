@@ -5,10 +5,7 @@
         ]
     },
     "logs": {
-        "text": ".build/infection/infection-log.txt",
-        "badge": {
-            "branch": "master"
-        }
+        "text": ".build/infection/infection-log.txt"
     },
     "mutators": {
         "@default": true,
