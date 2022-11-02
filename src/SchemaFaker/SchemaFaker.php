@@ -25,8 +25,8 @@ final class SchemaFaker
 
     public function __construct(Schema $schema, private Options $options, private bool $request = false)
     {
-        $schemaData    = json_decode(json_encode($schema->getSerializableData()), true);
-        $this->schema  = new Schema($this->resolveOfConstraints($schemaData, $options));
+        $schemaData   = json_decode(json_encode($schema->getSerializableData()), true);
+        $this->schema = new Schema($this->resolveOfConstraints($schemaData, $options));
     }
 
     /** @return array<mixed>|string|bool|int|float|null */
