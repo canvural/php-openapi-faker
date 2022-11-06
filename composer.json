@@ -1,5 +1,5 @@
 {
-    "name": "cschindl/php-openapi-faker",
+    "name": "canvural/php-openapi-faker",
     "description": "Library to generate fake data for OpenAPI request/response/schemas.",
     "license": "MIT",
     "type": "library",
