@@ -22,12 +22,12 @@ composer require --dev canvural/php-openapi-faker
 
 ## Usage
 
-First you need to create an instance of `OpenAPIFaker` with your schema that you want to fake data from.
+First you need to create an instance of `OpenAPIFaker` with your schema that you want to fake data from. You can use `createFromJson`, `createFromYaml` or `createFromSchema` to create an instance of `OpenAPIFaker`.
 ```php
 $faker = \Vural\OpenAPIFaker\OpenAPIFaker::createFromJson($yourSchemaAsJson);
 ```
 
-Then you can use `mockResponse`, `mockRequest` and `mockSchema` methods on it to generate fake data for your requests, responses and schemas. Like so:
+Then you can use `mockResponse`, `mockResponseForExample`, `mockRequest`, `mockRequestForExample` and `mockComponentSchema` methods on it to generate fake data for your requests, responses and schemas. Like so:
 
 ```php
 $fakeData = $faker->mockResponse('/todos','GET');
@@ -53,6 +53,10 @@ Override `maxItems` if it's greater than this value.
 ### `alwaysFakeOptionals`
 
 If enabled, every property or item will be generated regardless if they are required or not. **Default**: `false`
+
+### `strategy`
+By default, `OpenAPIFaker` uses a dynamic generation strategy. You can enable the static examples generation by using the `static` strategy.
+**Default**: `dynamic`
 
 ## Changelog
 
