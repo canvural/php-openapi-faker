@@ -12,7 +12,6 @@ use Vural\OpenAPIFaker\Utils\NumberUtils;
 use function mt_getrandmax;
 use function reset;
 
-use const PHP_FLOAT_MAX;
 use const PHP_INT_MAX;
 
 /** @internal */
@@ -91,10 +90,8 @@ final class NumberFaker
                 return (int) NumberUtils::ensureRange(-PHP_INT_MAX, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
 
             case 'float':
-                return (float) NumberUtils::ensureRange(-mt_getrandmax() / 1000000, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
-
             case 'double':
-                return (float) NumberUtils::ensureRange(-PHP_FLOAT_MAX, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
+                return (float) NumberUtils::ensureRange(-mt_getrandmax() / 1000000, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
 
             case null:
                 $number = NumberUtils::ensureRange(0, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
