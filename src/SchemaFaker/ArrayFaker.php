@@ -21,8 +21,13 @@ final class ArrayFaker
     /** @return array<mixed> */
     public static function generate(Schema $schema, Options $options): array
     {
-        $minimum = $schema->minItems ?? 0;
-        $maximum = $schema->maxItems ?? $minimum + 15;
+        $useStaticStrategy = $options->getStrategy() === Options::STRATEGY_STATIC;
+        $minimum           = $schema->minItems ?? ($useStaticStrategy ? 1 : 0);
+        $maximum           = $schema->maxItems ?? $minimum + 15;
+
+        if ($useStaticStrategy && $schema->example !== null) {
+            return $schema->example;
+        }
 
         if ($options->getMinItems() && $minimum < $options->getMinItems()) {
             /** @var int $minimum */
@@ -39,7 +44,7 @@ final class ArrayFaker
             }
         }
 
-        $itemSize = Base::numberBetween($minimum, $maximum);
+        $itemSize = $useStaticStrategy ? $minimum : Base::numberBetween($minimum, $maximum);
 
         $fakeData = [];
 
