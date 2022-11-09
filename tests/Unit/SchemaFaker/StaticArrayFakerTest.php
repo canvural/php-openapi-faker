@@ -233,10 +233,64 @@ JSON,
         $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
             <<<'JSON'
 {
+  "type": "array",
   "items": {
     "type": "integer"
   },
   "example": [1,2,3]
+}
+JSON,
+        ), $this->options);
+
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_example_of_an_individual_array_item()
+    {
+        $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
+            <<<'JSON'
+{
+  "type": "array",
+  "items": {
+    "type": "integer",
+    "example": 1
+  }
+}
+JSON,
+        ), $this->options);
+
+        $this->assertMatchesJsonSnapshot($fakeData);
+    }
+
+    /** @test */
+    function it_can_generate_example_for_array_of_objects()
+    {
+        $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
+            <<<'JSON'
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "string"
+      }
+    }
+  },
+  "example": [
+    {
+      "id": 1,
+      "name": "John"
+    },
+    {
+      "id": 2,
+      "name": "Jane"
+    }
+  ]
 }
 JSON,
         ), $this->options);
