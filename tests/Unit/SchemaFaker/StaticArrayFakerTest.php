@@ -10,7 +10,7 @@ use Vural\OpenAPIFaker\Tests\SchemaFactory;
 use Vural\OpenAPIFaker\Tests\Unit\UnitTestCase;
 
 use function array_unique;
-use function Safe\sort;
+use function sort;
 
 /**
  * @uses \Vural\OpenAPIFaker\SchemaFaker\BooleanFaker
@@ -32,22 +32,6 @@ class StaticArrayFakerTest extends UnitTestCase
         parent::setUp();
 
         $this->options = (new Options())->setStrategy(Options::STRATEGY_STATIC);
-    }
-
-    /** @test */
-    function it_can_generate_items()
-    {
-        $fakeData = ArrayFaker::generate(SchemaFactory::fromJson(
-            <<<'JSON'
-{
-  "items": {
-    "type": "string"
-  }
-}
-JSON,
-        ), $this->options);
-
-        $this->assertMatchesJsonSnapshot($fakeData);
     }
 
     /** @test */
