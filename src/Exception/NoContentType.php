@@ -6,6 +6,6 @@ namespace Vural\OpenAPIFaker\Exception;
 
 use Exception;
 
-class NoContentType extends Exception
+final class NoContentType extends Exception
 {
 }

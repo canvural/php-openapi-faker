@@ -436,6 +436,7 @@ YAML;
      * @uses \Vural\OpenAPIFaker\SchemaFaker\SchemaFaker
      * @uses \Vural\OpenAPIFaker\OpenAPIFaker::createFromYaml
      * @uses \Vural\OpenAPIFaker\OpenAPIFaker::mockComponentSchema
+     * @uses \Vural\OpenAPIFaker\OpenAPIFaker::findComponentSchema
      *
      * @test
      * @covers \Vural\OpenAPIFaker\Options
@@ -605,6 +606,22 @@ YAML;
         self::assertEquals($expected, $fakeData);
     }
 
+    /** @test */
+    function it_will_mock_component_example()
+    {
+        $yamlSpec = self::getTodosSpec();
+
+        $faker    = OpenAPIFaker::createFromYaml($yamlSpec);
+        $fakeData = $faker->mockComponentSchemaForExample('Todo');
+
+        $expected = [
+            'id' => 123,
+            'name' => 'watering plants',
+        ];
+
+        self::assertEquals($expected, $fakeData);
+    }
+
     private function getTodosSpec(): string
     {
         return <<<'YAML'
@@ -648,6 +665,9 @@ paths:
 components:
   schemas:
     Todo:
+      example:
+        id: 123
+        name: 'watering plants'
       type: object
       required:
         - id

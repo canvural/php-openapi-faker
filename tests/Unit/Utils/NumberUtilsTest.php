@@ -59,10 +59,18 @@ class NumberUtilsTest extends UnitTestCase
     }
 
     /** @test */
-    function it_can_ensure_with_multipl_of_range()
+    function it_can_ensure_with_multiple_of_range()
     {
         $number = NumberUtils::ensureRange(10, null, null, null, null, 3);
 
         self::assertEquals(9, $number);
+    }
+
+    /** @test */
+    function it_can_ensure_with_multiple_of_range_is_1()
+    {
+        $number = NumberUtils::ensureRange(10, null, null, null, null, 1);
+
+        self::assertEquals(10, $number);
     }
 }

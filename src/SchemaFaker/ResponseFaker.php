@@ -18,8 +18,9 @@ use function reset;
 final class ResponseFaker
 {
     private Schema|Reference|null $schema = null;
+
     /** @var Example[]|Reference[] */
-    private array $examples;
+    private array $examples = [];
 
     public function __construct(MediaType $mediaType, private Options $options)
     {

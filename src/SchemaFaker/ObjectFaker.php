@@ -36,10 +36,8 @@ final class ObjectFaker
 
         /** @var Schema $property */
         foreach ($schema->properties as $key => $property) {
-            if ($property instanceof Schema) {
-                if (($request && $property->readOnly) || (! $request && $property->writeOnly)) {
-                    continue;
-                }
+            if ($property instanceof Schema && (($request && $property->readOnly) || (! $request && $property->writeOnly))) {
+                continue;
             }
 
             if (
@@ -52,11 +50,10 @@ final class ObjectFaker
 
             $value = (new SchemaFaker($property, $options))->generate();
 
-            $isUnused = ! isset($schema->required[$key]) && $property->nullable && $value === null;
             if (
                 ! $options->getAlwaysFakeOptionals()
                 && $useStaticStrategy
-                && $isUnused
+                && $property->nullable
             ) {
                 continue;
             }

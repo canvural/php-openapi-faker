@@ -113,7 +113,7 @@ final class SchemaFaker
     private function merge(array $firstArray, array $secondArray): array
     {
         // phpcs:ignore
-        foreach ($secondArray as $key => $_) {
+        foreach (array_keys($secondArray) as $key) {
             if (! is_array($secondArray[$key])) {
                 $firstArray[$key] = $secondArray[$key];
 

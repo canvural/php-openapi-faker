@@ -7,6 +7,7 @@ namespace Vural\OpenAPIFaker\Utils;
 /** @internal */
 final class NumberUtils
 {
+    /** @return ($sample is int ? int : float) */
     public static function ensureRange(int|float $sample, int|float|null $minimum, int|float|null $maximum, bool|null $exclusiveMinimum = null, bool|null $exclusiveMaximum = null, int|float|null $multipleOf = null): int|float
     {
         if ($minimum === null) {
@@ -26,11 +27,11 @@ final class NumberUtils
         }
 
         if ($sample === $minimum && $exclusiveMinimum === true) {
-            $sample++;
+            ++$sample;
         }
 
         if ($sample === $maximum && $exclusiveMaximum === true) {
-            $sample--;
+            --$sample;
         }
 
         if ($multipleOf !== null && $multipleOf !== 1) {
