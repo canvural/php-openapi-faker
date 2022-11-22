@@ -27,7 +27,7 @@ First you need to create an instance of `OpenAPIFaker` with your schema that you
 $faker = \Vural\OpenAPIFaker\OpenAPIFaker::createFromJson($yourSchemaAsJson);
 ```
 
-Then you can use `mockResponse`, `mockResponseForExample`, `mockRequest`, `mockRequestForExample` and `mockComponentSchema` methods on it to generate fake data for your requests, responses and schemas. Like so:
+Then you can use `mockResponse`, `mockResponseForExample`, `mockRequest`, `mockRequestForExample`, `mockComponentSchema` and `mockComponentSchemaForExample` methods on it to generate fake data for your requests, responses and schemas. Like so:
 
 ```php
 $fakeData = $faker->mockResponse('/todos','GET');
