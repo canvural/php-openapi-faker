@@ -30,6 +30,7 @@ use function strtolower;
 final class OpenAPIFaker
 {
     private OpenApi $openAPISchema;
+
     private Options $options;
 
     /** @codeCoverageIgnore  */
@@ -44,7 +45,7 @@ final class OpenAPIFaker
      */
     public static function createFromJson(string $json): self
     {
-        $instance                = new static();
+        $instance                = new self();
         $instance->openAPISchema = (new LeagueOpenAPI\SchemaFactory\JsonFactory($json))->createSchema();
 
         return $instance;
@@ -56,7 +57,7 @@ final class OpenAPIFaker
      */
     public static function createFromYaml(string $yaml): self
     {
-        $instance                = new static();
+        $instance                = new self();
         $instance->openAPISchema = (new LeagueOpenAPI\SchemaFactory\YamlFactory($yaml))->createSchema();
 
         return $instance;
@@ -64,7 +65,7 @@ final class OpenAPIFaker
 
     public static function createFromSchema(OpenApi $schema): self
     {
-        $instance                = new static();
+        $instance                = new self();
         $instance->openAPISchema = $schema;
 
         return $instance;
@@ -135,18 +136,21 @@ final class OpenAPIFaker
     /** @throws Exception */
     public function mockComponentSchema(string $schemaName): mixed
     {
-        if ($this->openAPISchema->components === null) {
-            throw NoSchema::forZeroComponents();
-        }
-
-        if (! array_key_exists($schemaName, $this->openAPISchema->components->schemas)) {
-            throw NoSchema::forComponentName($schemaName);
-        }
-
-        /** @var Schema $schema */
-        $schema = $this->openAPISchema->components->schemas[$schemaName];
+        $schema = $this->findComponentSchema($schemaName);
 
         return (new SchemaFaker($schema, $this->options))->generate();
+    }
+
+    /** @throws Exception */
+    public function mockComponentSchemaForExample(string $schemaName): mixed
+    {
+        $schema = $this->findComponentSchema($schemaName);
+
+        if ($schema->example === null) {
+            throw new NoExample();
+        }
+
+        return $schema->example;
     }
 
     /** @param array{minItems?:?int, maxItems?:?int, alwaysFakeOptionals?:bool, strategy?:string} $options */
@@ -237,5 +241,19 @@ final class OpenAPIFaker
         $content = $contents[$contentType];
 
         return $content;
+    }
+
+    /** @throws NoSchema */
+    private function findComponentSchema(string $schemaName): Schema
+    {
+        if ($this->openAPISchema->components === null) {
+            throw NoSchema::forZeroComponents();
+        }
+
+        if (! array_key_exists($schemaName, $this->openAPISchema->components->schemas)) {
+            throw NoSchema::forComponentName($schemaName);
+        }
+
+        return $this->openAPISchema->components->schemas[$schemaName];
     }
 }

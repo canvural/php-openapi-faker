@@ -25,8 +25,9 @@
         "phpstan/phpstan": "^1.9",
         "phpstan/phpstan-phpunit": "^1",
         "phpunit/phpunit": "^9.5",
+        "rector/rector": "^0.14.7",
         "spatie/phpunit-snapshot-assertions": "^4.2",
-        "symfony/var-dumper": "^5.4",
+        "symfony/var-dumper": "^6",
         "thecodingmachine/phpstan-safe-rule": "^1.2"
     },
     "prefer-stable": true,
@@ -51,17 +52,6 @@
         "sort-packages": true
     },
     "scripts": {
-        "check": [
-            "@codestyle",
-            "@phpstan",
-            "@test"
-        ],
-        "ci:check": [
-            "@codestyle",
-            "@phpstan",
-            "@test-coverage",
-            "@test-mutation"
-        ],
         "codestyle": "vendor/bin/phpcs",
         "phpstan": "vendor/bin/phpstan analyse --ansi",
         "test": "vendor/bin/phpunit",

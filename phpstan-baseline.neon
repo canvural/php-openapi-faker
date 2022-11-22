@@ -1,16 +1,21 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$schema of class Vural\\\\OpenAPIFaker\\\\SchemaFaker\\\\SchemaFaker constructor expects cebe\\\\openapi\\\\spec\\\\Schema, cebe\\\\openapi\\\\spec\\\\Reference\\|cebe\\\\openapi\\\\spec\\\\Schema\\|null given\\.$#"
+			message: "#^Method Vural\\\\OpenAPIFaker\\\\OpenAPIFaker\\:\\:findComponentSchema\\(\\) should return cebe\\\\openapi\\\\spec\\\\Schema but returns cebe\\\\openapi\\\\spec\\\\Reference\\|cebe\\\\openapi\\\\spec\\\\Schema\\.$#"
 			count: 1
-			path: src/SchemaFaker/RequestFaker.php
-		
-		-
-			message: "#^Parameter \\#1 \\$schema of class Vural\\\\OpenAPIFaker\\\\SchemaFaker\\\\SchemaFaker constructor expects cebe\\\\openapi\\\\spec\\\\Schema, cebe\\\\openapi\\\\spec\\\\Reference\\|cebe\\\\openapi\\\\spec\\\\Schema\\|null given\\.$#"
-			count: 1
-			path: src/SchemaFaker/ResponseFaker.php
+			path: src/OpenAPIFaker.php
 
 		-
 			message: "#^Parameter \\#1 \\$schema of class Vural\\\\OpenAPIFaker\\\\SchemaFaker\\\\SchemaFaker constructor expects cebe\\\\openapi\\\\spec\\\\Schema, cebe\\\\openapi\\\\spec\\\\Reference\\|cebe\\\\openapi\\\\spec\\\\Schema\\|null given\\.$#"
 			count: 1
 			path: src/SchemaFaker/ArrayFaker.php
+
+		-
+			message: "#^Parameter \\#1 \\$schema of class Vural\\\\OpenAPIFaker\\\\SchemaFaker\\\\SchemaFaker constructor expects cebe\\\\openapi\\\\spec\\\\Schema, cebe\\\\openapi\\\\spec\\\\Reference\\|cebe\\\\openapi\\\\spec\\\\Schema\\|null given\\.$#"
+			count: 1
+			path: src/SchemaFaker/RequestFaker.php
+
+		-
+			message: "#^Parameter \\#1 \\$schema of class Vural\\\\OpenAPIFaker\\\\SchemaFaker\\\\SchemaFaker constructor expects cebe\\\\openapi\\\\spec\\\\Schema, cebe\\\\openapi\\\\spec\\\\Reference\\|cebe\\\\openapi\\\\spec\\\\Schema\\|null given\\.$#"
+			count: 1
+			path: src/SchemaFaker/ResponseFaker.php

@@ -164,7 +164,7 @@ examples:
 YAML;
 
         $this->expectException(NoExample::class);
-        $this->expectExceptionMessage('OpenAPI spec does not have a example "unknownExample" request');
+        $this->expectExceptionMessage('OpenAPI spec does not have an example "unknownExample" request');
 
         (new RequestFaker(MediaTypeFactory::fromYaml($yaml), $this->options))->generate('unknownExample');
     }

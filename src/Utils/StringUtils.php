@@ -8,11 +8,11 @@ use function base_convert;
 use function ceil;
 use function implode;
 use function max;
-use function Safe\substr;
 use function Safe\unpack;
 use function str_repeat;
 use function str_split;
 use function strlen;
+use function substr;
 
 /** @internal */
 final class StringUtils
@@ -44,11 +44,11 @@ final class StringUtils
             return $text;
         }
 
-        if ($maxLength < $minLength) {
+        if ($maxLength <= $minLength) {
             $maxLength = $minLength;
         }
 
-        if (strlen($text) < $minLength) {
+        if (strlen($text) <= $minLength) {
             $text = str_repeat($text, (int) ceil($minLength / strlen($text)));
         }
 

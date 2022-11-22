@@ -11,10 +11,7 @@
         "@default": true,
         "global-ignore": [
             "Vural\\OpenAPIFaker\\SchemaFaker\\BooleanFaker",
-            "Vural\\OpenAPIFaker\\Utils\\RegexUtils::generateSample",
-            "Vural\\OpenAPIFaker\\Utils\\StringUtils::convertToBinary",
-            "Vural\\OpenAPIFaker\\Utils\\StringUtils::ensureLength",
-            "Vural\\OpenAPIFaker\\Utils\\NumberUtils::ensureRange"
+            "Vural\\OpenAPIFaker\\Utils\\RegexUtils",
         ],
         "LessThan": {
             "ignore": [

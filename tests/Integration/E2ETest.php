@@ -15,7 +15,7 @@ use Vural\OpenAPIFaker\OpenAPIFaker;
 use Vural\OpenAPIFaker\Options;
 
 use function Safe\file_get_contents;
-use function Safe\sprintf;
+use function sprintf;
 
 /** @group Integration */
 class E2ETest extends TestCase
@@ -33,9 +33,9 @@ class E2ETest extends TestCase
 
         foreach ($schema->paths->getPaths() as $path => $pathItem) {
             foreach ($pathItem->getOperations() as $method => $operation) {
-                /** @var RequestBody|null $requestBody */
                 $requestBody = $operation->requestBody;
-                if ($requestBody === null) {
+
+                if (! $requestBody instanceof RequestBody) {
                     continue;
                 }
 
@@ -44,10 +44,9 @@ class E2ETest extends TestCase
                  * @var MediaType $mediaType
                  */
                 foreach ($requestBody->content as $contentType => $mediaType) {
-                    /** @var Schema|null $schema */
                     $schema = $mediaType->schema;
 
-                    if ($schema === null) {
+                    if (! $schema instanceof Schema) {
                         continue;
                     }
 
@@ -126,6 +125,40 @@ class E2ETest extends TestCase
          */
         foreach ($schema->components->schemas as $schemaName => $schema) {
             $mockSchema = $faker->mockComponentSchema($schemaName);
+
+            try {
+                (new SchemaValidator())->validate($mockSchema, $schema);
+            } catch (Throwable $e) {
+                self::fail($e->getMessage());
+            }
+        }
+
+        self::assertTrue(true);
+    }
+
+    /**
+     * @test
+     * @dataProvider specProvider
+     */
+    function it_can_generate_valid_component_examples(string $filename, string $strategy)
+    {
+        $file  = file_get_contents(sprintf('%s/../specs/%s.yaml', __DIR__, $filename));
+        $faker = OpenAPIFaker::createFromYaml($file)->setOptions(['strategy' => $strategy]);
+
+        $schema = (new YamlFactory($file))->createSchema();
+
+        self::assertNotNull($schema->components);
+
+        /**
+         * @var string $schemaName
+         * @var Schema $schema
+         */
+        foreach ($schema->components->schemas as $schemaName => $schema) {
+            if ($schema->example === null) {
+                continue;
+            }
+
+            $mockSchema = $faker->mockComponentSchemaForExample($schemaName);
 
             try {
                 (new SchemaValidator())->validate($mockSchema, $schema);

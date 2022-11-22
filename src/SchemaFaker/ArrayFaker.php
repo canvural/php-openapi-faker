@@ -50,16 +50,16 @@ final class ArrayFaker
 
         $itemSchema = new SchemaFaker($schema->items, $options);
 
-        for ($i = 0; $i < $itemSize; $i++) {
+        for ($i = 0; $i < $itemSize; ++$i) {
             $fakeData[] = $itemSchema->generate();
 
-            if ($schema->uniqueItems !== true) {
+            if (! $schema->uniqueItems) {
                 continue;
             }
 
             $uniqueData = array_unique($fakeData, is_array($fakeData[0]) ? SORT_REGULAR : SORT_STRING);
 
-            if (count($uniqueData) >= count($fakeData)) {
+            if (count($uniqueData) > count($fakeData)) {
                 continue;
             }
 

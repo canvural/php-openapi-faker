@@ -36,12 +36,12 @@ final class NumberFaker
         $maximum    = $schema->maximum ??  mt_getrandmax();
         $multipleOf = $schema->multipleOf ?? 1;
 
-        if ($schema->exclusiveMinimum === true) {
-            $minimum++;
+        if ($schema->exclusiveMinimum) {
+            ++$minimum;
         }
 
-        if ($schema->exclusiveMaximum === true) {
-            $maximum--;
+        if ($schema->exclusiveMaximum) {
+            --$maximum;
         }
 
         if ($schema->type === 'integer') {
@@ -91,7 +91,7 @@ final class NumberFaker
 
             case 'float':
             case 'double':
-                return (float) NumberUtils::ensureRange(-mt_getrandmax() / 1000000, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
+                return (float) NumberUtils::ensureRange(-mt_getrandmax() / 1_000_000, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
 
             case null:
                 $number = NumberUtils::ensureRange(0, $minimum, $maximum, $exclusiveMinimum, $exclusiveMaximum, $multipleOf);
