@@ -1103,7 +1103,7 @@ components:
     Tweet:
       example:
         author_id: '712089797812'
-        created_at: 'Wed Jun 20 16:53:49 +0000 2018'
+        created_at: '2018-06-20 16:53:49+0000'
         id: '12234'
         text: Some great insight into the human condition.
       properties:

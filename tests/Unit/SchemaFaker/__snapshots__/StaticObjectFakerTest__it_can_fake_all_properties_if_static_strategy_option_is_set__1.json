@@ -1,0 +1,8 @@
+{
+    "id": 0,
+    "username": "string",
+    "name": "string",
+    "age": 0,
+    "birthdate": "2019-08-24",
+    "email": "user@example.com"
+}

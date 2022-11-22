@@ -14,10 +14,13 @@ use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;
 use Exception;
 use League\OpenAPIValidation\PSR7 as LeagueOpenAPI;
+use Vural\OpenAPIFaker\Exception\NoExample;
 use Vural\OpenAPIFaker\Exception\NoPath;
 use Vural\OpenAPIFaker\Exception\NoRequest;
 use Vural\OpenAPIFaker\Exception\NoResponse;
 use Vural\OpenAPIFaker\Exception\NoSchema;
+use Vural\OpenAPIFaker\SchemaFaker\RequestFaker;
+use Vural\OpenAPIFaker\SchemaFaker\ResponseFaker;
 use Vural\OpenAPIFaker\SchemaFaker\SchemaFaker;
 
 use function array_key_exists;
@@ -27,6 +30,7 @@ use function strtolower;
 final class OpenAPIFaker
 {
     private OpenApi $openAPISchema;
+
     private Options $options;
 
     /** @codeCoverageIgnore  */
@@ -41,7 +45,7 @@ final class OpenAPIFaker
      */
     public static function createFromJson(string $json): self
     {
-        $instance                = new static();
+        $instance                = new self();
         $instance->openAPISchema = (new LeagueOpenAPI\SchemaFactory\JsonFactory($json))->createSchema();
 
         return $instance;
@@ -53,8 +57,16 @@ final class OpenAPIFaker
      */
     public static function createFromYaml(string $yaml): self
     {
-        $instance                = new static();
+        $instance                = new self();
         $instance->openAPISchema = (new LeagueOpenAPI\SchemaFactory\YamlFactory($yaml))->createSchema();
+
+        return $instance;
+    }
+
+    public static function createFromSchema(OpenApi $schema): self
+    {
+        $instance                = new self();
+        $instance->openAPISchema = $schema;
 
         return $instance;
     }
@@ -68,21 +80,25 @@ final class OpenAPIFaker
         string $method,
         string $contentType = 'application/json',
     ): mixed {
-        $operation = $this->findOperation($path, $method);
+        $content = $this->findContentForRequest($path, $method, $contentType);
 
-        if ($operation->requestBody === null) {
-            throw NoRequest::forPathAndMethod($path, $method);
-        }
+        return (new RequestFaker($content, $this->options))->generate();
+    }
 
-        /** @var RequestBody $requestBody */
-        $requestBody = $operation->requestBody;
-        $contents    = $requestBody->content;
+    /**
+     * @throws NoPath
+     * @throws NoRequest
+     * @throws NoExample
+     */
+    public function mockRequestForExample(
+        string $path,
+        string $method,
+        string $exampleName,
+        string $contentType = 'application/json',
+    ): mixed {
+        $content = $this->findContentForRequest($path, $method, $contentType);
 
-        if (! array_key_exists($contentType, $contents)) {
-            throw NoRequest::forPathAndMethodAndContentType($path, $method, $contentType);
-        }
-
-        return (new SchemaFaker($contents[$contentType]->schema, $this->options, true))->generate();
+        return (new RequestFaker($content, $this->options))->generate($exampleName);
     }
 
     /**
@@ -95,48 +111,49 @@ final class OpenAPIFaker
         string $statusCode = '200',
         string $contentType = 'application/json',
     ): mixed {
-        $operation = $this->findOperation($path, $method);
+        $content = $this->findContentForResponse($path, $method, $statusCode, $contentType);
 
-        if ($operation->responses === null) {
-            throw NoResponse::forPathAndMethod($path, $method);
-        }
+        return (new ResponseFaker($content, $this->options))->generate();
+    }
 
-        if (! $operation->responses->hasResponse($statusCode)) {
-            throw NoResponse::forPathAndMethodAndStatusCode($path, $method, $statusCode);
-        }
+    /**
+     * @throws NoPath
+     * @throws NoResponse
+     * @throws NoExample
+     */
+    public function mockResponseForExample(
+        string $path,
+        string $method,
+        string $exampleName,
+        string $statusCode = '200',
+        string $contentType = 'application/json',
+    ): mixed {
+        $content = $this->findContentForResponse($path, $method, $statusCode, $contentType);
 
-        /** @var Response $response */
-        $response = $operation->responses->getResponse($statusCode);
-        $contents = $response->content;
-
-        if (! array_key_exists($contentType, $contents)) {
-            throw NoResponse::forPathAndMethodAndStatusCode($path, $method, $statusCode);
-        }
-
-        /** @var MediaType $content */
-        $content = $contents[$contentType];
-
-        return (new SchemaFaker($content->schema, $this->options))->generate();
+        return (new ResponseFaker($content, $this->options))->generate($exampleName);
     }
 
     /** @throws Exception */
     public function mockComponentSchema(string $schemaName): mixed
     {
-        if ($this->openAPISchema->components === null) {
-            throw NoSchema::forZeroComponents();
-        }
-
-        if (! array_key_exists($schemaName, $this->openAPISchema->components->schemas)) {
-            throw NoSchema::forComponentName($schemaName);
-        }
-
-        /** @var Schema $schema */
-        $schema = $this->openAPISchema->components->schemas[$schemaName];
+        $schema = $this->findComponentSchema($schemaName);
 
         return (new SchemaFaker($schema, $this->options))->generate();
     }
 
-    /** @param array{minItems?:?int, maxItems?:?int, alwaysFakeOptionals?:bool} $options */
+    /** @throws Exception */
+    public function mockComponentSchemaForExample(string $schemaName): mixed
+    {
+        $schema = $this->findComponentSchema($schemaName);
+
+        if ($schema->example === null) {
+            throw new NoExample();
+        }
+
+        return $schema->example;
+    }
+
+    /** @param array{minItems?:?int, maxItems?:?int, alwaysFakeOptionals?:bool, strategy?:string} $options */
     public function setOptions(array $options): self
     {
         foreach ($options as $key => $value) {
@@ -161,5 +178,82 @@ final class OpenAPIFaker
         }
 
         return $operation;
+    }
+
+    /**
+     * @throws NoPath
+     * @throws NoRequest
+     */
+    private function findContentForRequest(
+        string $path,
+        string $method,
+        string $contentType = 'application/json',
+    ): MediaType {
+        $operation = $this->findOperation($path, $method);
+
+        if ($operation->requestBody === null) {
+            throw NoRequest::forPathAndMethod($path, $method);
+        }
+
+        /** @var RequestBody $requestBody */
+        $requestBody = $operation->requestBody;
+        $contents    = $requestBody->content;
+
+        if (! array_key_exists($contentType, $contents)) {
+            throw NoRequest::forPathAndMethodAndContentType($path, $method, $contentType);
+        }
+
+        /** @var MediaType $content */
+        $content = $contents[$contentType];
+
+        return $content;
+    }
+
+    /**
+     * @throws NoPath
+     * @throws NoResponse
+     */
+    private function findContentForResponse(
+        string $path,
+        string $method,
+        string $statusCode = '200',
+        string $contentType = 'application/json',
+    ): MediaType {
+        $operation = $this->findOperation($path, $method);
+
+        if ($operation->responses === null) {
+            throw NoResponse::forPathAndMethod($path, $method);
+        }
+
+        if (! $operation->responses->hasResponse($statusCode)) {
+            throw NoResponse::forPathAndMethodAndStatusCode($path, $method, $statusCode);
+        }
+
+        /** @var Response $response */
+        $response = $operation->responses->getResponse($statusCode);
+        $contents = $response->content;
+
+        if (! array_key_exists($contentType, $contents)) {
+            throw NoResponse::forPathAndMethodAndStatusCode($path, $method, $statusCode);
+        }
+
+        /** @var MediaType $content */
+        $content = $contents[$contentType];
+
+        return $content;
+    }
+
+    /** @throws NoSchema */
+    private function findComponentSchema(string $schemaName): Schema
+    {
+        if ($this->openAPISchema->components === null) {
+            throw NoSchema::forZeroComponents();
+        }
+
+        if (! array_key_exists($schemaName, $this->openAPISchema->components->schemas)) {
+            throw NoSchema::forComponentName($schemaName);
+        }
+
+        return $this->openAPISchema->components->schemas[$schemaName];
     }
 }

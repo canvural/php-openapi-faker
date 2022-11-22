@@ -6,9 +6,9 @@ namespace Vural\OpenAPIFaker\Exception;
 
 use Exception;
 
-use function Safe\sprintf;
+use function sprintf;
 
-class NoSchema extends Exception
+final class NoSchema extends Exception
 {
     public string $name;
 

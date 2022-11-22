@@ -10,23 +10,24 @@
         }
     ],
     "require": {
-        "php": "^8.0 || ^8.1",
+        "php": "^8.0 || ^8.1 || ^8.2",
         "ext-json": "*",
         "cebe/php-openapi": "^1.7",
         "fakerphp/faker": "^1.20",
         "league/openapi-psr7-validator": "^0.18",
-        "thecodingmachine/safe": "^2.2"
+        "thecodingmachine/safe": "^2.4"
     },
     "require-dev": {
         "doctrine/coding-standard": "^10",
         "ergebnis/composer-normalize": "^2.27",
         "infection/infection": "^0.26",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^1.7",
+        "phpstan/phpstan": "^1.9",
         "phpstan/phpstan-phpunit": "^1",
         "phpunit/phpunit": "^9.5",
+        "rector/rector": "^0.14.7",
         "spatie/phpunit-snapshot-assertions": "^4.2",
-        "symfony/var-dumper": "^5.4",
+        "symfony/var-dumper": "^6",
         "thecodingmachine/phpstan-safe-rule": "^1.2"
     },
     "prefer-stable": true,
@@ -54,8 +55,9 @@
         "codestyle": "vendor/bin/phpcs",
         "phpstan": "vendor/bin/phpstan analyse --ansi",
         "test": "vendor/bin/phpunit",
-        "test-coverage": "vendor/bin/phpunit --coverage-clover=.build/phpunit/clover.xml",
+        "test-coverage": "vendor/bin/phpunit --coverage-clover=.build/phpunit/clover.xml --coverage-html=.build/phpunit",
         "test-fast": "vendor/bin/phpunit --color=always --exclude Integration",
+        "test-fast-coverage": "vendor/bin/phpunit --exclude Integration --coverage-clover=.build/phpunit/clover.xml --coverage-html=.build/phpunit",
         "test-mutation": "vendor/bin/infection --ignore-msi-with-no-mutations --min-covered-msi=89 --min-msi=89"
     }
 }

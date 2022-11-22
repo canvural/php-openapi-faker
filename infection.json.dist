@@ -10,7 +10,8 @@
     "mutators": {
         "@default": true,
         "global-ignore": [
-            "Vural\\OpenAPIFaker\\SchemaFaker\\BooleanFaker"
+            "Vural\\OpenAPIFaker\\SchemaFaker\\BooleanFaker",
+            "Vural\\OpenAPIFaker\\Utils\\RegexUtils",
         ],
         "LessThan": {
             "ignore": [
@@ -24,9 +25,34 @@
         },
         "CastInt": {
             "ignore": [
-                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generate"
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateDynamic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateStatic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateStaticFromFormat"
+            ]
+        },
+        "CastFloat": {
+            "ignore": [
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateDynamic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateStatic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\NumberFaker::generateStaticFromFormat"
+            ]
+        },
+        "IncrementInteger": {
+            "ignore": [
+                "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::generateStatic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::generateDynamic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::generateStaticFromFormat",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::generateDynamicFromFormat"
+            ]
+        },
+        "DecrementInteger": {
+            "ignore": [
+                "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::generateStatic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::generateDynamic",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::generateStaticFromFormat",
+                "Vural\\OpenAPIFaker\\SchemaFaker\\StringFaker::generateDynamicFromFormat"
             ]
         }
     },
-    "timeout": 20
+    "timeout": 5
 }

@@ -21,8 +21,13 @@ final class ArrayFaker
     /** @return array<mixed> */
     public static function generate(Schema $schema, Options $options): array
     {
-        $minimum = $schema->minItems ?? 0;
-        $maximum = $schema->maxItems ?? $minimum + 15;
+        $useStaticStrategy = $options->getStrategy() === Options::STRATEGY_STATIC;
+        $minimum           = $schema->minItems ?? ($useStaticStrategy ? 1 : 0);
+        $maximum           = $schema->maxItems ?? $minimum + 15;
+
+        if ($useStaticStrategy && $schema->example !== null) {
+            return $schema->example;
+        }
 
         if ($options->getMinItems() && $minimum < $options->getMinItems()) {
             /** @var int $minimum */
@@ -39,22 +44,22 @@ final class ArrayFaker
             }
         }
 
-        $itemSize = Base::numberBetween($minimum, $maximum);
+        $itemSize = $useStaticStrategy ? $minimum : Base::numberBetween($minimum, $maximum);
 
         $fakeData = [];
 
         $itemSchema = new SchemaFaker($schema->items, $options);
 
-        for ($i = 0; $i < $itemSize; $i++) {
+        for ($i = 0; $i < $itemSize; ++$i) {
             $fakeData[] = $itemSchema->generate();
 
-            if ($schema->uniqueItems !== true) {
+            if (! $schema->uniqueItems) {
                 continue;
             }
 
             $uniqueData = array_unique($fakeData, is_array($fakeData[0]) ? SORT_REGULAR : SORT_STRING);
 
-            if (count($uniqueData) >= count($fakeData)) {
+            if (count($uniqueData) > count($fakeData)) {
                 continue;
             }
 
