@@ -14,7 +14,7 @@
         "ext-json": "*",
         "cebe/php-openapi": "^1.7",
         "fakerphp/faker": "^1.20",
-        "league/openapi-psr7-validator": "^0.18",
+        "league/openapi-psr7-validator": "^0.21",
         "thecodingmachine/safe": "^2.4"
     },
     "require-dev": {
