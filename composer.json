@@ -18,7 +18,7 @@
         "thecodingmachine/safe": "^2.4"
     },
     "require-dev": {
-        "doctrine/coding-standard": "^11",
+        "doctrine/coding-standard": "^12",
         "ergebnis/composer-normalize": "^2.29",
         "infection/infection": "^0.26",
         "phpstan/extension-installer": "^1.1",
