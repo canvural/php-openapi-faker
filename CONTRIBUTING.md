@@ -42,7 +42,7 @@ If the project maintainer has any additional requirements, you will find them li
 
 ### Coding Standards
 
-We are using [`squizlabs/PHP_CodeSniffer`](https://github.com/squizlabs/PHP_CodeSniffer) to enforce coding standards in PHP files.
+We are using [`squizlabs/PHP_CodeSniffer`](https://github.com/PHPCSStandards/PHP_CodeSniffer) to enforce coding standards in PHP files.
 
 Run
 
